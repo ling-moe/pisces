@@ -1,0 +1,41 @@
+// Material color helpers including text color and background color
+@use 'variables';
+
+@mixin generate-colors($prefix, $property) {
+  @each $name, $value in variables.$mat-colors {
+    // If the value is a map, continue to each
+    @if type-of($value) == 'map' {
+      @each $hue, $color in $value {
+        @if ($hue != 'contrast') {
+          .#{$prefix + '-' + $name + '-' + $hue} {
+            #{$property}: $color !important;
+          }
+        }
+      }
+    }
+
+    @if type-of($value) == 'color' {
+      .#{$prefix + '-' + $name} {
+        #{$property}: $value !important;
+      }
+    }
+  }
+
+  // alias
+  @for $i from 1 through 9 {
+    .#{$prefix + '-grey-' + $i * 100} {
+      @extend .#{$prefix + '-gray-' + $i * 100};
+    }
+
+    .#{$prefix + '-blue-grey-' + $i * 100} {
+      @extend .#{$prefix + '-blue-gray-' + $i * 100};
+    }
+  }
+}
+
+// Generate text-color helpers
+@include generate-colors('text', 'color');
+// Generate background-color helpers
+@include generate-colors('bg', 'background-color');
+// Generate border-color helpers
+@include generate-colors('border', 'border-color');

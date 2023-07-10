@@ -1,0 +1,18 @@
+/** Override Material styles */
+
+@use '../../app/theme/style/variables';
+
+.mat-mdc-card {
+  margin-bottom: variables.$gutter;
+}
+
+.mat-mdc-accordion {
+  display: block;
+  margin-bottom: variables.$gutter;
+}
+
+.form-field-full {
+  .mat-mdc-form-field {
+    width: 100%;
+  }
+}

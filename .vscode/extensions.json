@@ -1,8 +1,15 @@
 {
   "recommendations": [
-    "nrwl.angular-console",
+    "angular.ng-template",
+    "cyrilletuzi.angular-schematics",
+    "apk27.ngx-translate-lookup",
     "esbenp.prettier-vscode",
-    "firsttris.vscode-jest-runner",
+    "stylelint.vscode-stylelint",
+    "syler.sass-indented",
+    "editorconfig.editorconfig",
+    "box-of-hats.quick-material-icons",
+    "mrmlnc.vscode-scss",
+    "nrwl.angular-console",
     "dbaeumer.vscode-eslint"
   ]
 }

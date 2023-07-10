@@ -1,0 +1,80 @@
+@use '@angular/material' as mat;
+@use '../style/badge';
+
+.matero-topmenu {
+  position: sticky;
+  z-index: 200;
+  display: block;
+  padding: 8px;
+
+  @include mat.elevation(2);
+
+  .mat-mdc-button-base {
+    padding: 0 16px;
+    white-space: nowrap;
+  }
+
+  .menu-icon,
+  .menu-caret,
+  .menu-name {
+    vertical-align: middle;
+  }
+
+  .mat-icon.menu-icon {
+    width: 18px;
+    height: 18px;
+    margin-right: 8px;
+    font-size: 18px;
+    line-height: 18px;
+
+    [dir='rtl'] & {
+      margin-right: auto;
+      margin-left: 8px;
+    }
+  }
+
+  .mat-icon.menu-caret {
+    margin-right: -8px;
+
+    [dir='rtl'] & {
+      margin-right: auto;
+      margin-left: -8px;
+    }
+  }
+
+  .menu-label,
+  .menu-badge {
+    @include badge.badge();
+
+    margin-left: 8px;
+    font-size: 12px;
+
+    [dir='rtl'] & {
+      margin-right: 8px;
+      margin-left: auto;
+    }
+  }
+
+  .menu-badge {
+    border-radius: 50rem;
+  }
+
+  .mat-tab-nav-bar,
+  .mat-tab-header {
+    border-bottom: none;
+  }
+}
+
+.matero-topmenu-panel {
+  .mat-menu-item {
+    .menu-name {
+      margin-right: 8px;
+      vertical-align: middle;
+
+      [dir='rtl'] & {
+        margin-right: auto;
+        margin-left: 8px;
+      }
+    }
+  }
+}

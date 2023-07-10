@@ -1,0 +1,19 @@
+import { Directive, Input, OnChanges, Optional } from '@angular/core';
+import { NgControl } from '@angular/forms';
+
+@Directive({
+  selector: '[disableControl]',
+})
+export class DisableControlDirective implements OnChanges {
+  @Input() disableControl = false;
+
+  constructor(@Optional() private ngControl: NgControl) {}
+
+  ngOnChanges(): void {
+    if (this.disableControl) {
+      this.ngControl?.control?.disable({ emitEvent: false });
+    } else {
+      this.ngControl?.control?.enable({ emitEvent: false });
+    }
+  }
+}

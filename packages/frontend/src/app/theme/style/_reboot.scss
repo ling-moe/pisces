@@ -1,0 +1,48 @@
+@use 'variables';
+
+body {
+  margin: 0;
+  font-family: variables.$font-family-base;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+html,
+body {
+  position: relative; // 1
+  height: 100%;
+  overflow: auto; // 2
+}
+
+*,
+::after,
+::before {
+  box-sizing: border-box;
+}
+
+dl,
+ol,
+ul {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+code,
+kbd,
+pre,
+samp {
+  font-family: variables.$font-family-monospace;
+}
+
+code {
+  padding: 3px;
+  font-size: 90%;
+  word-break: break-word;
+}
+
+a {
+  text-decoration: none;
+}
