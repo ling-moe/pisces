@@ -35,7 +35,7 @@ export class FormlyFieldComboboxComponent extends FieldType<FieldTypeConfig> {
   }
 
   // The original `onContainerClick` has been covered up in FieldType, so we should redefine it.
-  onContainerClick(event: MouseEvent) {
+  override onContainerClick(event: MouseEvent) {
     const target = event.target as HTMLElement;
     if (/mat-form-field|mtx-select/g.test(target.parentElement?.classList[0] || '')) {
       this.select.focus();

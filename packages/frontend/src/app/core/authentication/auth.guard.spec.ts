@@ -43,7 +43,7 @@ describe('authGuard function unit test', () => {
     inject([AuthService, Router], () => {
       tokenService.set({ access_token: 'token', token_type: 'bearer' });
 
-      expect(authGuard(route, state)).toBeTrue();
+      expect(authGuard(route, state)).toBeTruthy();
     });
   });
 

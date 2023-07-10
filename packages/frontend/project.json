@@ -61,8 +61,8 @@
       },
       "defaultConfiguration": "development",
       "options": {
-        "browserTarget": "frontend:build",
-        "proxyConfig": "proxy.config.js"
+        "browserTarget": "packages/frontend:build",
+        "proxyConfig": "packages/frontend/proxy.config.js"
       }
     },
     "extract-i18n": {
