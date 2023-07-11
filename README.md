@@ -29,6 +29,8 @@
 
 [ ] Oauth2集成
 
+[ ] 多租户展开
+
 ## 安装
 
 这个项目使用 [node](http://nodejs.org/) 和 [npm](https://npmjs.com/)。请确保你本地安装了它们。
