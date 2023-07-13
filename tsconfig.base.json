@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@pisces/musubi": ["packages/musubi/src/index.ts"],
       "@pisces/prisma-tool": ["packages/prisma-tool/src/index.ts"]
     }
   },

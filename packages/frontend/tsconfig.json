@@ -1,7 +1,6 @@
 {
-  "compileOnSave": false,
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "baseUrl": "src",
     "target": "es2022",
     "useDefineForClassFields": false,
     "forceConsistentCasingInFileNames": true,
@@ -13,16 +12,17 @@
     "declaration": false,
     "module": "es2020",
     "paths": {
-      "@core": ["app/core"],
-      "@core/*": ["app/core/*"],
-      "@shared": ["app/shared"],
-      "@shared/*": ["app/shared/*"],
-      "@theme": ["app/theme"],
-      "@theme/*": ["app/theme/*"],
-      "@testing": ["testing"],
-      "@testing/*": ["testing/*"],
-      "@env": ["environments"],
-      "@env/*": ["environments/*"]
+      "@pisces/musubi": ["packages/musubi/src/index.ts"],
+      "@core": ["packages/frontend/src/app/core"],
+      "@core/*": ["packages/frontend/src/app/core/*"],
+      "@shared": ["packages/frontend/src/app/shared"],
+      "@shared/*": ["packages/frontend/src/app/shared/*"],
+      "@theme": ["packages/frontend/src/app/theme"],
+      "@theme/*": ["packages/frontend/src/app/theme/*"],
+      "@testing": ["packages/frontend/src/testing"],
+      "@testing/*": ["packages/frontend/src/testing/*"],
+      "@env": ["packages/frontend/src/environments"],
+      "@env/*": ["packages/frontend/src/environments/*"]
     }
   },
   "files": [],
@@ -38,7 +38,6 @@
       "path": "./tsconfig.editor.json"
     }
   ],
-  "extends": "../../tsconfig.base.json",
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,

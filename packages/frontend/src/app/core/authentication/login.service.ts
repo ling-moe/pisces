@@ -1,14 +1,17 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Type } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Token, User } from './interface';
 import { Menu } from '@core';
 import { map } from 'rxjs/operators';
 
+
 @Injectable({
   providedIn: 'root',
 })
-export class LoginService {
-  constructor(protected http: HttpClient) {}
+export class LoginService extends Consumer(UserRemoteService) {
+  constructor(protected http: HttpClient) {
+    super();
+  }
 
   login(username: string, password: string, rememberMe = false) {
     return this.http.post<Token>('/auth/login', { username, password, rememberMe });

@@ -11,6 +11,7 @@ export class FakeLoginService extends LoginService {
   private token = { access_token: 'MW56YjMyOUAxNjMuY29tWm9uZ2Jpbg==', token_type: 'bearer' };
 
   override login() {
+    console.log('在这停顿');
     return of(this.token);
   }
 
@@ -23,6 +24,7 @@ export class FakeLoginService extends LoginService {
   }
 
   override me() {
+    console.log('在这停顿');
     return of(admin);
   }
 
