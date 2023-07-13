@@ -2,6 +2,8 @@
 
 这是一个TS全栈框架，用于快速交付和开发应用。
 
+[Feature看板](https://github.com/orgs/ling-moe/projects/1)
+
 ## 内容列表
 
 - [背景](#背景)
