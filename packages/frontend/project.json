@@ -7,9 +7,15 @@
   "tags": [],
   "targets": {
     "build": {
-      "executor": "@angular-devkit/build-angular:browser",
+      "executor": "@angular-builders/custom-webpack:browser",
       "outputs": ["{options.outputPath}"],
       "options": {
+        "customWebpackConfig": {
+          "path": "packages/frontend/extra-webpack.config.js",
+          "mergeRules": {
+            "externals": "replace"
+          }
+        },
         "outputPath": "dist/packages/frontend",
         "index": "packages/frontend/src/index.html",
         "main": "packages/frontend/src/main.ts",
@@ -50,7 +56,7 @@
       "defaultConfiguration": "production"
     },
     "serve": {
-      "executor": "@angular-devkit/build-angular:dev-server",
+      "executor": "@angular-builders/custom-webpack:dev-server",
       "configurations": {
         "production": {
           "browserTarget": "frontend:build:production"
