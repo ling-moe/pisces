@@ -8,9 +8,8 @@ import { map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root',
 })
-export class LoginService extends Consumer(UserRemoteService) {
+export class LoginService {
   constructor(protected http: HttpClient) {
-    super();
   }
 
   login(username: string, password: string, rememberMe = false) {
