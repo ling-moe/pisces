@@ -9,6 +9,7 @@ export class AuthController {
   @UseGuards(RolesGuard)
   @Post('login')
   async login(@Request() req) {
+    // 登录请求逻辑
     return this.authService.login(req.user);
   }
 }
