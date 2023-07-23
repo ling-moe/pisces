@@ -5,7 +5,8 @@
   "scripts": {
     "test": "nx g @pisces/musubi:musubi-update --verbose",
     "musubi:tsc": "packages/musubi/tsconfig.schematics.json",
-    "musubi:update": "schematics ./packages/musubi:update --debug==false"
+    "musubi:update": "schematics ./packages/musubi:update --debug==false",
+    "migrate":"prisma migrate dev --schema=packages/prisma-tool/schema.prisma"
   },
   "private": true,
   "devDependencies": {
