@@ -6,10 +6,15 @@ import { AuthService } from './auth.service';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @UseGuards(RolesGuard)
   @Post('login')
   async login(@Request() req) {
     // 登录请求逻辑
     return this.authService.login(req.user);
+  }
+
+  @Post('hello')
+  async hello(@Request() req) {
+    // 登录请求逻辑
+    return "Hello World";
   }
 }
