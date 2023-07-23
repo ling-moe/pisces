@@ -1,5 +1,6 @@
 import { INestApplication, Injectable, Module, OnModuleInit } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
+
 import { UserService } from './user.service';
 
 @Module({

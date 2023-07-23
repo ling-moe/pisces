@@ -1,20 +1,21 @@
 import { Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
-import { RolesGuard } from './roles.guard';
+import { UniqueTokenAuthGuard } from './token.guard';
 import { AuthService } from './auth.service';
 
 @Controller('/auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post('login')
+  @Post('/login')
   async login(@Request() req) {
     // 登录请求逻辑
+    console.log(req.user);
     return this.authService.login(req.user);
   }
 
   @Get('/hello')
   async hello() {
     // 登录请求逻辑
-    return "Hello World";
+    return this.authService.getUser();
   }
 }

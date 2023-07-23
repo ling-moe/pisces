@@ -19,4 +19,5 @@ export class TokenStrategy extends PassportStrategy(UniqueTokenStrategy) {
     }
     return user;
   }
+  
 }
