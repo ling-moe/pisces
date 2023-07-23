@@ -1,8 +1,8 @@
-import { Controller, Post, Request, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
 import { RolesGuard } from './roles.guard';
 import { AuthService } from './auth.service';
 
-@Controller('auth')
+@Controller('/auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
@@ -12,8 +12,8 @@ export class AuthController {
     return this.authService.login(req.user);
   }
 
-  @Post('hello')
-  async hello(@Request() req) {
+  @Get('/hello')
+  async hello() {
     // 登录请求逻辑
     return "Hello World";
   }
