@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "test": "npx nx run frontend:serve"
+    "test": "nx g @pisces/musubi:musubi-update --verbose",
+    "musubi:tsc": "packages/musubi/tsconfig.schematics.json",
+    "musubi:update": "schematics ./packages/musubi:update --debug==false"
   },
   "private": true,
   "devDependencies": {
@@ -11,6 +13,7 @@
     "@angular-devkit/build-angular": "~16.1.0",
     "@angular-devkit/core": "~16.1.0",
     "@angular-devkit/schematics": "~16.1.0",
+    "@angular-devkit/schematics-cli": "^16.1.4",
     "@angular-eslint/builder": "^16.0.3",
     "@angular-eslint/eslint-plugin": "~16.0.0",
     "@angular-eslint/eslint-plugin-template": "~16.0.0",
@@ -31,13 +34,14 @@
     "@nx/node": "16.4.2",
     "@nx/web": "16.5.0",
     "@nx/webpack": "16.4.2",
-    "@nx/workspace": "16.4.2",
+    "@nx/workspace": "^16.4.2",
     "@schematics/angular": "~16.1.0",
     "@types/jest": "^29.4.0",
     "@types/lodash": "^4.14.195",
     "@types/node": "~18.7.1",
     "@typescript-eslint/eslint-plugin": "^5.58.0",
     "@typescript-eslint/parser": "^5.58.0",
+    "copyfiles": "^2.4.1",
     "cypress": "^12.16.0",
     "eslint": "~8.15.0",
     "eslint-config-prettier": "8.1.0",

@@ -9,12 +9,11 @@ export class AppComponent implements OnInit, AfterViewInit {
   constructor(private preloader: PreloaderService, private settings: SettingsService) {}
 
   ngOnInit() {
-    console.error('热替换');
     // @ts-ignore
     if (module.hot) {
       // @ts-ignore
       module.hot.accept('./README.md', () => {
-      console.error('热替换');
+      console.log('热替换');
     });
     }
     this.settings.setDirection();
