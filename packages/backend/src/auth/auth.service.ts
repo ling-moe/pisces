@@ -14,9 +14,9 @@ export class AuthService {
   constructor(
     @Inject(CACHE_MANAGER) private cacheManager: Cache
   ){}
-  async getUser() {
+  async getUser(token: string) {
     // throw new Error("Method not implemented.");
-    return await this.cacheManager.get(this.token)
+    return await this.cacheManager.get(token)
 
   }
 
