@@ -1,1 +1,1 @@
-export * from './lib/musubi';
+export * from './lib/remote/musubi.remote';
