@@ -1,7 +1,5 @@
-import { Body, Controller, Get, Post, Req, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Request, UseGuards,Response, Res, HttpStatus } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LocalAuthGuard } from './local-auth.guard';
-import { TokenStrategy } from './token.strategy';
 import { UserDto } from './user';
 import { AuthGuard } from '@nestjs/passport';
 
@@ -16,18 +14,17 @@ export class AuthController {
     return this.authService.login(user);
   }
 
+  @Get('getUserInfo')
+  @UseGuards(AuthGuard('unique-token'))
+  async getUserInfo() {
+    const user = this.authService.getUser();
+    console.log("[getUserInfo]user ==> ",JSON.stringify(user))
+    return user;
+  }
+
   @Get('protected')
   @UseGuards(AuthGuard('unique-token'))
   protectedRoute() {
-    // 需要收保护的路由 
+    console.log("[protected]==>request")
   }
-
-  @Get('getUserInfo')
-  async getUserInfo(@Req() req: Request) {
-    const authHeader = req.headers['authorization'];
-    console.log("[TokenStrategy][getTokenFromHeader]==>request",authHeader)
-    const user = this.authService.validate(authHeader);
-    return user;
-  }
-  
 }

@@ -5,7 +5,6 @@ import { AuthController } from './auth.controller';
 import { PassportModule } from '@nestjs/passport';
 import { TokenStrategy } from './token.strategy';
 import { UserMoudule } from './user.module';
-import { LocalStrategy } from './local.strategy';
 
 /**
  * 用于配置 Passport 和身份验证策略
@@ -14,13 +13,12 @@ import { LocalStrategy } from './local.strategy';
   imports: [
     CacheModule.register(), // Initialize cache manager module
     UserMoudule,
-    PassportModule.register({ defaultStrategy: 'unique-token' }),
+    PassportModule.register({ defaultStrategy: 'bearer' })
   ],
 
   providers: [
     AuthService,
     TokenStrategy, // 提供 UniqueTokenStrategy
-    LocalStrategy,
   ],
   controllers: [AuthController],
 })

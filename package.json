@@ -6,7 +6,7 @@
     "test": "nx g @pisces/musubi:musubi-update --verbose",
     "musubi:tsc": "packages/musubi/tsconfig.schematics.json",
     "musubi:update": "schematics ./packages/musubi:update --debug==false",
-    "migrate":"prisma migrate dev --schema=packages/prisma-tool/schema.prisma"
+    "migrate": "prisma migrate dev --schema=packages/prisma-tool/schema.prisma"
   },
   "private": true,
   "devDependencies": {
@@ -99,6 +99,7 @@
     "ngx-progressbar": "^11.1.0",
     "ngx-toastr": "^17.0.2",
     "passport": "^0.6.0",
+    "passport-http-bearer": "^1.0.1",
     "passport-unique-token": "^3.0.0",
     "passport-wechat": "^2.0.4",
     "photoviewer": "^3.7.1",

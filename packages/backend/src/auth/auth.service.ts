@@ -21,9 +21,9 @@ export class AuthService {
     // 在此处实现用户身份验证逻辑（例如从数据库中验证用户凭据） 如果验证成功，返回用户对象；否则返回 null
     const user = await this.userService.findOne(username);
     if (user && user.password === password) {
-      console.log("user==>" + user);
+      console.log("user==>",JSON.stringify(user));
       const { password, ...result } = user;
-      console.log("result==>" + result);
+      console.log("result==>",JSON.stringify(result));
       return result;
     }
     throw new Error('Incorrect username or password');
@@ -31,10 +31,11 @@ export class AuthService {
 
 
   async login(user: any) {
-    const userData = this.validateUser(user.username, user.password);
+    const userData = await this.validateUser(user.username, user.password);
     const token = uuidv4(); // Generate a unique token (you can use other token generation methods)
     this.token = token;
-    await this.cacheManager.set(token, userData, 3600); // Cache the user data with the token (ttl is in seconds)
+    console.log("result==>",JSON.stringify(userData));
+    await this.cacheManager.set(token, userData, 360000); // Cache the user data with the token (ttl is in seconds)
     return token;
   }
 
@@ -49,7 +50,9 @@ export class AuthService {
     try {
       // 假设这里使用简单的静态数据来模拟查询数据库验证 token 的过程
       // const validTokens = ['token123', 'token456'];
-      if (token == this.token) {
+      console.log("[validate]token==>",token)
+      console.log("[validate]this.toke==>",this.token)
+      if (token === this.token) {
         // 如果验证通过，将用户对象传递给回调函数
         return { id: 1, username: 'example' };
       } else {
