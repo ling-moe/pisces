@@ -1,5 +1,5 @@
 import { Observable } from "rxjs";
-/// <reference path="./musubi.ts"/>
+import { UserService } from "./remote/musubi.remote";
 
 export type Consumer<T> = {
   [P in keyof T]: T[P] extends (...args: infer A) => infer R ? (...args: A) => Observable<R> : any;
@@ -7,6 +7,6 @@ export type Consumer<T> = {
 
 export type Provider<T> = T;
 
-export type UserServiceConsumer = Consumer<a.b.UserService>;
+export type UserServiceConsumer = Consumer<UserService>;
 
-export type UserServiceProvider = Provider<a.b.UserService>;
+export type UserServiceProvider = Provider<UserService>;

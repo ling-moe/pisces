@@ -14,6 +14,18 @@
         "assets": ["packages/musubi/*.md"]
       }
     },
+    "tsc": {
+      "command": "tsc -p tsconfig.schematics.json",
+      "options": {
+        "cwd": "packages/musubi"
+      }
+    },
+    "update": {
+      "command": "schematics .:update --debug==false",
+      "options": {
+        "cwd": "packages/musubi"
+      }
+    },
     "lint": {
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
