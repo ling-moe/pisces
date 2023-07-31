@@ -11,7 +11,7 @@ export class BaseUrlInterceptor implements HttpInterceptor {
   constructor(@Optional() @Inject(BASE_URL) private baseUrl?: string) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    return this.hasScheme(request.url) === false
+    return this.hasScheme(request.url) === false && !request.url.includes('assets')
       ? next.handle(request.clone({ url: this.prependBaseUrl(request.url) }))
       : next.handle(request);
   }

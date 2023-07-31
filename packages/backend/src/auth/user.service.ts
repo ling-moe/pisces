@@ -9,6 +9,8 @@ export class UserService {
       userId: 1,
       username: 'admin',
       password: '123456',
+      email: 'nzb329@163.com',
+      avatar: './assets/images/avatar.jpg',
     },
     {
       userId: 2,

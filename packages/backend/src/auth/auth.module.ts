@@ -5,6 +5,8 @@ import { AuthController } from './auth.controller';
 import { PassportModule } from '@nestjs/passport';
 import { TokenStrategy } from './token.strategy';
 import { UserMoudule } from './user.module';
+import { SelfController } from './self.controller';
+import { MenuService } from './menu.service';
 
 /**
  * 用于配置 Passport 和身份验证策略
@@ -13,13 +15,14 @@ import { UserMoudule } from './user.module';
   imports: [
     CacheModule.register(), // Initialize cache manager module
     UserMoudule,
-    PassportModule.register({ defaultStrategy: 'bearer' })
+    PassportModule.register({ defaultStrategy: 'bearer' }),
   ],
 
   providers: [
     AuthService,
-    TokenStrategy, // 提供 UniqueTokenStrategy
+    TokenStrategy,
+    MenuService, // 提供 UniqueTokenStrategy
   ],
-  controllers: [AuthController],
+  controllers: [AuthController, SelfController],
 })
 export class AuthModule {}

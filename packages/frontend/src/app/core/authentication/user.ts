@@ -1,14 +1,15 @@
 import { User } from './interface';
 
 export const admin: User = {
-  id: 1,
-  name: 'Zongbin',
+  userId: 1,
+  username: 'Zongbin',
   email: 'nzb329@163.com',
   avatar: './assets/images/avatar.jpg',
 };
 
 export const guest: User = {
-  name: 'unknown',
+  userId: 2,
+  username: 'unknown',
   email: 'unknown',
   avatar: './assets/images/avatar-default.jpg',
 };

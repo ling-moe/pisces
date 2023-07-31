@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, Request, UseGuards,Response, Res, HttpStatus } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Request, UseGuards,Response, Res, HttpStatus, Header, Headers } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { UserDto } from './user';
 import { AuthGuard } from '@nestjs/passport';
@@ -12,14 +12,6 @@ export class AuthController {
   async login(@Body() user: UserDto) {
     // 登录请求逻辑
     return this.authService.login(user);
-  }
-
-  @Get('getUserInfo')
-  @UseGuards(AuthGuard('unique-token'))
-  async getUserInfo() {
-    const user = this.authService.getUser();
-    console.log("[getUserInfo]user ==> ",JSON.stringify(user))
-    return user;
   }
 
   @Get('protected')
