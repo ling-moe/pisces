@@ -3,10 +3,12 @@ import { Module } from '@nestjs/common';
 
 import { AppController } from './app.controller';
 import { AuthModule } from '../auth/auth.module';
+import { MusubiTestModule } from '../musubi-test/musubi-test.module';
 
 @Module({
   imports: [
-    AuthModule
+    AuthModule,
+    MusubiTestModule
     // RedisModule.register({
     //   //Redis配置
     //   host: 'localhost',

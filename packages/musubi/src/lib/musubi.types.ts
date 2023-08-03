@@ -6,7 +6,5 @@ export type Consumer<T> = {
 }
 
 export type Provider<T> = T;
-
-export type UserServiceConsumer = Consumer<UserService>;
-
 export type UserServiceProvider = Provider<UserService>;
+export type UserServiceConsumer = Consumer<UserService>;

@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "test": "nx g @pisces/musubi:musubi-update --verbose",
+    "test": "npx nx run backend:serve",
     "musubi:tsc": "packages/musubi/tsconfig.schematics.json",
     "musubi:update": "schematics ./packages/musubi:update --debug==false",
     "migrate": "prisma migrate dev --schema=packages/prisma-tool/schema.prisma"
@@ -108,5 +108,8 @@
     "screenfull": "^6.0.2",
     "tslib": "^2.3.0",
     "zone.js": "~0.13.0"
+  },
+  "prettier":{
+    "printWidth": 120
   }
 }

@@ -1,5 +1,6 @@
-import { Controller, Get, Module } from '@nestjs/common';
+import { Controller, Get, MiddlewareConsumer, Module } from '@nestjs/common';
 import { UserService } from './nestjs.service';
+import {  Router } from 'express';
 
 @Controller()
 export class UserServiceController {
@@ -17,4 +18,15 @@ export class UserServiceController {
   providers: [UserService],
 })
 export class MusubiModule {
+  configure(consumer: MiddlewareConsumer) {
+    const router = Router();
+    router.get('/example', (req, res) => 'hello example');
+    //forRoutes起到controller的作用
+    consumer.apply(router).forRoutes('/*');
+    
+  }
+}
+
+function MusubiProvider(interfaces: string[]){
+
 }

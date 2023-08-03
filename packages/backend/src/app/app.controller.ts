@@ -1,11 +1,11 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 
 
 @Controller()
 export class AppController {
 
   @Get()
-  getData() {
+  getData(@Query("person") person: string) {
     return "";
   }
 }
