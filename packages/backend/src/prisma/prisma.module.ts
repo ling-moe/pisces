@@ -3,12 +3,6 @@ import { PrismaClient } from '@prisma/client';
 
 import { UserService } from './user.service';
 
-@Module({
-  controllers: [],
-  providers: [UserService],
-  exports: [UserService],
-})
-export class PrismaModule {}
 
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit {
@@ -22,3 +16,11 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
     });
   }
 }
+
+
+@Module({
+  controllers: [],
+  providers: [PrismaService],
+  exports: [PrismaService],
+})
+export class PrismaModule {}

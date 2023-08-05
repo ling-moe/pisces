@@ -3,7 +3,7 @@ import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { Cache } from 'cache-manager';
 import { v4 as uuidv4 } from 'uuid';
 import { User } from '@prisma/client';
-import { UserService } from './user.service';
+import { UserService } from '../prisma/user.service';
 
 /**
  * 用于处理用户身份验证和生成令牌
@@ -14,11 +14,11 @@ export class AuthService {
 
   async validateUser(username: string, password: string): Promise<any> {
     // 在此处实现用户身份验证逻辑（例如从数据库中验证用户凭据） 如果验证成功，返回用户对象；否则返回 null
-    const user = await this.userService.findOne(username);
+    const user = await this.userService.findByUsername(username);
     if (user && user.password === password) {
-      console.log('user==>', JSON.stringify(user));
+      console.log('user==>', user);
       const { password, ...result } = user;
-      console.log('result==>', JSON.stringify(result));
+      console.log('result==>', result);
       return result;
     }
     throw new Error('Incorrect username or password');
@@ -27,7 +27,7 @@ export class AuthService {
   async login(user: User) {
     const userData = await this.validateUser(user.username, user.password);
     const token = uuidv4(); // Generate a unique token (you can use other token generation methods)
-    console.log('result==>', JSON.stringify(userData));
+    console.log('result==>', userData);
     await this.cacheManager.set(token, userData, 3600000); // Cache the user data with the token (ttl is in seconds)
     return { access_token: token, token_type: 'bearer' };
   }

@@ -6,6 +6,16 @@ import { Prisma, User } from '@prisma/client';
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
+  async findByUsername(username: string): Promise<User | null> {
+    return this.prisma.user.findFirst({
+      where: {
+        username: {
+          equals: username,
+        },
+      },
+    });
+  }
+
   async user(userWhereUniqueInput: Prisma.UserWhereUniqueInput) {
     return this.prisma.user.findUnique({
       where: userWhereUniqueInput,
@@ -36,10 +46,7 @@ export class UserService {
     });
   }
 
-  async updateUser(options: {
-    where: Prisma.UserWhereUniqueInput;
-    data: Prisma.UserUpdateInput;
-  }) {
+  async updateUser(options: { where: Prisma.UserWhereUniqueInput; data: Prisma.UserUpdateInput }) {
     const { where, data } = options;
     return this.prisma.user.update({
       data,

@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { User } from '@prisma/client';
-import exp from 'constants';
 
 @Injectable()
 export class UserService {

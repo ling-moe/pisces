@@ -1,4 +1,3 @@
-
 import { Module } from '@nestjs/common';
 import { CacheModule } from '@nestjs/cache-manager';
 import { AuthService } from './auth.service';
@@ -11,7 +10,8 @@ import { MenuService } from './menu.service';
 import { RedisClientOptions } from 'redis';
 import { redisStore } from 'cache-manager-redis-yet';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-
+import { UserService } from '../prisma/user.service';
+import { PrismaModule } from '../prisma/prisma.module';
 
 /**
  * 用于配置 Passport 和身份验证策略
@@ -22,19 +22,20 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       imports: [ConfigModule],
       useFactory: async (cfg: ConfigService) => ({
         store: await redisStore({
-         socket: {
-           host: cfg.get('REDIS_HOST') || 'singapore-redis.render.com',
-           port: parseInt(cfg.get('REDIS_PORT ') || '6379'),
-           tls: true
-         },
-         username: 'red-cj6v6g4l975s73b41p60',
-         password: cfg.get('REDIS_PASSWORD') || 'KZMdBNea7Q1bXFVUBQr8Z9XZrlsuK820',
-         ttl: cfg.get('REDIS_TTL'),
-       }),
+          socket: {
+            host: cfg.get('REDIS_HOST') || 'singapore-redis.render.com',
+            port: parseInt(cfg.get('REDIS_PORT ') || '6379'),
+            tls: true,
+          },
+          username: 'red-cj6v6g4l975s73b41p60',
+          password: cfg.get('REDIS_PASSWORD') || 'KZMdBNea7Q1bXFVUBQr8Z9XZrlsuK820',
+          ttl: cfg.get('REDIS_TTL'),
+        }),
       }),
-      inject: [ConfigService]
-     }),
+      inject: [ConfigService],
+    }),
     UserMoudule,
+    PrismaModule,
     PassportModule.register({ defaultStrategy: 'bearer' }),
   ],
 
@@ -42,6 +43,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     AuthService,
     TokenStrategy,
     MenuService, // 提供 UniqueTokenStrategy
+    UserService
   ],
   controllers: [AuthController, SelfController],
 })
