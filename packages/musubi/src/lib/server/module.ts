@@ -1,16 +1,13 @@
-import { MiddlewareConsumer, Module, ModuleMetadata, RequestMethod, Type, assignMetadata } from '@nestjs/common';
+import { ModuleMetadata, RequestMethod, Type, assignMetadata } from '@nestjs/common';
 import { CONTROLLER_WATERMARK, HOST_METADATA, METHOD_METADATA, PATH_METADATA, ROUTE_ARGS_METADATA, SCOPE_OPTIONS_METADATA, VERSION_METADATA } from '@nestjs/common/constants';
 import { validateModuleKeys } from '@nestjs/common/utils/validate-module-keys.util';
-import { RouterModule } from '@nestjs/core';
-import { Router } from 'express';
-import { Request, Response, NextFunction } from 'express';
-import { HelloService } from './hello.service';
 import { RouteParamtypes } from '@nestjs/common/enums/route-paramtypes.enum';
-import { methodToHttp } from './method-sigature.util';
+import { extractMethodParams, methodToHttp } from '../method-sigature.util';
+
 export type MusubiModuleMetadata = ModuleMetadata & {
   alias?: string;
 }
-RouterModule
+// ! TODO 可能还需要一个可远程化注入的注解，用来代替module的service字段，标记可远程化的service
 
 /**
  * 在原有module注解的情况下进行增强
@@ -71,19 +68,19 @@ function defineMappingMatedata(proxyController: Type<any>) {
     }
     const { method, path, paramType } = methodToHttp(obj[property].value.name);
     Reflect.defineMetadata(PATH_METADATA, path, obj[property].value);
-    Reflect.defineMetadata(METHOD_METADATA, method, obj[property].value);
+    Reflect.defineMetadata(METHOD_METADATA, RequestMethod[method], obj[property].value);
     // 方法参数标记
-    defineMappingParamsMatedata(obj[property].value.toString(), (obj.constructor as any).value, paramType, property);
+    defineMappingParamsMatedata(obj[property].value, (obj.constructor as any).value, RouteParamtypes[paramType], property);
   }
 }
 
 function defineMappingParamsMatedata(
-  methodStr: string,
+  method: any,
   classConstructor: Function,
   paramType: RouteParamtypes,
   property: string
 ) {
-  const params = methodStr.slice(methodStr.indexOf('(') + 1, methodStr.indexOf(')')).match(/([^\s,]+)/g);
+  const params = extractMethodParams(method);
   for (let i = 0; i < params.length; i++) {
     // 添加get方法用的query参数
     Reflect.defineMetadata(

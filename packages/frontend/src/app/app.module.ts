@@ -22,9 +22,8 @@ export function TranslateHttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
-import { LoginService } from '@core/authentication/login.service';
-import { FakeLoginService } from './fake-login.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { musubiProvider } from '@pisces/musubi/client';
 
 @NgModule({
   declarations: [AppComponent],
@@ -49,7 +48,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   ],
   providers: [
     { provide: BASE_URL, useValue: environment.baseUrl },
-    // { provide: LoginService, useClass: FakeLoginService }, // <= Remove it in the real APP
+    musubiProvider,
     httpInterceptorProviders,
     appInitializerProviders,
   ],
