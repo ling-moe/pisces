@@ -1,6 +1,5 @@
-import { MiddlewareConsumer, NestModule } from '@nestjs/common';
 import { HelloService } from './hello.service';
-import { MusubiModule } from './module';
+import { MusubiModule } from "@pisces/musubi/server";
 
 @MusubiModule({
   providers: [
