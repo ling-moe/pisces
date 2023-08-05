@@ -24,25 +24,4 @@ export class TokenStrategy extends PassportStrategy(Strategy,"unique-token") {
     console.log("[TokenStrategy][validate]==>",token)
     return await this.authService.validate(token);
   }
-
-
-  // async validate(request: any) {
-  //   // const user = await this.authService.validateUser( username, password);
-  //   console.log("[TokenStrategy][validate]==>request",request)
-  //   const token = this.getTokenFromHeader(request);
-  //   const user = await this.authService.validate(token);
-  //   if (!user) {
-  //     throw new UnauthorizedException();
-  //   }
-  //   return user;
-  // }
-
-  private getTokenFromHeader(request: any): string | null {
-    console.log("[TokenStrategy][getTokenFromHeader]==>request",request)
-    const authHeader = request.headers['authorization'];
-    if (authHeader) {
-      return authHeader;
-    }
-    throw new UnauthorizedException();
-  }
 }

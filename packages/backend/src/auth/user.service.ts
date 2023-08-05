@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { User } from '@prisma/client';
 import exp from 'constants';
-import { UserDto } from './user';
 
 @Injectable()
 export class UserService {
@@ -17,9 +17,9 @@ export class UserService {
       username: 'test',
       password: '123456',
     },
-  ];
+  ] as unknown as User[];
 
-  async findOne(username: string): Promise<UserDto | undefined> {
+  async findOne(username: string): Promise<User | undefined> {
     return this.userList.find((user) => user.username == username);
   }
 }

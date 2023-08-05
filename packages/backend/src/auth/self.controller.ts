@@ -22,7 +22,7 @@ export class SelfController {
   @UseGuards(AuthGuard('unique-token'))
   async menu(@Headers('Authorization') token) {
     const user = this.menuService.menu(await this.authService.getUser(token));
-    console.log("[getUserInfo]user ==> ",JSON.stringify(user))
+    console.log("[getUserInfo]user==> ",JSON.stringify(user))
     return user;
   }
 }
