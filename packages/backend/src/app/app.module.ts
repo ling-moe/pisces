@@ -8,7 +8,7 @@ import { MusubiTestModule } from '../musubi-test/musubi-test.module';
 @Module({
   imports: [
     AuthModule,
-    MusubiTestModule
+    MusubiTestModule,
     // RedisModule.register({
     //   //Redis配置
     //   host: 'localhost',
