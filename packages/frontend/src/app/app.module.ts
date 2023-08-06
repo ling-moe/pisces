@@ -4,9 +4,9 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 
-import { CoreModule } from '@core/core.module';
-import { ThemeModule } from '@theme/theme.module';
-import { SharedModule } from '@shared/shared.module';
+import { CoreModule } from '@pisces/core';
+import { ThemeModule } from '@pisces/theme';
+import { SharedModule } from '@pisces/shared';
 import { RoutesModule } from './routes/routes.module';
 import { FormlyConfigModule } from './formly-config.module';
 import { NgxPermissionsModule } from 'ngx-permissions';
@@ -14,8 +14,9 @@ import { ToastrModule } from 'ngx-toastr';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
-import { environment } from '@env/environment';
-import { BASE_URL, httpInterceptorProviders, appInitializerProviders } from '@core';
+// @ts-ignore
+import { environment } from '../environments/environment';
+import { BASE_URL, httpInterceptorProviders, appInitializerProviders } from '@pisces/core';
 
 // Required for AOT compilation
 export function TranslateHttpLoaderFactory(http: HttpClient) {

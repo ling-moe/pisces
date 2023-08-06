@@ -3,7 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { filter } from 'rxjs/operators';
-import { AuthService } from '@core/authentication';
+import { AuthService } from '@pisces/core';
 
 @Component({
   selector: 'app-login',
@@ -14,8 +14,8 @@ export class LoginComponent {
   isSubmitting = false;
 
   loginForm = this.fb.nonNullable.group({
-    username: ['ng-matero', [Validators.required]],
-    password: ['ng-matero', [Validators.required]],
+    username: ['admin', [Validators.required]],
+    password: ['123456', [Validators.required]],
     rememberMe: [false],
   });
 
