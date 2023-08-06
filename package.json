@@ -91,6 +91,7 @@
     "@ngx-translate/http-loader": "^8.0.0",
     "@prisma/client": "^5.0.0",
     "axios": "^1.0.0",
+    "bcrypt": "^5.1.0",
     "cache-manager": "^5.2.3",
     "cache-manager-redis-store": "^3.0.1",
     "cache-manager-redis-yet": "^4.1.2",

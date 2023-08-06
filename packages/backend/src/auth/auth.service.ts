@@ -1,9 +1,10 @@
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import { ForbiddenException, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { Cache } from 'cache-manager';
 import { v4 as uuidv4 } from 'uuid';
 import { User } from '@prisma/client';
 import { UserService } from '../prisma/user.service';
+import * as bcrypt from 'bcrypt';
 
 /**
  * 用于处理用户身份验证和生成令牌
@@ -15,8 +16,8 @@ export class AuthService {
   async validateUser(username: string, password: string): Promise<any> {
     // 在此处实现用户身份验证逻辑（例如从数据库中验证用户凭据） 如果验证成功，返回用户对象；否则返回 null
     const user = await this.userService.findByUsername(username);
-    // TODO 密码需要使用bcrypt进行加密处理然后进行比较（加盐）
-    if (user && user.password === password) {
+    // 校验用户信息
+    if (user && await this.comparePasswords(password,user.password)) {
       console.log('user==>', user);
       return user;
     }
@@ -33,7 +34,11 @@ export class AuthService {
 
   async getUser(token: string) {
     // throw new Error("Method not implemented.");
-    return (await this.cacheManager.get(token.split(' ')[1])) as User;
+    const user = (await this.cacheManager.get(token.split(' ')[1]));
+    if (user === null) {
+      throw new UnauthorizedException();
+    }
+    return user as User;
   }
 
   async validate(token: string) {
@@ -48,5 +53,14 @@ export class AuthService {
       throw new UnauthorizedException();
     }
     return user;
+  }
+
+  async hashPassword(password: string): Promise<string> {
+    const saltOrRounds = 10; // 盐的轮数，一般建议设置为 10
+    return bcrypt.hash(password, saltOrRounds);
+  }
+
+  async comparePasswords(password: string, hashedPassword: string): Promise<boolean> {
+    return bcrypt.compare(password, hashedPassword);
   }
 }

@@ -13,7 +13,6 @@ export class SelfController {
   @Get()
   @UseGuards(AuthGuard('unique-token'))
   async self(@Headers('Authorization') token) {
-    // ! TODO 莉桑，如果拿不到用户记得返回401,另外全局异常拦截器你也要配，现在登录的时候如果失败，返回的http错误码有问题
     const user = await this.authService.getUser(token);
     return user;
   }

@@ -9,18 +9,11 @@ import { AuthService } from './auth.service';
 @Injectable()
 export class TokenStrategy extends PassportStrategy(Strategy,"unique-token") {
   constructor(private authService: AuthService) {
-    // TODO
-    // super((token) => this.authService.getUser());
-    // super({
-    //   tokenField: 'authorization',
-    // });
     super();
   }
 
   async validate(token: any) {
-    // const user = await this.authService.validateUser( username, password);
-    // console.log("[TokenStrategy][validate]==>request",request)
-    // const token = this.getTokenFromHeader(request);
+    // 接口鉴权实现逻辑
     console.log("[TokenStrategy][validate]==>",token)
     return await this.authService.validate(token);
   }
