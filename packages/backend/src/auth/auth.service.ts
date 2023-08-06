@@ -18,10 +18,7 @@ export class AuthService {
     // TODO 密码需要使用bcrypt进行加密处理然后进行比较（加盐）
     if (user && user.password === password) {
       console.log('user==>', user);
-      // TODO BigInt序列化问题 缓存中先排除掉BigInteger字段
-      const { password,userId,createBy,updateBy, ...result } = user;
-      console.log('result==>', result);
-      return result;
+      return user;
     }
     throw new Error('Incorrect username or password');
   }
@@ -30,7 +27,6 @@ export class AuthService {
     const userData = await this.validateUser(user.username, user.password);
     const token = uuidv4(); // Generate a unique token (you can use other token generation methods)
     console.log('result==>', userData);
-    // TODO 需要处理bigInt序列化问题
     await this.cacheManager.set(token, userData, 3600000); // Cache the user data with the token (ttl is in seconds)
     return { access_token: token, token_type: 'bearer' };
   }
