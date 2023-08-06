@@ -14,7 +14,7 @@
   @include badge.badge();
 }
 
-@each $size in [18, 24, 36, 48] {
+@each $size in 18, 24, 36, 48 {
   .icon-#{$size} {
     @include icon.icon($size);
   }

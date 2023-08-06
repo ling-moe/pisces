@@ -110,7 +110,9 @@
     "rxjs": "^7.8.0",
     "screenfull": "^6.0.2",
     "tslib": "^2.3.0",
-    "zone.js": "~0.13.0"
+    "zone.js": "~0.13.0",
+    "@pisces/theme": "file:libs/theme/src/lib",
+    "@pisces/shared": "file:libs/shared/src/lib"
   },
   "prettier": {
     "printWidth": 120
