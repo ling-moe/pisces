@@ -1,5 +1,5 @@
 import { NgModule, ModuleWithProviders, Provider } from '@angular/core';
-import { SharedModule } from './shared/shared.module';
+import { SharedModule } from '@pisces/shared';
 
 import { FormlyModule } from '@ngx-formly/core';
 import { FormlyFieldComboboxComponent } from './formly-templates';

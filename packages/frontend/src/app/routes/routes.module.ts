@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { SharedModule } from '@shared/shared.module';
+import { SharedModule } from '@pisces/shared';
 import { RoutesRoutingModule } from './routes-routing.module';
 
 import { DashboardComponent } from './dashboard/dashboard.component';

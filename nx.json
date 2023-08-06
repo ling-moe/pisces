@@ -18,11 +18,7 @@
       "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"]
     },
     "lint": {
-      "inputs": [
-        "default",
-        "{workspaceRoot}/.eslintrc.json",
-        "{workspaceRoot}/.eslintignore"
-      ]
+      "inputs": ["default", "{workspaceRoot}/.eslintrc.json", "{workspaceRoot}/.eslintignore"]
     },
     "e2e": {
       "inputs": ["default", "^production"]
@@ -41,7 +37,7 @@
   },
   "workspaceLayout": {
     "appsDir": "packages",
-    "libsDir": "packages"
+    "libsDir": "libs"
   },
   "generators": {
     "@nx/angular:application": {

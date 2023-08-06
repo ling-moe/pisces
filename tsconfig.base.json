@@ -15,9 +15,12 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@pisces/musubi/server": ["packages/musubi/src/lib/server/index.ts"],
       "@pisces/musubi/client": ["packages/musubi/src/lib/client/index.ts"],
-      "@pisces/prisma-tool": ["packages/prisma-tool/src/index.ts"]
+      "@pisces/musubi/server": ["packages/musubi/src/lib/server/index.ts"],
+      "@pisces/prisma-tool": ["packages/prisma-tool/src/index.ts"],
+      "@pisces/core": ["libs/core/src/index.ts"],
+      "@pisces/shared": ["libs/shared/src/index.ts"],
+      "@pisces/theme": ["libs/theme/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

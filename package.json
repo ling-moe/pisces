@@ -28,8 +28,8 @@
     "@nx/angular": "^16.5.0",
     "@nx/cypress": "16.5.0",
     "@nx/eslint-plugin": "16.4.2",
-    "@nx/jest": "16.5.0",
-    "@nx/js": "16.5.0",
+    "@nx/jest": "16.5.2",
+    "@nx/js": "16.5.2",
     "@nx/linter": "16.4.2",
     "@nx/nest": "^16.4.2",
     "@nx/node": "16.4.2",
@@ -111,7 +111,9 @@
     "rxjs": "^7.8.0",
     "screenfull": "^6.0.2",
     "tslib": "^2.3.0",
-    "zone.js": "~0.13.0"
+    "zone.js": "~0.13.0",
+    "@pisces/theme": "file:libs/theme/src/lib",
+    "@pisces/shared": "file:libs/shared/src/lib"
   },
   "prettier": {
     "printWidth": 120

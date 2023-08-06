@@ -25,6 +25,12 @@
           "packages/frontend/src/favicon.ico",
           "packages/frontend/src/assets"
         ],
+        "allowedCommonJsDependencies": [
+          "base64-js",
+          "lodash",
+          "moment",
+          "photoviewer"
+        ],
         "styles": ["packages/frontend/src/styles.scss"],
         "scripts": []
       },
