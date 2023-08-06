@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { UserService } from '@pisces/musubi/server';
+import { Remotable, UserService } from '@pisces/musubi/server';
 
+@Remotable()
 @Injectable()
 export class HelloService implements UserService{
 

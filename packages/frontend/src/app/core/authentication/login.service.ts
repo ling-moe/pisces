@@ -1,9 +1,8 @@
-import { Inject, Injectable, Type, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Token, User } from './interface';
 import { Menu } from '@core';
 import { map } from 'rxjs/operators';
-import { RemoteService, Consumer, UserService } from '@pisces/musubi/client';
 
 @Injectable({
   providedIn: 'root',
@@ -11,10 +10,7 @@ import { RemoteService, Consumer, UserService } from '@pisces/musubi/client';
 export class LoginService {
   constructor(
     protected http: HttpClient,
-    @Inject(RemoteService) protected userService: Consumer<UserService>) {
-      debugger
-      console.log('qweqrew2');
-      userService.hello('lily');
+    ) {
   }
 
   login(username: string, password: string, rememberMe = false) {

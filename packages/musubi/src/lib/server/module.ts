@@ -1,11 +1,31 @@
-import { ModuleMetadata, RequestMethod, Type, assignMetadata } from '@nestjs/common';
-import { CONTROLLER_WATERMARK, HOST_METADATA, METHOD_METADATA, PATH_METADATA, ROUTE_ARGS_METADATA, SCOPE_OPTIONS_METADATA, VERSION_METADATA } from '@nestjs/common/constants';
+import { ModuleMetadata, Provider, RequestMethod, Type, assignMetadata } from '@nestjs/common';
+import {
+  CONTROLLER_WATERMARK,
+  HOST_METADATA,
+  METHOD_METADATA,
+  PATH_METADATA,
+  ROUTE_ARGS_METADATA,
+  SCOPE_OPTIONS_METADATA,
+  VERSION_METADATA,
+} from '@nestjs/common/constants';
 import { validateModuleKeys } from '@nestjs/common/utils/validate-module-keys.util';
 import { RouteParamtypes } from '@nestjs/common/enums/route-paramtypes.enum';
 import { extractMethodParams, methodToHttp } from '../method-sigature.util';
 
+export declare const MUSUBI_REMOTABLE = '__musubi_remotable__';
+
 export type MusubiModuleMetadata = ModuleMetadata & {
   alias?: string;
+};
+
+/**
+ * 标记一个service可远程化
+ * @returns void
+ */
+export function Remotable(): ClassDecorator {
+  return (target: object) => {
+    Reflect.defineMetadata(MUSUBI_REMOTABLE, true, target);
+  };
 }
 // ! TODO 可能还需要一个可远程化注入的注解，用来代替module的service字段，标记可远程化的service
 
@@ -34,8 +54,10 @@ export function MusubiModule(metadata: MusubiModuleMetadata): ClassDecorator {
     if (!metadata.alias) {
       metadata.alias = toPath(target.name);
     }
+    // 过滤出可远程化的service
+    const remotableServices = (metadata.providers ?? []).filter(provider => Reflect.getMetadata(MUSUBI_REMOTABLE, provider));
     // 加载controller
-    Reflect.defineMetadata('controllers', createController(metadata).concat(metadata.controllers??[]), target);
+    Reflect.defineMetadata('controllers', createController(metadata.alias, remotableServices).concat(metadata.controllers ?? []), target);
     for (const property in metadata) {
       if (metadata.hasOwnProperty(property)) {
         Reflect.defineMetadata(property, (metadata as any)[property], target);
@@ -43,12 +65,12 @@ export function MusubiModule(metadata: MusubiModuleMetadata): ClassDecorator {
     }
   };
 }
-function createController(metadata: MusubiModuleMetadata) {
+function createController(module: string, remotableServices: Provider[]) {
   const result = [];
-  for(const provider of metadata.providers??[]){
+  for (const provider of remotableServices) {
     const proxyController = provider as any;
     Reflect.defineMetadata(CONTROLLER_WATERMARK, true, proxyController);
-    Reflect.defineMetadata(PATH_METADATA, metadata.alias, proxyController);
+    Reflect.defineMetadata(PATH_METADATA, module, proxyController);
     Reflect.defineMetadata(HOST_METADATA, undefined, proxyController);
     Reflect.defineMetadata(SCOPE_OPTIONS_METADATA, undefined, proxyController);
     Reflect.defineMetadata(VERSION_METADATA, undefined, proxyController);
@@ -70,7 +92,12 @@ function defineMappingMatedata(proxyController: Type<any>) {
     Reflect.defineMetadata(PATH_METADATA, path, obj[property].value);
     Reflect.defineMetadata(METHOD_METADATA, RequestMethod[method], obj[property].value);
     // 方法参数标记
-    defineMappingParamsMatedata(obj[property].value, (obj.constructor as any).value, RouteParamtypes[paramType], property);
+    defineMappingParamsMatedata(
+      obj[property].value,
+      (obj.constructor as any).value,
+      RouteParamtypes[paramType],
+      property
+    );
   }
 }
 
@@ -94,8 +121,8 @@ function defineMappingParamsMatedata(
 
 function toPath(str: string) {
   let path = str;
-  if(path.endsWith('Module')){
-    path = path.slice(0,-6)
+  if (path.endsWith('Module')) {
+    path = path.slice(0, -6);
   }
   return path
     .replace(/([A-Z])/g, '-$1')
