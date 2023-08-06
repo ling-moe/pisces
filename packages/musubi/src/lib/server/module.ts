@@ -1,4 +1,4 @@
-import { ModuleMetadata, Provider, RequestMethod, Type, assignMetadata } from '@nestjs/common';
+import { Module, ModuleMetadata, Provider, RequestMethod, Type, assignMetadata } from '@nestjs/common';
 import {
   CONTROLLER_WATERMARK,
   HOST_METADATA,
@@ -16,18 +16,8 @@ export declare const MUSUBI_REMOTABLE = '__musubi_remotable__';
 
 export type MusubiModuleMetadata = ModuleMetadata & {
   alias?: string;
+  remotes?: Type<any>[];
 };
-
-/**
- * 标记一个service可远程化
- * @returns void
- */
-export function Remotable(): ClassDecorator {
-  return (target: object) => {
-    Reflect.defineMetadata(MUSUBI_REMOTABLE, true, target);
-  };
-}
-// ! TODO 可能还需要一个可远程化注入的注解，用来代替module的service字段，标记可远程化的service
 
 /**
  * 在原有module注解的情况下进行增强
@@ -47,22 +37,21 @@ export function Remotable(): ClassDecorator {
  * @publicApi
  */
 export function MusubiModule(metadata: MusubiModuleMetadata): ClassDecorator {
-  const propsKeys = Object.keys(metadata);
-  validateModuleKeys(propsKeys);
+
   return (target: Function) => {
-    // 设置模块名
-    if (!metadata.alias) {
-      metadata.alias = toPath(target.name);
-    }
-    // 过滤出可远程化的service
-    const remotableServices = (metadata.providers ?? []).filter(provider => Reflect.getMetadata(MUSUBI_REMOTABLE, provider));
-    // 加载controller
-    Reflect.defineMetadata('controllers', createController(metadata.alias, remotableServices).concat(metadata.controllers ?? []), target);
-    for (const property in metadata) {
-      if (metadata.hasOwnProperty(property)) {
-        Reflect.defineMetadata(property, (metadata as any)[property], target);
+      // 设置模块名
+      if (!metadata.alias) {
+        metadata.alias = toPath(target.name);
       }
-    }
+      // 加载controller
+      Reflect.defineMetadata('controllers', createController(metadata.alias, metadata.remotes ?? []).concat(metadata.controllers ?? []), target);
+      // 将service追加到service中
+      metadata.remotes?.forEach(remote => metadata.providers?.push(remote))
+      // 移除增强的属性
+      delete metadata.alias;
+      delete metadata.remotes;
+      // 调用原本的module
+      Module(metadata)(target)
   };
 }
 function createController(module: string, remotableServices: Provider[]) {
