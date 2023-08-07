@@ -7,8 +7,7 @@ import { UserMoudule } from './user.module';
 import { SelfController } from './self.controller';
 import { MenuService } from './menu.service';
 
-import { UserService } from '../prisma/user.service';
-import { PrismaModule } from '../prisma/prisma.module';
+import { UserService } from './user.service';
 import { CacheModule } from '../cache/cache.module';
 
 /**
@@ -18,7 +17,6 @@ import { CacheModule } from '../cache/cache.module';
   imports: [
     CacheModule,
     UserMoudule,
-    PrismaModule,
     PassportModule.register({ defaultStrategy: 'bearer' }),
   ],
 

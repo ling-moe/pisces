@@ -1,7 +1,7 @@
 import { Injectable, Optional, UnauthorizedException } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 import { User } from '@prisma/client';
-import { UserService } from '../prisma/user.service';
+import { UserService } from './user.service';
 import { hash, compare } from 'bcrypt';
 import { CacheHelper } from '../cache/cache.helper';
 
