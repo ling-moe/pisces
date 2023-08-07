@@ -10,7 +10,6 @@ import { MenuService } from './menu.service';
 import { UserService } from '../prisma/user.service';
 import { PrismaModule } from '../prisma/prisma.module';
 import { CacheModule } from '../cache/cache.module';
-import { ConfigModule } from '@nestjs/config';
 
 /**
  * 用于配置 Passport 和身份验证策略
@@ -20,7 +19,6 @@ import { ConfigModule } from '@nestjs/config';
     CacheModule,
     UserMoudule,
     PrismaModule,
-
     PassportModule.register({ defaultStrategy: 'bearer' }),
   ],
 

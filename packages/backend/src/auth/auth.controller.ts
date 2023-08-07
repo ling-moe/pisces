@@ -1,16 +1,7 @@
 import {
   Body,
   Controller,
-  Get,
   Post,
-  Req,
-  Request,
-  UseGuards,
-  Response,
-  Res,
-  HttpStatus,
-  Header,
-  Headers,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { User } from '@prisma/client';
