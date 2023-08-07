@@ -7,7 +7,7 @@ import { Logger } from '@nestjs/common';
 import { NestApplication, NestFactory } from '@nestjs/core';
 
 import { AppModule } from './app/app.module';
-import { GlobalExceptionFilter } from './common/filters/global-exception';
+import { GlobalExceptionFilter } from './config/exception/filters/global-exception.filter';
 
 (BigInt as any).prototype.toJSON = function() { return this.toString() }
 async function bootstrap() {

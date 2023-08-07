@@ -37,6 +37,7 @@
     "@nx/webpack": "16.4.2",
     "@nx/workspace": "^16.4.2",
     "@schematics/angular": "~16.1.0",
+    "@types/bcrypt": "^5.0.0",
     "@types/jest": "^29.4.0",
     "@types/lodash": "^4.14.195",
     "@types/node": "~18.7.1",
@@ -82,13 +83,14 @@
     "@nestjs/core": "^10.0.2",
     "@nestjs/passport": "^10.0.0",
     "@nestjs/platform-express": "^10.0.2",
-    "@nestjs/typeorm": "^10.0.0",
     "@ng-matero/extensions": "^16.0.0",
     "@ng-matero/extensions-moment-adapter": "^16.0.0",
     "@ngx-formly/core": "^6.1.3",
     "@ngx-formly/material": "^6.1.3",
     "@ngx-translate/core": "^15.0.0",
     "@ngx-translate/http-loader": "^8.0.0",
+    "@pisces/shared": "file:libs/shared/src/lib",
+    "@pisces/theme": "file:libs/theme/src/lib",
     "@prisma/client": "^5.0.0",
     "axios": "^1.0.0",
     "bcrypt": "^5.1.0",
@@ -111,9 +113,7 @@
     "rxjs": "^7.8.0",
     "screenfull": "^6.0.2",
     "tslib": "^2.3.0",
-    "zone.js": "~0.13.0",
-    "@pisces/theme": "file:libs/theme/src/lib",
-    "@pisces/shared": "file:libs/shared/src/lib"
+    "zone.js": "~0.13.0"
   },
   "prettier": {
     "printWidth": 120
