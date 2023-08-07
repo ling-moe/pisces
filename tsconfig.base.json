@@ -16,8 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "@pisces/core": ["libs/core/src/index.ts"],
-      "@pisces/musubi/client": ["libs/musubi/src/lib/client/index.ts"],
-      "@pisces/musubi/server": ["libs/musubi/src/lib/server/index.ts"],
+      "@pisces/iam/*": ["features/iam/src/lib/*"],
+      "@pisces/musubi/*": ["libs/musubi/src/lib/*"],
       "@pisces/prisma-tool": ["packages/prisma-tool/src/index.ts"],
       "@pisces/shared": ["libs/shared/src/index.ts"],
       "@pisces/theme": ["libs/theme/src/index.ts"]
