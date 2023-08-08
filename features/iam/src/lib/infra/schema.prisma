@@ -13,38 +13,58 @@ datasource db {
 // 用户信息表
 model User {
   // 用户ID
-  userId   BigInt   @id @default(autoincrement()) @map("user_id")
+  userId             BigInt    @id @default(autoincrement()) @map("user_id")
   // 用户名
-  username String   @db.VarChar(30)
+  username           String    @unique @db.VarChar(30)
   // 用户昵称
-  nickName String   @map("nick_name") @db.VarChar(30)
+  displayName        String    @map("display_name") @db.VarChar(30)
+  // 语言,默认是中文
+  lang               String    @db.VarChar(30)
+  // 地区,默认是中国
+  locale             String    @db.VarChar(30)
   // 邮箱
-  email    String   @db.VarChar(50)
+  email              String    @unique @db.VarChar(50)
   // 手机号码
-  phone    String   @db.VarChar(11)
+  phone              String    @unique @db.VarChar(11)
   // 用户性别（0男 1女 2未知）
-  sex      String   @db.VarChar(10)
+  sex                String    @db.VarChar(5)
   // 用户头像
-  avatar   String   @db.VarChar(100)
+  avatar             String?   @db.VarChar(100)
   // 密码
-  password String   @db.VarChar(100)
+  password           String    @db.VarChar(100)
+  // 生效开始日期
+  effectiveStartDate DateTime  @default(now()) @map("effective_start_date")
+  // 生效截至日期
+  effectiveEndDate   DateTime? @map("effective_end_date")
+  // 已激活标识
+  activedFlag        Boolean   @default(true) @map("actived_flag")
+  // 锁定截止时间
+  lockedTime         DateTime? @map("locked_time")
+  //  已启用标识·
+  enabledFlag        Boolean   @default(true) @map("enabled_flag")
+  // 版本号
+  versionNum         BigInt    @default(1) @map("version_num")
   // 创建者
-  createBy BigInt   @map("create_by")
+  createBy           BigInt    @map("create_by")
   // 创建时间
-  createAt DateTime @default(now()) @map("create_at")
+  createAt           DateTime  @default(now()) @map("create_at")
   // 更新者
-  updateBy BigInt   @map("update_by")
+  updateBy           BigInt    @map("update_by")
   // 更新时间
-  updateAt DateTime @updatedAt @map("update_at")
+  updateAt           DateTime  @updatedAt @map("update_at")
 
   @@map("sys_user")
 }
 
 model Role {
   roleId      BigInt   @id @default(autoincrement()) @map("role_id")
-  roleCode    String   @db.VarChar(30)
-  roleName    String   @db.VarChar(60)
-  enabledFlag Int
+  roleCode    String   @map("role_code") @db.VarChar(60)
+  roleName    String   @map("role_name") @db.VarChar(60)
+  enabledFlag Boolean  @default(true) @map("enabled_flag")
+  // 备注
+  remark      String?  @db.VarChar(120)
+  // 版本号
+  versionNum  BigInt   @default(1) @map("version_num")
   // 创建者
   createBy    BigInt   @map("create_by")
   // 创建时间
@@ -55,15 +75,41 @@ model Role {
   updateAt    DateTime @updatedAt @map("update_at")
 }
 
-model Permission {
-  permissionId   BigInt   @id @default(autoincrement()) @map("permission_id")
-  permissionCode String   @db.VarChar(120)
-  permissionName String   @db.VarChar(60)
-  uri            String   @db.VarChar(120)
-  httpMethod     String   @db.VarChar(10)
-  module         String   @db.VarChar(30)
-  publicAccess   Int
-  loginAccess    Int
+model Perm {
+  permId       BigInt   @id @default(autoincrement()) @map("permission_id")
+  permCode     String   @map("perm_code") @db.VarChar(120)
+  permName     String   @map("perm_name") @db.VarChar(60)
+  uri          String   @db.VarChar(240)
+  module       String   @db.VarChar(30)
+  publicAccess Boolean  @default(false) @map("public_access")
+  loginAccess  Boolean  @default(false) @map("login_access")
+  // 备注
+  remark       String?  @db.VarChar(120)
+  // 创建者
+  createBy     BigInt   @map("create_by")
+  // 创建时间
+  createAt     DateTime @default(now()) @map("create_at")
+  // 更新者
+  updateBy     BigInt   @map("update_by")
+  // 更新时间
+  updateAt     DateTime @updatedAt @map("update_at")
+}
+
+model Menu {
+  menuId         BigInt   @id @default(autoincrement()) @map("role_id")
+  menuCode       String   @map("menu_code") @db.VarChar(30)
+  menuName       String   @map("menu_name") @db.VarChar(30)
+  menuType       String   @map("menu_type") @db.VarChar(10)
+  pid            BigInt   @default(0)
+  menuGlobalCode String   @map("menu_globle_code") @db.VarChar(120)
+  icon           String?  @db.VarChar(30)
+  route          String?  @db.VarChar(120)
+  menuOrder      Int      @default(0)
+  enabledFlag    Boolean  @default(true) @map("enabled_flag")
+  // 备注
+  remark         String?  @db.VarChar(120)
+  // 版本号
+  versionNum     BigInt   @default(1) @map("version_num")
   // 创建者
   createBy       BigInt   @map("create_by")
   // 创建时间
@@ -72,4 +118,47 @@ model Permission {
   updateBy       BigInt   @map("update_by")
   // 更新时间
   updateAt       DateTime @updatedAt @map("update_at")
+}
+
+model PermRole {
+  permRoleId  BigInt   @id @default(autoincrement()) @map("perm_role_id")
+  permCode    String   @map("perm_code") @db.VarChar(120)
+  permType    String   @map("perm_type") @db.VarChar(30)
+  menuId      BigInt?  @map("menu_id")
+  roleId      BigInt   @map("role_id")
+  enabledFlag Boolean  @default(true) @map("enabled_flag")
+  // 备注
+  remark      String?  @db.VarChar(120)
+  // 版本号
+  versionNum  BigInt   @default(1) @map("version_num")
+  // 创建者
+  createBy    BigInt   @map("create_by")
+  // 创建时间
+  createAt    DateTime @default(now()) @map("create_at")
+  // 更新者
+  updateBy    BigInt   @map("update_by")
+  // 更新时间
+  updateAt    DateTime @updatedAt @map("update_at")
+
+  @@unique([roleId, permCode])
+}
+
+model MenuPerm {
+  menuPermId BigInt   @id @default(autoincrement()) @map("menu_perm_id")
+  permCode   String   @map("perm_code") @db.VarChar(120)
+  menuId     BigInt   @map("menu_id")
+  // 备注
+  remark     String?  @db.VarChar(120)
+  // 版本号
+  versionNum BigInt   @default(1) @map("version_num")
+  // 创建者
+  createBy   BigInt   @map("create_by")
+  // 创建时间
+  createAt   DateTime @default(now()) @map("create_at")
+  // 更新者
+  updateBy   BigInt   @map("update_by")
+  // 更新时间
+  updateAt   DateTime @updatedAt @map("update_at")
+
+  @@unique([permCode, menuId])
 }
