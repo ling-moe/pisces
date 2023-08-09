@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { User } from '@prisma/client';
 import { UserService } from './user.service';
 import { hash, compare } from 'bcrypt';
-import { CacheHelper } from '../cache/cache.helper';
+import { CacheHelper } from '@pisces/core/backend/cache/cache.helper';
 
 /**
  * 用于处理用户身份验证和生成令牌
@@ -24,7 +24,15 @@ export class AuthService {
   }
 
   async login(user: User) {
-    const userData = await this.validateUser(user.username, user.password);
+    // const userData = await this.validateUser(user.username, user.password);
+    // FIXME 临时
+    const userData = {
+      userId: 1,
+      username: 'admin',
+      password: '123456',
+      email: 'nzb329@163.com',
+      avatar: './assets/images/avatar.jpg',
+    };
     const token = uuidv4(); // Generate a unique token (you can use other token generation methods)
     console.log('result==>', userData);
     await this.cachehelper.set(token, userData, 3600000); // Cache the user data with the token (ttl is in seconds)

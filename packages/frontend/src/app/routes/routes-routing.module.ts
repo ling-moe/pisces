@@ -34,6 +34,13 @@ const routes: Routes = [
       { path: 'register', component: RegisterComponent },
     ],
   },
+  {
+    path: 'iam',
+    component: AdminLayoutComponent,
+    canActivate: [authGuard],
+    canActivateChild: [authGuard],
+    loadChildren: () => import('@pisces/iam/iam.frontend.module').then((m) => m.IamFrontendModule)
+  },
   { path: '**', redirectTo: 'dashboard' },
 ];
 

@@ -14,7 +14,6 @@ import { ToastrModule } from 'ngx-toastr';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
-// @ts-ignore
 import { environment } from '../environments/environment';
 import { BASE_URL, httpInterceptorProviders, appInitializerProviders } from '@pisces/core';
 

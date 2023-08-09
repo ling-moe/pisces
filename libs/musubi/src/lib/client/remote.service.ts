@@ -24,33 +24,35 @@ export function MusubiServiceFactory(httpClient: HttpClient) {
   return createProxy(httpClient);
 }
 
-const noop = () => {};
+const noop = () => {
+  // empty
+};
 
 function createProxy(httpClient: HttpClient) {
   const proxy: unknown = new Proxy(noop, {
-    get(_obj, key) {
-      if (typeof key !== 'string' || key === 'then') {
+    get(_obj, schema) {
+      if (typeof schema !== 'string' || schema === 'then') {
         // special case for if the proxy is accidentally treated
         // like a PromiseLike (like in `Promise.resolve(proxy)`)
         return undefined;
       }
       return new Proxy(noop, {
-        get(_obj, key) {
-          if (typeof key !== 'string' || key === 'then') {
+        get(_obj, methodName) {
+          if (typeof methodName !== 'string' || methodName === 'then') {
             // special case for if the proxy is accidentally treated
             // like a PromiseLike (like in `Promise.resolve(proxy)`)
             return undefined;
           }
           return new Proxy(noop, {
             apply: (target: any, thisArg: any, argumentsList: any[]) => {
-              const { method, path } = methodToHttp(target.name);
+              const { method, path } = methodToHttp(methodName);
               const paramNames = extractMethodParams(target);
-              const body = zipObject(paramNames, argumentsList);
+              const body = paramNames.length !==0 ? zipObject(paramNames, argumentsList) : undefined;
               let ob;
               if (method === 'GET') {
-                ob = httpClient.request(new HttpRequest(method, path, { params: body }));
+                ob = httpClient.request(new HttpRequest(method, `${schema}/${path}`, { params: body }));
               } else {
-                ob = httpClient.request(new HttpRequest(method, path, body));
+                ob = httpClient.request(new HttpRequest(method, `${schema}/${path}`, body));
               }
               return ob;
             },

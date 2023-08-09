@@ -1,6 +1,6 @@
 /** Override Material styles */
 
-@use '../../app/theme/style/variables';
+@use '@pisces/theme/style/variables';
 
 .mat-mdc-card {
   margin-bottom: variables.$gutter;

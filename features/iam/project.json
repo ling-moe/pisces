@@ -1,7 +1,7 @@
 {
   "name": "iam",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/iam/src",
+  "sourceRoot": "features/iam/src",
   "prefix": "pisces",
   "projectType": "library",
   "targets": {
@@ -9,14 +9,14 @@
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/iam/**/*.ts"]
+        "lintFilePatterns": ["features/iam/**/*.ts"]
       }
     },
     "test": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "libs/iam/jest.config.ts",
+        "jestConfig": "features/iam/jest.config.ts",
         "passWithNoTests": true
       },
       "configurations": {

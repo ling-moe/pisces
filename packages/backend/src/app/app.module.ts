@@ -1,24 +1,19 @@
+import { CoreBackendModule } from '@pisces/core/backend/core.backend.module';
+import { IamBackendModule } from '@pisces/iam/iam.backend.module';
 import { Module } from '@nestjs/common';
 import { AuthModule } from '../auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
-import { APP_FILTER } from '@nestjs/core';
-import { GlobalExceptionFilter } from '../config/exception/filters/global-exception.filter';
-import { PrismaModule } from '../prisma/prisma.module';
 
 @Module({
   imports: [
     AuthModule,
-    PrismaModule,
+    CoreBackendModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    IamBackendModule,
   ],
   controllers: [],
-  providers: [
-    {
-      provide: APP_FILTER,
-      useClass: GlobalExceptionFilter,
-    }
-  ],
+
 })
 export class AppModule {}

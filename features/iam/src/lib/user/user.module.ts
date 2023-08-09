@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '@pisces/shared';
-import { UserRoutingModule } from './user-routing.module';
+import { UserRoutingModule } from './view/user-routing.module';
 import { UserListComponent } from './view/list/list.component';
 
 const COMPONENTS: any[] = [UserListComponent];

@@ -8,7 +8,7 @@ import { SelfController } from './self.controller';
 import { MenuService } from './menu.service';
 
 import { UserService } from './user.service';
-import { CacheModule } from '../cache/cache.module';
+import { CacheModule } from '@pisces/core/backend/cache/cache.module';
 
 /**
  * 用于配置 Passport 和身份验证策略

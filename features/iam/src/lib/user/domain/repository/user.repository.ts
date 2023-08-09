@@ -1,10 +1,15 @@
+import { PrismaService } from '@pisces/core/backend/prisma/prisma.module';
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../../../../libs/core/src/lib/backend/prisma/prisma.module';
 import { Prisma, User } from '@prisma/client';
+import { UserRemoteService } from './user.remote';
+import { Provider } from '@pisces/musubi/server';
 
 @Injectable()
-export class UserService {
+export class UserRepository implements Provider<UserRemoteService>{
   constructor(private prisma: PrismaService) {}
+  async list(): Promise<User[]> {
+    return await this.prisma.user.findMany();
+  }
 
   async findByUsername(username: string): Promise<User | null> {
     return this.prisma.user.findFirst({

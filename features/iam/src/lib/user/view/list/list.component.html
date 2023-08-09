@@ -1,3 +1,35 @@
 <page-header></page-header>
 
-<p>list works!</p>
+<table mat-table [dataSource]="data">
+  <!-- 列定义 -->
+  <ng-container matColumnDef="username">
+    <th mat-header-cell *matHeaderCellDef> Username </th>
+    <td mat-cell *matCellDef="let user"> {{ user.username }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="displayName">
+    <th mat-header-cell *matHeaderCellDef> Display Name </th>
+    <td mat-cell *matCellDef="let user"> {{ user.displayName }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="phone">
+    <th mat-header-cell *matHeaderCellDef> Language/Email/Phone </th>
+    <td mat-cell *matCellDef="let user"> {{ user.phone }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="sex">
+    <th mat-header-cell *matHeaderCellDef> Sex </th>
+    <td mat-cell *matCellDef="let user"> {{ user.sex }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="avatar">
+    <th mat-header-cell *matHeaderCellDef> Avatar </th>
+    <td mat-cell *matCellDef="let user">
+      <img [src]="user.avatar" alt="Avatar">
+    </td>
+  </ng-container>
+
+  <!-- 列绑定 -->
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let user; columns: displayedColumns;"></tr>
+</table>

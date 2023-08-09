@@ -1,4 +1,4 @@
-import { Module, ModuleMetadata, Provider, RequestMethod, Type, assignMetadata } from '@nestjs/common';
+import { Module, ModuleMetadata, Provider as NestProvider, RequestMethod, Type, assignMetadata } from '@nestjs/common';
 import {
   CONTROLLER_WATERMARK,
   HOST_METADATA,
@@ -8,7 +8,6 @@ import {
   SCOPE_OPTIONS_METADATA,
   VERSION_METADATA,
 } from '@nestjs/common/constants';
-import { validateModuleKeys } from '@nestjs/common/utils/validate-module-keys.util';
 import { RouteParamtypes } from '@nestjs/common/enums/route-paramtypes.enum';
 import { extractMethodParams, methodToHttp } from '../method-sigature.util';
 
@@ -17,6 +16,10 @@ export declare const MUSUBI_REMOTABLE = '__musubi_remotable__';
 export type MusubiModuleMetadata = ModuleMetadata & {
   alias?: string;
   remotes?: Type<any>[];
+};
+
+export type Provider<T> = {
+  [P in keyof T]: T[P] extends (...args: infer A) => infer R ? (...args: A) => Promise<R | undefined> | R  | undefined : any;
 };
 
 /**
@@ -54,7 +57,7 @@ export function MusubiModule(metadata: MusubiModuleMetadata): ClassDecorator {
       Module(metadata)(target)
   };
 }
-function createController(module: string, remotableServices: Provider[]) {
+function createController(module: string, remotableServices: NestProvider[]) {
   const result = [];
   for (const provider of remotableServices) {
     const proxyController = provider as any;

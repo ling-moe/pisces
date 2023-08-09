@@ -10,7 +10,7 @@ export class CacheHelper {
     private cacheManager: Cache,
   ) {}
 
-  async set(key: string, value: string, ttl: number):Promise<void> {
+  async set(key: string, value: unknown, ttl: number):Promise<void> {
     return await this.cacheManager.set(key, value, ttl);
   }
 
