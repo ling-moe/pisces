@@ -14,11 +14,12 @@ export class UserListComponent implements OnInit {
   displayedColumns = ['username', 'displayName', 'phone', 'sex', 'avatar'];
 
   constructor(
-    @Inject(RemoteService) private userRemoteService: Consumer<UserRemoteService, 'user'>
+    @Inject(RemoteService) private userRemoteService: Consumer<UserRemoteService, 'user'>,
   ) { }
 
   ngOnInit() {
     this.userRemoteService.user.list().subscribe(users => this.data = users)
+
   }
 
 }

@@ -5,12 +5,10 @@ import { extractMethodParams, methodToHttp } from '../method-sigature.util';
 import { Observable } from 'rxjs';
 
 export type RemoteService<T> = {
-
   [P in keyof T]: T[P] extends (...args: infer A) => infer R ? (...args: A) => Observable<R> : any;
 };
 
 export type Consumer<T, S extends string> = Required<Record<S, RemoteService<T>>>;
-
 
 export const RemoteService = new InjectionToken<Consumer<any, string>>('MUSUBI_REMOTE_SERVICE');
 
@@ -47,17 +45,11 @@ function createProxy(httpClient: HttpClient) {
             apply: (target: any, thisArg: any, argumentsList: any[]) => {
               const { method, path } = methodToHttp(methodName);
               const paramNames = extractMethodParams(target);
-              const body = paramNames.length !==0 ? zipObject(paramNames, argumentsList) : undefined;
-              let ob;
-              if (method === 'GET') {
-                ob = httpClient.request(new HttpRequest(method, `${schema}/${path}`, { params: body }));
-              } else {
-                ob = httpClient.request(new HttpRequest(method, `${schema}/${path}`, body));
-              }
-              return ob;
+              const body = paramNames.length !== 0 ? zipObject(paramNames, argumentsList) : undefined;
+              return httpClient.request(method, `${schema}/${path}`, method === 'GET' ? { params: body } : body);
             },
           });
-        }
+        },
       });
     },
   });
