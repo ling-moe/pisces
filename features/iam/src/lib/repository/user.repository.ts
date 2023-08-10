@@ -1,7 +1,7 @@
 import { PrismaService } from '@pisces/core/backend/prisma/prisma.module';
 import { Injectable } from '@nestjs/common';
 import { Prisma, User } from '@prisma/client';
-import { UserRemoteService } from './user.remote';
+import { UserRemoteService } from '../domain/user.remote';
 import { Provider } from '@pisces/musubi/server';
 
 @Injectable()
