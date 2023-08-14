@@ -9,6 +9,8 @@
 }
 
 .matero-content {
+  width: 100%;
+  height: calc(100% - 64px);
   position: relative;
   padding: variables.$gutter;
 }

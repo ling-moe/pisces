@@ -1,35 +1,61 @@
 <page-header></page-header>
+<mat-drawer-container style="height: calc(100% - 96px);">
+  <mat-drawer #drawer class="example-sidenav" mode="over" position="end" disableClose="true">
+    <button type="button" mat-button (click)="drawer.toggle()">
+      关闭
+    </button>
+    <pisces-create></pisces-create>
+  </mat-drawer>
 
-<table mat-table [dataSource]="data">
-  <!-- 列定义 -->
-  <ng-container matColumnDef="username">
-    <th mat-header-cell *matHeaderCellDef> Username </th>
-    <td mat-cell *matCellDef="let user"> {{ user.username }} </td>
-  </ng-container>
+  <button type="button" mat-button (click)="drawer.toggle()">
+    Toggle sidenav
+  </button>
+  <table mat-table [dataSource]="data">
+    <!-- 列定义 -->
+    <ng-container matColumnDef="username">
+      <th mat-header-cell *matHeaderCellDef>用户名</th>
+      <td mat-cell *matCellDef="let user"> {{ user.username }} </td>
+    </ng-container>
 
-  <ng-container matColumnDef="displayName">
-    <th mat-header-cell *matHeaderCellDef> Display Name </th>
-    <td mat-cell *matCellDef="let user"> {{ user.displayName }} </td>
-  </ng-container>
+    <ng-container matColumnDef="displayName">
+      <th mat-header-cell *matHeaderCellDef> 展示姓名 </th>
+      <td mat-cell *matCellDef="let user"> {{ user.displayName }} </td>
+    </ng-container>
 
-  <ng-container matColumnDef="phone">
-    <th mat-header-cell *matHeaderCellDef> Language/Email/Phone </th>
-    <td mat-cell *matCellDef="let user"> {{ user.phone }} </td>
-  </ng-container>
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef>邮箱</th>
+      <td mat-cell *matCellDef="let user"> {{ user.email }} </td>
+    </ng-container>
 
-  <ng-container matColumnDef="sex">
-    <th mat-header-cell *matHeaderCellDef> Sex </th>
-    <td mat-cell *matCellDef="let user"> {{ user.sex }} </td>
-  </ng-container>
+    <ng-container matColumnDef="phone">
+      <th mat-header-cell *matHeaderCellDef>手机</th>
+      <td mat-cell *matCellDef="let user"> {{ user.phone }} </td>
+    </ng-container>
 
-  <ng-container matColumnDef="avatar">
-    <th mat-header-cell *matHeaderCellDef> Avatar </th>
-    <td mat-cell *matCellDef="let user">
-      <img [src]="user.avatar" alt="Avatar">
-    </td>
-  </ng-container>
+    <ng-container matColumnDef="sex">
+      <th mat-header-cell *matHeaderCellDef>性别 </th>
+      <td mat-cell *matCellDef="let user"> {{ user.sex }} </td>
+    </ng-container>
+    <ng-container matColumnDef="effectiveStartDate">
+      <th mat-header-cell *matHeaderCellDef>生效开始日期 </th>
+      <td mat-cell *matCellDef="let user"> {{ user.effectiveStartDate }} </td>
+    </ng-container>
+    <ng-container matColumnDef="effectiveEndDate">
+      <th mat-header-cell *matHeaderCellDef>生效截至日期 </th>
+      <td mat-cell *matCellDef="let user"> {{ user.effectiveEndDate }} </td>
+    </ng-container>
+    <ng-container matColumnDef="lockedTime">
+      <th mat-header-cell *matHeaderCellDef>锁定截止时间 </th>
+      <td mat-cell *matCellDef="let user"> {{ user.lockedTime }} </td>
+    </ng-container>
+    <ng-container matColumnDef="enabledFlag">
+      <th mat-header-cell *matHeaderCellDef>已启用 </th>
+      <td mat-cell *matCellDef="let user"> {{ user.enabledFlag }} </td>
+    </ng-container>
 
-  <!-- 列绑定 -->
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let user; columns: displayedColumns;"></tr>
-</table>
+    <!-- 列绑定 -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let user; columns: displayedColumns;"></tr>
+  </table>
+</mat-drawer-container>
+

@@ -1,0 +1,56 @@
+<form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+  <div class="row">
+    <mat-form-field class="col-12">
+      <mat-label>用户名</mat-label>
+      <input matInput formControlName="username">
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <mat-form-field class="col-12">
+      <mat-label>展示姓名</mat-label>
+      <input matInput formControlName="displayName">
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <mat-form-field class="col-12">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" formControlName="email">
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <mat-form-field class="col-12">
+      <mat-label>手机</mat-label>
+      <input matInput type="text" formControlName="phone">
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <mat-form-field class="col-12">
+      <mat-label>性别</mat-label>
+      <mat-select formControlName="sex">
+        <mat-option value="0">女</mat-option>
+        <mat-option value="1">男</mat-option>
+        <mat-option value="2">未知</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <mat-slide-toggle  class="col-12" formControlName="enabledFlag">启用</mat-slide-toggle>
+  </div>
+  <div class="row">
+    <mat-form-field class="col-12">
+      <mat-label>生效开始时间</mat-label>
+      <input matInput type="date" [matDatepicker]="effectiveStartDatePicker" formControlName="effectiveStartDate">
+      <mat-datepicker-toggle matIconSuffix [for]="effectiveStartDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #effectiveStartDatePicker></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <mat-form-field class="col-12">
+      <mat-label>生效截止时间</mat-label>
+      <input matInput type="date" [matDatepicker]="effectiveEndDatePicker" formControlName="effectiveEndDate">
+      <mat-datepicker-toggle matIconSuffix [for]="effectiveEndDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #effectiveEndDatePicker></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <button mat-raised-button color="primary" type="submit">Submit</button>
+</form>
