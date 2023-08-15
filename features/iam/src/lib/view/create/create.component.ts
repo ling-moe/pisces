@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UserRemoteService } from '../../domain/user.remote';
 import { RemoteService, Consumer } from '@pisces/musubi/client/remote.service';
@@ -10,7 +10,8 @@ import { RemoteService, Consumer } from '@pisces/musubi/client/remote.service';
 })
 export class CreateComponent implements OnInit {
   myForm!: FormGroup;
-
+  @Output()
+  submitClose = new EventEmitter<boolean>();
   constructor(private fb: FormBuilder,
     @Inject(RemoteService) private userRemoteService: Consumer<UserRemoteService, 'user'>,
     ) { }
@@ -35,7 +36,7 @@ export class CreateComponent implements OnInit {
   onSubmit() {
     console.log('qq')
     // if (this.myForm.valid) {
-      this.userRemoteService.user.create(this.myForm.value).subscribe(res => console.log(res));
+      this.userRemoteService.user.create(this.myForm.value).subscribe(res => this.submitClose.emit(true));
     // }
   }
 }

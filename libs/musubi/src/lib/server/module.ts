@@ -19,8 +19,10 @@ export type MusubiModuleMetadata = ModuleMetadata & {
   remotes?: Type<any>[];
 };
 
+type RemoteKey<T> = T extends string ?  `${T}Remotable` : T;
+
 export type Provider<T> = {
-  [P in keyof T]: T[P] extends (...args: infer A) => infer R ? (...args: A) => Promise<R | undefined> | R  | undefined : any;
+  [P in keyof T as RemoteKey<P>]: T[P] extends (...args: infer A) => infer R ? (...args: A) => Promise<R | undefined> | R  | undefined : any;
 };
 
 /**
@@ -78,7 +80,7 @@ function createController(module: string, remotableServices: NestProvider[]) {
 function defineMappingMatedata(proxyController: Type<any>) {
   const obj = Object.getOwnPropertyDescriptors(proxyController.prototype);
   for (const property in obj) {
-    if (property === 'constructor') {
+    if (property === 'constructor' || !property.endsWith('Remotable')) {
       continue;
     }
     const { method, path, paramType } = methodToHttp(obj[property].value.name);

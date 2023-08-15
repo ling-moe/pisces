@@ -7,5 +7,5 @@ export interface UserRemoteService{
   list(): User[]
 
   create(user: User): void;
-
+  update(user:User): void;
 }
