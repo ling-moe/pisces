@@ -31,7 +31,7 @@ export function methodToHttp(name: string): RequestMappingConifg {
   }
   return {
     method,
-    path: name.endsWith('Remotable') ? name.slice(0,-9) : name,
+    path: name.endsWith('Rpc') ? name.slice(0,-3) : name,
     paramType,
   };
 }

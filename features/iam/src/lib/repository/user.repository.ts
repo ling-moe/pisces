@@ -7,16 +7,16 @@ import { Provider } from '@pisces/musubi/server';
 @Injectable()
 export class UserRepository implements Provider<UserRemoteService>{
   constructor(private prisma: PrismaService) {}
-  async createRemotable(user: User): Promise<void> {
+  async createRpc(user: User): Promise<void> {
     await this.prisma.user.create({data: user});
   }
-  async listRemotable(): Promise<User[]> {
+  async listRpc(): Promise<User[]> {
     return await this.prisma.user.findMany();
   }
-  async updateRemotable(user: User): Promise<void> {
+  async updateRpc(user: User): Promise<void> {
     await this.prisma.user.update({where: {userId: user.userId},data: user});
   }
-
+  
   async findByUsername(username: string): Promise<User | null> {
     return this.prisma.user.findFirst({
       where: {
