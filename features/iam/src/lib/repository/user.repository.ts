@@ -8,6 +8,9 @@ import _ = require('lodash');
 @Injectable()
 export class UserRepository implements Provider<UserRemoteService>{
   constructor(private prisma: PrismaService) {}
+  async create(user: User): Promise<void> {
+    await this.prisma.user.create({data: user});
+  }
   async list(): Promise<User[]> {
     return await this.prisma.user.findMany();
   }

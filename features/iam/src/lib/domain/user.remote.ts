@@ -6,5 +6,6 @@ export interface UserRemoteService{
    */
   list(): User[]
 
-  createUser(data: User): Promise<User>;
+  create(user: User): void;
+
 }

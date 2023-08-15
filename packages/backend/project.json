@@ -36,7 +36,7 @@
         "production": {
           "buildTarget": "backend:build:production"
         }
-      }
+      },
     },
     "lint": {
       "executor": "@nx/linter:eslint",

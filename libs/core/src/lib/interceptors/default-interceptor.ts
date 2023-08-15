@@ -27,7 +27,7 @@ export class DefaultInterceptor implements HttpInterceptor {
     if (event instanceof HttpResponse) {
       const body = event.body;
       if (body && 'error' in body) {
-        this.toast.error(body.msg);
+        this.toast.error(body.message);
         return throwError(() => []);
       }
     }

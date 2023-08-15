@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common/constants';
 import { RouteParamtypes } from '@nestjs/common/enums/route-paramtypes.enum';
 import { extractMethodParams, methodToHttp } from '../method-sigature.util';
+import { debug } from 'console';
 
 export declare const MUSUBI_REMOTABLE = '__musubi_remotable__';
 
@@ -102,12 +103,17 @@ function defineMappingParamsMatedata(
   const params = extractMethodParams(method);
   for (let i = 0; i < params.length; i++) {
     // 添加get方法用的query参数
-    Reflect.defineMetadata(
-      ROUTE_ARGS_METADATA,
-      assignMetadata({}, paramType, i, params[i], ...[]),
-      classConstructor,
-      property
-    );
+    if(params[i] === 'req' || params[i] === 'res'){
+      // TODO 接入request和response对象
+    }else{
+      Reflect.defineMetadata(
+        ROUTE_ARGS_METADATA,
+        assignMetadata({}, paramType, i, i.toString(), ...[]),
+        classConstructor,
+        property
+      );
+    }
+
   }
 }
 

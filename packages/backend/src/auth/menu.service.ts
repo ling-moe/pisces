@@ -8,7 +8,7 @@ export class MenuService {
     return {
       "menu": [
         {
-          "route": "iam/user/list",
+          "route": "iam/user",
           "name": "dashboard",
           "type": "link",
           "icon": "dashboard",

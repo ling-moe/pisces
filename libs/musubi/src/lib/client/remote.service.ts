@@ -1,6 +1,5 @@
 import { InjectionToken, Provider } from '@angular/core';
-import { HttpClient, HttpRequest } from '@angular/common/http';
-import { zipObject } from 'lodash';
+import { HttpClient} from '@angular/common/http';
 import { extractMethodParams, methodToHttp } from '../method-sigature.util';
 import { Observable } from 'rxjs';
 
@@ -42,11 +41,15 @@ function createProxy(httpClient: HttpClient) {
             return undefined;
           }
           return new Proxy(noop, {
-            apply: (target: any, thisArg: any, argumentsList: any[]) => {
+            apply: (target: any, thisArg: any, args: any[]) => {
               const { method, path } = methodToHttp(methodName);
-              const paramNames = extractMethodParams(target);
-              const body = paramNames.length !== 0 ? zipObject(paramNames, argumentsList) : undefined;
-              return httpClient.request(method, `${schema}/${path}`, method === 'GET' ? { params: body } : body);
+              const body = {};
+              Object.assign(body, args);
+              if(method === 'GET'){
+                return httpClient.request(method, `${schema}/${path}`, { params: body });
+              }else{
+                return httpClient.request(method, `${schema}/${path}`, { body: body, headers: {'Content-Type':  'application/json'} });
+              }
             },
           });
         },
