@@ -14,8 +14,8 @@ export class UserListComponent implements OnInit {
     this.current = user;
     drawer.toggle();
   }
-  close(drawer: MatDrawer) {
-    drawer.toggle();
+  close() {
+    this.current = undefined;
   }
   current?: User;
   data: User[] = [];

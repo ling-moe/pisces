@@ -16,22 +16,22 @@ export function methodToHttp(name: string): RequestMappingConifg {
   const lowerName = name.toLowerCase();
   let method: Method = 'POST';
   let paramType: ParamType = 'BODY';
-  if (GET_MAPPING.includes(lowerName)) {
+  if (GET_MAPPING.find(i => lowerName.startsWith(i))) {
     method = 'GET';
     paramType = 'QUERY';
-  } else if (POST_MAPPING.includes(lowerName)) {
+  } else if (POST_MAPPING.find(i => lowerName.startsWith(i))) {
     method = 'POST';
     paramType = 'BODY';
-  } else if (PUT_MAPPING.includes(lowerName)) {
+  } else if (PUT_MAPPING.find(i => lowerName.startsWith(i))) {
     method = 'PUT';
     paramType = 'BODY';
-  } else if (DELETE_MAPPING.includes(lowerName)) {
+  } else if (DELETE_MAPPING.find(i => lowerName.startsWith(i))) {
     method = 'DELETE';
     paramType = 'BODY';
   }
   return {
     method,
-    path: name,
+    path: name.endsWith('Remotable') ? name.slice(0,-9) : name,
     paramType,
   };
 }

@@ -1,11 +1,11 @@
 <page-header></page-header>
 <mat-drawer-container style="height: calc(100% - 96px);">
   <mat-drawer #drawer class="example-sidenav" mode="over" position="end" disableClose="true" autoFocus="false">
-    <button type="button" mat-button (click)="close(drawer)">
+    <button type="button" mat-button (click)="drawer.toggle();"  (closedStart)="close()">
       <mat-icon>close</mat-icon>
     </button>
-    <pisces-create *ngIf="!current"></pisces-create>
-    <pisces-edit *ngIf="current"></pisces-edit>
+    <pisces-create *ngIf="!current" (submitClose)="drawer.toggle();"></pisces-create>
+    <pisces-edit *ngIf="current" [data]="current" (submitClose)="drawer.toggle();"></pisces-edit>
   </mat-drawer>
 
   <button type="button" mat-button color="primary" (click)="drawer.toggle()">
