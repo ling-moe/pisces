@@ -73,6 +73,8 @@ model Role {
   updateBy    BigInt   @map("update_by")
   // 更新时间
   updateAt    DateTime @updatedAt @map("update_at")
+
+  @@map("sys_role")
 }
 
 model Perm {
@@ -93,6 +95,8 @@ model Perm {
   updateBy     BigInt   @map("update_by")
   // 更新时间
   updateAt     DateTime @updatedAt @map("update_at")
+
+  @@map("sys_perm")
 }
 
 model Menu {
@@ -118,6 +122,8 @@ model Menu {
   updateBy       BigInt   @map("update_by")
   // 更新时间
   updateAt       DateTime @updatedAt @map("update_at")
+
+  @@map("sys_menu")
 }
 
 model PermRole {
@@ -141,6 +147,7 @@ model PermRole {
   updateAt    DateTime @updatedAt @map("update_at")
 
   @@unique([roleId, permCode])
+  @@map("sys_perm_role")
 }
 
 model MenuPerm {
@@ -161,4 +168,6 @@ model MenuPerm {
   updateAt   DateTime @updatedAt @map("update_at")
 
   @@unique([permCode, menuId])
+  @@map("sys_menu_perm")
+  
 }

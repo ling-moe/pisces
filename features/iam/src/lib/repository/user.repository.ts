@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { Prisma, User } from '@prisma/client';
 import { UserRemoteService } from '../domain/user.remote';
 import { Provider } from '@pisces/musubi/server';
+import _ = require('lodash');
 
 @Injectable()
 export class UserRepository implements Provider<UserRemoteService>{
@@ -10,6 +11,15 @@ export class UserRepository implements Provider<UserRemoteService>{
   async list(): Promise<User[]> {
     return await this.prisma.user.findMany();
   }
+
+  async createUser(data: User): Promise<User>  {
+    console.log(data)
+    const userCreateInput = _.cloneDeep(data);
+    return this.prisma.user.create({
+      data:userCreateInput,
+    });
+  }
+
 
   async findByUsername(username: string): Promise<User | null> {
     return this.prisma.user.findFirst({
@@ -45,12 +55,7 @@ export class UserRepository implements Provider<UserRemoteService>{
     });
   }
 
-  async createUser(data: Prisma.UserCreateInput) {
-    return this.prisma.user.create({
-      data,
-    });
-  }
-
+  
   async updateUser(options: { where: Prisma.UserWhereUniqueInput; data: Prisma.UserUpdateInput }) {
     const { where, data } = options;
     return this.prisma.user.update({
