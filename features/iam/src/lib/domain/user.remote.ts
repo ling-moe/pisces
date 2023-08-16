@@ -1,11 +1,16 @@
 import { Prisma, User } from "@prisma/client";
 
-export interface UserRemoteService{
+export interface UserRemoteService {
   /**
    * 获取用户列表
    */
   list(): User[]
-
+  /**
+   * 创建用户
+   */
   create(user: User): void;
-  update(user:User): void;
+  /**
+   * 更新用户信息
+   */
+  update(user: User): void;
 }
