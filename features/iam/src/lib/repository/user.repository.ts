@@ -5,13 +5,12 @@ import { UserRemoteService } from '../domain/user.remote';
 import { Provider } from '@pisces/musubi/server';
 import { AuthService } from 'packages/backend/src/auth/auth.service'
 import { BizException } from 'libs/core/src/lib/backend/config/exception/biz-exception'
+import { hash } from 'bcrypt';
 
 
 @Injectable()
 export class UserRepository implements Provider<UserRemoteService>{
-  constructor(private prisma: PrismaService,
-    private authService: AuthService,
-    private bizException: BizException) { }
+  constructor(private prisma: PrismaService) { }
   /**
    * 查询列表
    */
@@ -25,7 +24,7 @@ export class UserRepository implements Provider<UserRemoteService>{
   async createRpc(user: User): Promise<void> {
     console.log("[User][createRpc]==>", JSON.stringify(user))
     // 处理密码
-    const pwd = await this.authService.hashPassword(user.password);
+    const pwd = await hash(user.password, 10);
     user.password = pwd;
     // TODO 必填校验怎么统一处理
     // 处理用户唯一 不能重复
@@ -40,7 +39,7 @@ export class UserRepository implements Provider<UserRemoteService>{
    */
   async updateRpc(user: User): Promise<void> {
     // 必填校验
-    validUserId(user.userId)
+    this.validUserId(user.userId)
     await this.prisma.user.update({ where: { userId: user.userId }, data: user });
   }
 
@@ -48,10 +47,10 @@ export class UserRepository implements Provider<UserRemoteService>{
    * 重置用户密码
    */
   async resetPassword(userId: string, user: User): Promise<void> {
-    validUserId(user.userId)
+   this. validUserId(user.userId)
   }
 
-  async validUserId(userId: string): Promise<void> {
+  async validUserId(userId: bigint): Promise<void> {
     const dbUser = await this.findByUserId(userId);
     if (dbUser === null) {
       throw new BizException("您操作的用户信息异常,请检查后重试!")
@@ -68,7 +67,7 @@ export class UserRepository implements Provider<UserRemoteService>{
     });
   }
 
-  async findByUserId(userId: string): Promise<User | null> {
+  async findByUserId(userId: bigint): Promise<User | null> {
     return this.prisma.user.findFirst({
       where: {
         userId: {

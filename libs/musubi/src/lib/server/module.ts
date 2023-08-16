@@ -10,7 +10,6 @@ import {
 } from '@nestjs/common/constants';
 import { RouteParamtypes } from '@nestjs/common/enums/route-paramtypes.enum';
 import { extractMethodParams, methodToHttp } from '../method-sigature.util';
-import { debug } from 'console';
 
 export declare const MUSUBI_REMOTABLE = '__musubi_remotable__';
 
@@ -45,10 +44,6 @@ export type Provider<T> = {
 export function MusubiModule(metadata: MusubiModuleMetadata): ClassDecorator {
 
   return (target: Function) => {
-      // 设置模块名
-      if (!metadata.alias) {
-        metadata.alias = toPath(target.name);
-      }
       // 加载controller
       Reflect.defineMetadata('controllers', createController(metadata.alias, metadata.remotes ?? []).concat(metadata.controllers ?? []), target);
       // 将service追加到service中
@@ -60,12 +55,13 @@ export function MusubiModule(metadata: MusubiModuleMetadata): ClassDecorator {
       Module(metadata)(target)
   };
 }
-function createController(module: string, remotableServices: NestProvider[]) {
+function createController(module: string | undefined, remotableServices: NestProvider[]) {
   const result = [];
   for (const provider of remotableServices) {
     const proxyController = provider as any;
+    const path = module ??  toPath(proxyController.name);
     Reflect.defineMetadata(CONTROLLER_WATERMARK, true, proxyController);
-    Reflect.defineMetadata(PATH_METADATA, module, proxyController);
+    Reflect.defineMetadata(PATH_METADATA, path, proxyController);
     Reflect.defineMetadata(HOST_METADATA, undefined, proxyController);
     Reflect.defineMetadata(SCOPE_OPTIONS_METADATA, undefined, proxyController);
     Reflect.defineMetadata(VERSION_METADATA, undefined, proxyController);
@@ -121,8 +117,8 @@ function defineMappingParamsMatedata(
 
 function toPath(str: string) {
   let path = str;
-  if (path.endsWith('Module')) {
-    path = path.slice(0, -6);
+  if (path.endsWith('Repository')) {
+    path = path.slice(0, -10);
   }
   return path
     .replace(/([A-Z])/g, '-$1')
