@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Route } from '@angular/router';
 import { SharedModule } from '@pisces/shared';
-import { UserListComponent } from './view/list/list.component';
-import { CreateComponent } from './view/create/create.component';
-import { EditComponent } from './view/edit/edit.component';
+import { UserListComponent } from './view/user/list/list.component';
+import { UserCreateComponent } from './view/user/create/create.component';
+import { UserEditComponent } from './view/user/edit/edit.component';
+import { RoleListComponent } from './view/role/list/list.component';
 
-const COMPONENTS = [UserListComponent];
+const COMPONENTS = [UserListComponent,UserCreateComponent, UserEditComponent];
 
 const iamFrontendRoutes: Route[] = [
   {
@@ -20,6 +21,6 @@ const iamFrontendRoutes: Route[] = [
 ];
 @NgModule({
   imports: [SharedModule, RouterModule.forChild(iamFrontendRoutes)],
-  declarations: [...COMPONENTS, CreateComponent, EditComponent],
+  declarations: [...COMPONENTS, RoleListComponent],
 })
 export class IamFrontendModule {}

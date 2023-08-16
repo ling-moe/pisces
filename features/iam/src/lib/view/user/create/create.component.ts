@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { UserRemoteService } from '../../domain/user.remote';
+import { UserRemoteService } from '../../../domain/user.remote';
 import { RemoteService, Consumer } from '@pisces/musubi/client/remote.service';
 
 @Component({
@@ -8,7 +8,7 @@ import { RemoteService, Consumer } from '@pisces/musubi/client/remote.service';
   templateUrl: './create.component.html',
   styleUrls: ['./create.component.scss'],
 })
-export class CreateComponent implements OnInit {
+export class UserCreateComponent implements OnInit {
   myForm!: FormGroup;
   @Output()
   submitClose = new EventEmitter<boolean>();
