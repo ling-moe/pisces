@@ -40,11 +40,22 @@ export class UserRepository implements Provider<UserRemoteService>{
    */
   async updateRpc(user: User): Promise<void> {
     // 必填校验
-    const dbUser = await this.findByUserId(user.userId);
+    validUserId(user.userId)
+    await this.prisma.user.update({ where: { userId: user.userId }, data: user });
+  }
+
+  /**
+   * 重置用户密码
+   */
+  async resetPassword(userId: string, user: User): Promise<void> {
+    validUserId(user.userId)
+  }
+
+  async validUserId(userId: string): Promise<void> {
+    const dbUser = await this.findByUserId(userId);
     if (dbUser === null) {
       throw new BizException("您操作的用户信息异常,请检查后重试!")
     }
-    await this.prisma.user.update({ where: { userId: user.userId }, data: user });
   }
 
   async findByUsername(username: string): Promise<User | null> {
