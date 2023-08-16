@@ -46,7 +46,6 @@ export class UserRepository implements Provider<UserRemoteService>{
     }
     await this.prisma.user.update({ where: { userId: user.userId }, data: user });
   }
-  async resetPassword()
 
   async findByUsername(username: string): Promise<User | null> {
     return this.prisma.user.findFirst({
