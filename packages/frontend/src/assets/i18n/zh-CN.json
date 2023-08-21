@@ -1,6 +1,8 @@
 {
   "menu": {
     "dashboard": "数据大盘",
+    "user": "用户管理",
+    "role": "角色管理",
     "design": "设计",
     "design.colors": "颜色系统",
     "design.icons": "Material 图标库",

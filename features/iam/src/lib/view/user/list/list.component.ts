@@ -1,6 +1,6 @@
 import { Consumer, RemoteService } from '@pisces/musubi/client/remote.service';
 import { Component, Inject, OnInit } from '@angular/core';
-import { UserRemoteService } from '../../domain/user.remote';
+import { UserRemoteService } from '../../../domain/user.remote';
 import { User } from '@prisma/client';
 import { MatDrawer } from '@angular/material/sidenav';
 

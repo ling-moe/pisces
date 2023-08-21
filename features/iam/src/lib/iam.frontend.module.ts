@@ -16,6 +16,10 @@ const iamFrontendRoutes: Route[] = [
         path: 'user',
         component: UserListComponent
       },
+      {
+        path: 'role',
+        component: RoleListComponent
+      },
     ],
   },
 ];

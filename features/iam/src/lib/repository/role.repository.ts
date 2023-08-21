@@ -3,19 +3,16 @@ import { Injectable } from '@nestjs/common';
 import { Provider } from '@pisces/musubi/server';
 import { Role, RoleRemoteService } from '../domain/role.entity';
 
-
 @Injectable()
-export class RoleRepository implements Provider<RoleRemoteService>{
-  constructor(
-    private prisma: PrismaService
-    ) { }
-  listRpc(): Role[] {
-    throw new Error('Method not implemented.');
+export class RoleRepository implements Provider<RoleRemoteService> {
+  constructor(private prisma: PrismaService) {}
+  async listRpc() {
+    return await this.prisma.role.findMany();
   }
-  createRpc(user: Role): void {
-    throw new Error('Method not implemented.');
+  async createRpc(role: Role) {
+    await this.prisma.role.create({ data: role });
   }
-  updateRpc(user: Role): void {
-    throw new Error('Method not implemented.');
+  async updateRpc(role: Role) {
+    await this.prisma.role.update({ where: { roleId: role.roleId }, data: role });
   }
 }

@@ -9,13 +9,15 @@ export class MenuService {
       "menu": [
         {
           "route": "iam/user",
-          "name": "dashboard",
+          "name": "user",
           "type": "link",
           "icon": "dashboard",
-          "badge": {
-            "color": "red-500",
-            "value": "5"
-          }
+        },
+        {
+          "route": "iam/role",
+          "name": "role",
+          "type": "link",
+          "icon": "dashboard",
         },
         {
           "route": "/",
