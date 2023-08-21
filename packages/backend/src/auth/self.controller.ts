@@ -2,22 +2,19 @@ import { Body, Controller, Get, Headers, Post, UseGuards } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { MenuService } from './menu.service';
-import { User } from '.prisma/client';
-// import { UserRemoteService } from '@pisces/iam/domain/user.remote';
+import { RolesGuard } from './roles.guard';
 
 @Controller('/self')
 export class SelfController {
   constructor(
     private readonly authService: AuthService,
     private readonly menuService: MenuService
-    // private readonly userRemoteService: UserRemoteService
     ) {}
 
   @Get()
-  @UseGuards(AuthGuard('unique-token'))
+  @UseGuards(RolesGuard())
   async self(@Headers('Authorization') token) {
-    const user = await this.authService.getUser(token);
-    return user;
+    return await this.authService.getUser(token);
   }
 
   @Get('/menu')
