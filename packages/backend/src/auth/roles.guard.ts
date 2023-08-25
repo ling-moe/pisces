@@ -1,6 +1,8 @@
 import { AuthGuard } from '@nestjs/passport';
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException, mixin } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { ClsService } from 'nestjs-cls';
+import { User } from '@prisma/client';
 
 
 /**
@@ -27,7 +29,9 @@ export function RolesGuard<R extends string>(...roles: Array<R>) {
 
   @Injectable()
   class MixinRolesGuard extends AuthGuard('unique-token') {
-    constructor(readonly reflector: Reflector) {
+    constructor(
+      readonly reflector: Reflector,
+      private readonly authClsStore: ClsService<{currentUser: User}>,) {
       super()
     }
 
@@ -42,7 +46,7 @@ export function RolesGuard<R extends string>(...roles: Array<R>) {
       }
 
       if (!req.user) await super.canActivate(context);
-
+      this.authClsStore.set('currentUser', req.user as User)
       if (roles.length === 0) return true;
 
       return rbacLogic(req.user.roles, roles);

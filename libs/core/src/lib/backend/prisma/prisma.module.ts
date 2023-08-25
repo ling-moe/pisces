@@ -1,12 +1,13 @@
 import { Global, INestApplication, Injectable, Module, OnModuleInit } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, User } from '@prisma/client';
 import { RequestCacheHelper } from './request-cache.helper';
 import { CacheModule } from '../cache/cache.module';
+import { ClsService } from "nestjs-cls";
 
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit {
   constructor(
-     requestCacheHelper: RequestCacheHelper,
+    private readonly authClsStore: ClsService<{'currentUser': User}>,
   ){
     super();
   }
@@ -14,7 +15,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
     // 注册拦截器
     this.$use(async (params, next) => {
       // TODO 获取当前用户id
-      const userId =  1;
+      const userId = this.authClsStore.get('currentUser')?.userId ?? 1;
       if (params.action === 'create') {
         params.args.data['createBy'] = userId;
         params.args.data['updateBy'] = userId;

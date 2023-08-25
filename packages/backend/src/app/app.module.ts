@@ -3,6 +3,7 @@ import { IamBackendModule } from '@pisces/iam/iam.backend.module';
 import { Module } from '@nestjs/common';
 import { AuthModule } from '../auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
+import { ClsModule } from "nestjs-cls";
 
 @Module({
   imports: [
@@ -10,6 +11,10 @@ import { ConfigModule } from '@nestjs/config';
     CoreBackendModule,
     ConfigModule.forRoot({
       isGlobal: true,
+    }),
+    ClsModule.forRoot({
+      global: true,
+      middleware: { mount: true },
     }),
     IamBackendModule,
   ],

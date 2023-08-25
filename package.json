@@ -99,6 +99,7 @@
     "cache-manager-redis-yet": "^4.1.2",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
+    "nestjs-cls": "^3.5.0",
     "ng-matero": "^16.0.1",
     "ngx-permissions": "^15.0.1",
     "ngx-progressbar": "^11.1.0",
