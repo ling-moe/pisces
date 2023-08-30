@@ -5,8 +5,9 @@ import { UserListComponent } from './view/user/list/list.component';
 import { UserCreateComponent } from './view/user/create/create.component';
 import { UserEditComponent } from './view/user/edit/edit.component';
 import { RoleListComponent } from './view/role/list/list.component';
+import { MenuListComponent } from './view/menu/list/list.component';
 
-const COMPONENTS = [UserListComponent,UserCreateComponent, UserEditComponent];
+const COMPONENTS = [UserListComponent,UserCreateComponent, UserEditComponent, MenuListComponent];
 
 const iamFrontendRoutes: Route[] = [
   {
@@ -19,6 +20,10 @@ const iamFrontendRoutes: Route[] = [
       {
         path: 'role',
         component: RoleListComponent
+      },
+      {
+        path: 'menu',
+        component: MenuListComponent
       },
     ],
   },

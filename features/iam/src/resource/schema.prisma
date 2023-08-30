@@ -100,15 +100,17 @@ model Perm {
 }
 
 model Menu {
-  menuId         BigInt   @id @default(autoincrement()) @map("role_id")
-  menuCode       String   @map("menu_code") @db.VarChar(30)
-  menuName       String   @map("menu_name") @db.VarChar(30)
-  menuType       String   @map("menu_type") @db.VarChar(10)
-  pid            BigInt   @default(0)
+  menuId   BigInt @id @default(autoincrement()) @map("role_id")
+  menuCode String @map("menu_code") @db.VarChar(30)
+  menuName String @map("menu_name") @db.VarChar(30)
+  menuType String @map("menu_type") @db.VarChar(10)
+  pid      BigInt @default(0)
+  children Menu[] @relation("SubMenu")
+  parent   Menu?  @relation("SubMenu", fields: [pid], references: [menuId])
   menuGlobalCode String   @map("menu_globle_code") @db.VarChar(120)
   icon           String?  @db.VarChar(30)
   route          String?  @db.VarChar(120)
-  menuOrder      Int      @default(0)
+  menuSort       Int      @default(0)
   enabledFlag    Boolean  @default(true) @map("enabled_flag")
   // 备注
   remark         String?  @db.VarChar(120)
@@ -169,5 +171,4 @@ model MenuPerm {
 
   @@unique([permCode, menuId])
   @@map("sys_menu_perm")
-  
 }

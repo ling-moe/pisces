@@ -20,6 +20,12 @@ export class MenuService {
           "icon": "dashboard",
         },
         {
+          "route": "iam/menu",
+          "name": "menu",
+          "type": "link",
+          "icon": "dashboard",
+        },
+        {
           "route": "/",
           "name": "sessions",
           "type": "sub",
