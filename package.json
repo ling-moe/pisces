@@ -4,9 +4,10 @@
   "license": "MIT",
   "scripts": {
     "test": "npx nx run backend:serve",
+    "db:studio": "prisma studio --schema=features/iam/src/resource/schema.prisma",
     "musubi:tsc": "packages/musubi/tsconfig.schematics.json",
     "musubi:update": "schematics ./packages/musubi:update --debug==false",
-    "migrate": "prisma migrate dev --schema=packages/prisma-tool/schema.prisma"
+    "migrate": "prisma migrate dev --schema=features/iam/src/resource/schema.prisma"
   },
   "private": true,
   "devDependencies": {

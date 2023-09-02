@@ -2,6 +2,7 @@ import type { Menu as PrismaMenu } from '@prisma/client';
 import type { GetResult } from '@prisma/client/runtime/library';
 
 export type Menu = PrismaMenu extends GetResult<infer T, infer K> ? T : unknown;
+export type MenuNode = Menu & {children?: MenuNode[], level: number, expandable: boolean};
 
 export interface MenuRemoteService {
   /**

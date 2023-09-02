@@ -2,24 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { RemoteService, Consumer } from '@pisces/musubi/client/remote.service';
-import { MenuRemoteService } from '../../../domain/menu.entity';
-
-export interface MenuItem {
-  menuId: string;
-  menuCode: string;
-  menuName: string;
-  menuType: string;
-  pid: string;
-  level: number;
-  expandable: boolean;
-  menuGlobalCode: string;
-  icon: string;
-  route: string;
-  menuOrder: number;
-  enabledFlag: boolean;
-  remark: string;
-  children?: MenuItem[];
-}
+import { MenuNode, MenuRemoteService } from '../../../domain/menu.entity';
 
 @Component({
   selector: 'pisces-menu-list',
@@ -28,7 +11,7 @@ export interface MenuItem {
 })
 export class MenuListComponent implements OnInit {
 
-  displayedColumns: string[] = ['menuCode','menuName', 'menuType', 'pid', 'menuGlobalCode', 'icon', 'route', 'menuOrder', 'enabledFlag', 'remark'];
+  displayedColumns: string[] = ['menuCode','menuName', 'menuType', 'icon', 'route', 'menuOrder', 'enabledFlag', 'remark'];
 
   constructor(
     @Inject(RemoteService)
@@ -36,10 +19,10 @@ export class MenuListComponent implements OnInit {
   ){}
 
   ngOnInit(): void {
-    this.menuRemoteService.menu.tree().subscribe(res => this.dataSource.data = (res as unknown as MenuItem[]));
+    this.menuRemoteService.menu.tree().subscribe(res => this.dataSource.data = res as MenuNode[]);
   }
 
-  private transformer = (node: MenuItem, level: number) => {
+  private transformer = (node: MenuNode, level: number) => {
     return {
       ...node,
       expandable: !!node.children && node.children.length > 0,
@@ -47,7 +30,7 @@ export class MenuListComponent implements OnInit {
     };
   }
 
-  treeControl = new FlatTreeControl<MenuItem>(
+  treeControl = new FlatTreeControl<MenuNode>(
       node => node.level, node => node.expandable);
 
   treeFlattener = new MatTreeFlattener(
@@ -56,6 +39,6 @@ export class MenuListComponent implements OnInit {
 
   dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
-  hasChild = (_: number, node: MenuItem) => node.expandable;
+  hasChild = (_: number, node: MenuNode) => node.expandable;
 
 }
