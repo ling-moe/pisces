@@ -14,10 +14,10 @@ export class MenuRepository implements Provider<MenuRemoteService> {
       UNION
       SELECT m.*, p.level + 1 as level FROM sys_menu m JOIN result p ON m.pid = p.menu_id)
       SELECT * FROM result;`;
-    const list = list1.map((i) => mapKeys(i, (k, v) => camelCase(v))) as MenuNode[];
+    const list = list1.map((i) => mapKeys(i, (_, v) => camelCase(v))) as MenuNode[];
     const group = groupBy(list, 'pid');
     return list.filter((father) => {
-      father.children = group[Number(father.menuId)];
+      father.children = group[father.menuId.toString()];
       return father.pid === 0n;
     });
   }

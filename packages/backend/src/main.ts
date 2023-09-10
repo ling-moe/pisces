@@ -7,7 +7,7 @@ import { Logger } from '@nestjs/common';
 import { NestApplication, NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 
-(BigInt as any).prototype.toJSON = function() { return this.toString() }
+// (BigInt as any).prototype.toJSON = function() { return this.toString() }
 async function bootstrap() {
   const app = await NestFactory.create(AppModule) as NestApplication;
   const globalPrefix = 'api';
