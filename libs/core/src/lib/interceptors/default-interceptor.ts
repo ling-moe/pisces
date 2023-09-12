@@ -26,7 +26,7 @@ export class DefaultInterceptor implements HttpInterceptor {
   private handleOkReq(event: HttpEvent<any>): Observable<any> {
     if (event instanceof HttpResponse) {
       const body = event.body;
-      if (body && 'error' in body) {
+      if (body && body?.error) {
         this.toast.error(body.message);
         return throwError(() => []);
       }
