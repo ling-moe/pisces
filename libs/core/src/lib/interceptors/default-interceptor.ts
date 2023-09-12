@@ -11,19 +11,21 @@ import { mergeMap } from 'rxjs/operators';
 
 import { ToastrService } from 'ngx-toastr';
 
+type Error = {error?: string, message?: string};
+
 @Injectable()
 export class DefaultInterceptor implements HttpInterceptor {
   constructor(private toast: ToastrService) {}
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if (!req.url.includes('/api/')) {
       return next.handle(req);
     }
 
-    return next.handle(req).pipe(mergeMap((event: HttpEvent<any>) => this.handleOkReq(event)));
+    return next.handle(req).pipe(mergeMap((event: HttpEvent<Error>) => this.handleOkReq(event)));
   }
 
-  private handleOkReq(event: HttpEvent<any>): Observable<any> {
+  private handleOkReq(event: HttpEvent<Error>): Observable<HttpEvent<unknown>> {
     if (event instanceof HttpResponse) {
       const body = event.body;
       if (body && body?.error) {

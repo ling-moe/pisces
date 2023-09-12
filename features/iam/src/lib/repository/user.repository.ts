@@ -3,7 +3,6 @@ import { Injectable } from '@nestjs/common';
 import { Prisma, User } from '@prisma/client';
 import { UserRemoteService } from '../domain/user.remote';
 import { Provider } from '@pisces/musubi/server';
-import { AuthService } from 'packages/backend/src/auth/auth.service'
 import { BizException } from 'libs/core/src/lib/backend/config/exception/biz-exception'
 import { hash } from 'bcrypt';
 
