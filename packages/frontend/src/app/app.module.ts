@@ -5,7 +5,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 
 import { CoreModule } from '@pisces/core';
-import { ThemeModule } from '@pisces/theme';
+import { ThemeModule } from '../theme';
 import { SharedModule } from '@pisces/shared';
 import { RoutesModule } from './routes/routes.module';
 import { FormlyConfigModule } from './formly-config.module';

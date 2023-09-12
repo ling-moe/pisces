@@ -1,11 +1,11 @@
 @use '@angular/material' as mat;
 @use '@ng-matero/extensions' as mtx;
 
-@use '@pisces/theme/style/reboot-theme';
-@use '@pisces/theme/header/header-theme';
-@use '@pisces/theme/sidebar/sidebar-theme';
-@use '@pisces/theme/sidemenu/sidemenu-theme';
-@use '@pisces/theme/topmenu/topmenu-theme';
+@use '../theme/style/reboot-theme';
+@use '../theme/header/header-theme';
+@use '../theme/sidebar/sidebar-theme';
+@use '../theme/sidemenu/sidemenu-theme';
+@use '../theme/topmenu/topmenu-theme';
 @use '@pisces/shared/components/error-code/error-code-theme';
 
 @use './custom/table-theme';
