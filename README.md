@@ -48,3 +48,9 @@ npm i
 标准 Readme 遵循 [Contributor Covenant](http://contributor-covenant.org/version/1/3/0/) 行为规范。
 
 - https://twitter.com/nxdevtools
+
+docker run --name redis -p 6379:6379 -d redis --requirepass "KZMdBNea7Q1bXFVUBQr8Z9XZrlsuK820"
+
+docker run --name postgres -p 5432:5432 -e POSTGRES_PASSWORD=VR7HUOH7ZOSRe5LSPHo706e1UwsitBnA -e POSTGRES_USER=root -e POSTGRES_DB=pisces -d postgres
+
+

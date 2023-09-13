@@ -12,5 +12,5 @@ declare global {
 }
 
 export function initStandard(){
-  BigInt.prototype.toJSON = function () { return `BIGINT:${this.toString()}`; };
+  BigInt.prototype.toJSON = function () { return `BIGINT::${this.toString()}`; };
 }

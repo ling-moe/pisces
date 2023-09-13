@@ -46,7 +46,7 @@ export class UserRepository implements Provider<UserRemoteService>{
    * 重置用户密码
    */
   async resetPassword(userId: string, user: User): Promise<void> {
-   this. validUserId(user.userId)
+   this.validUserId(user.userId)
   }
 
   async validUserId(userId: bigint): Promise<void> {
