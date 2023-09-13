@@ -6,9 +6,13 @@
 import { Logger } from '@nestjs/common';
 import { NestApplication, NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
+import * as bodyParser from 'body-parser';
+import { BigIntModule, initStandard } from "../../../libs/common/src/index";
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule) as NestApplication;
+  initStandard();
+  const app = await NestFactory.create<NestApplication>(AppModule);
+  app.use(bodyParser.json({ reviver: BigIntModule }))
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
   const port = process.env.PORT || 3100;
@@ -17,13 +21,5 @@ async function bootstrap() {
     `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`
   );
 }
-
-declare global {
-  interface BigInt {
-    toJSON(): string;
-  }
-}
-
-BigInt.prototype.toJSON = function () { return `BIGINT:${this.toString()}`; };
 
 bootstrap();

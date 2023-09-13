@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
+import { BigIntModule } from "@pisces/common";
 
 @Injectable()
 export class DeserializeInterceptor implements HttpInterceptor {
@@ -23,12 +24,7 @@ export class DeserializeInterceptor implements HttpInterceptor {
 
   private parseJsonResponse(event: HttpEvent<unknown>) {
     if (event instanceof HttpResponse && typeof event.body === 'string') {
-      return event.clone<unknown>({body: JSON.parse(event.body, (key, value) => {
-        if (typeof value === "string" && value.startsWith('BIGINT:')) {
-          return BigInt(value.substring(8));
-        }
-        return value;
-      })});
+      return event.clone<unknown>({body: JSON.parse(event.body, BigIntModule)});
     } else {
       return event;
     }

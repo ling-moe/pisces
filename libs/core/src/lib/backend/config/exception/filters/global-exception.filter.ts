@@ -28,7 +28,8 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       status = 200;
       message = exception.message;
     }
-    console.log(exception.stack);
+    console.log('This is GlobalExceptionFilter')
+    console.error(exception.stack);
     response.status(status).json({ error, message });
   }
 }

@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@pisces/common": ["libs/common/src/index.ts"],
       "@pisces/core": ["libs/core/src/index.ts"],
       "@pisces/core/*": ["libs/core/src/lib/*"],
       "@pisces/iam/*": ["features/iam/src/lib/*"],

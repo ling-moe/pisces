@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { CacheModule } from './cache/cache.module';
-import { PrismaModule } from './prisma/prisma.module';
 import { APP_FILTER } from '@nestjs/core';
+import { CacheModule } from './cache/cache.module';
 import { GlobalExceptionFilter } from './config/exception/filters/global-exception.filter';
+import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
   imports: [CacheModule, PrismaModule],
@@ -14,3 +14,4 @@ import { GlobalExceptionFilter } from './config/exception/filters/global-excepti
   ],
 })
 export class CoreBackendModule {}
+
