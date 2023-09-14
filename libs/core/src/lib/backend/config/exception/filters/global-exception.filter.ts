@@ -2,7 +2,7 @@ import { ArgumentsHost, Catch, ExceptionFilter, ForbiddenException, Unauthorized
 import { Response } from 'express';
 import { BizException } from '../biz-exception';
 
-@Catch() // 可以指定要捕获的异常类型，例如 @Catch(HttpException)
+@Catch(Error) // 可以指定要捕获的异常类型，例如 @Catch(HttpException)
 export class GlobalExceptionFilter implements ExceptionFilter {
   catch(exception: Error, host: ArgumentsHost) {
     const ctx = host.switchToHttp();

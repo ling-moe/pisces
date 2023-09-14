@@ -7,7 +7,7 @@ import { Logger } from '@nestjs/common';
 import { NestApplication, NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 import * as bodyParser from 'body-parser';
-import { BigIntModule, initStandard } from "../../../libs/common/src/index";
+import { BigIntModule, initStandard } from '@pisces/common';
 
 async function bootstrap() {
   initStandard();
