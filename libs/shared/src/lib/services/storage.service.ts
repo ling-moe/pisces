@@ -8,7 +8,7 @@ export class LocalStorageService {
     return JSON.parse(localStorage.getItem(key) || '{}') || {};
   }
 
-  set(key: string, value: any): boolean {
+  set(key: string, value: unknown): boolean {
     localStorage.setItem(key, JSON.stringify(value));
 
     return true;
@@ -34,7 +34,7 @@ export class MemoryStorageService {
     return JSON.parse(this.store[key] || '{}') || {};
   }
 
-  set(key: string, value: any): boolean {
+  set(key: string, value: unknown): boolean {
     this.store[key] = JSON.stringify(value);
     return true;
   }

@@ -15,7 +15,9 @@ describe('TokenInterceptor', () => {
   let http: HttpClient;
   let router: Router;
   let tokenService: TokenService;
-  const emptyFn = () => {};
+  const emptyFn = () => {
+    // noop
+  };
   const baseUrl = 'https://foo.bar';
   const user: User = { id: 1, email: 'foo@bar.com' };
 
@@ -35,7 +37,7 @@ describe('TokenInterceptor', () => {
     tokenService = TestBed.inject(TokenService).set({ access_token, token_type: 'bearer' });
   }
 
-  function mockRequest(url: string, body?: any, headers?: any) {
+  function mockRequest(url: string, body?: unknown, headers?: unknown) {
     http.get(url).subscribe(emptyFn, emptyFn, emptyFn);
     const testRequest = httpMock.expectOne(url);
     testRequest.flush(body ?? {}, headers ?? {});
@@ -74,7 +76,7 @@ describe('TokenInterceptor', () => {
 
     const headers = mockRequest('https://api.github.com', { success: true }).request.headers;
 
-    expect(headers.has('Authorization')).toBeFalse();
+    expect(headers.has('Authorization')).toBeFalsy();
   });
 
   it('should not append token when base url is empty and url is not same site', () => {
@@ -82,7 +84,7 @@ describe('TokenInterceptor', () => {
 
     const headers = mockRequest('https://api.github.com', { success: true }).request.headers;
 
-    expect(headers.has('Authorization')).toBeFalse();
+    expect(headers.has('Authorization')).toBeFalsy();
   });
 
   it('should clear token when response status is unauthorized', () => {

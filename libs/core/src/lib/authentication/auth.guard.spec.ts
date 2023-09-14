@@ -1,11 +1,11 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { LocalStorageService, MemoryStorageService } from '@pisces/shared';
-import { TokenService, AuthService, authGuard } from './';
+import { AuthService, TokenService, authGuard } from './';
 
 @Component({ template: '' })
 class DummyComponent {}

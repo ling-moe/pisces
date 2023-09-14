@@ -20,7 +20,7 @@ export class SettingsService {
     return this.notify$.asObservable();
   }
 
-  private htmlElement!: HTMLHtmlElement;
+  private htmlElement: HTMLHtmlElement;
 
   constructor(
     private store: LocalStorageService,

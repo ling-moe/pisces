@@ -7,7 +7,7 @@ import { MessageService } from '@pisces/shared';
 export class LoggingInterceptor implements HttpInterceptor {
   constructor(private messenger: MessageService) {}
 
-  intercept(req: HttpRequest<any>, next: HttpHandler) {
+  intercept(req: HttpRequest<unknown>, next: HttpHandler) {
     const started = Date.now();
     let ok: string;
 

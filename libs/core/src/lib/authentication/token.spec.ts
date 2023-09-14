@@ -2,7 +2,7 @@ import { base64, currentTimestamp, JwtToken } from './';
 
 describe('Token', () => {
   describe('JwtToken', () => {
-    function generateToken(params: any, typ = 'JWT') {
+    function generateToken(params: unknown, typ = 'JWT') {
       return [
         base64.encode(JSON.stringify({ typ, alg: 'HS256' })),
         base64.encode(JSON.stringify(params)),
@@ -17,7 +17,7 @@ describe('Token', () => {
     });
 
     it('test access_token is JWT', () => {
-      expect(JwtToken.is(token.access_token)).toBeTrue();
+      expect(JwtToken.is(token.access_token)).toBeTruthy();
     });
 
     it('test bearer token', function () {

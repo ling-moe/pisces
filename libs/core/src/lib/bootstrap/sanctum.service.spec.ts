@@ -1,13 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { HttpClient } from '@angular/common/http';
 import { BASE_URL } from '../interceptors/base-url-interceptor';
 import { SANCTUM_PREFIX, SanctumService } from './sanctum.service';
 
 describe('SanctumService', () => {
   let httpMock: HttpTestingController;
-  let http: HttpClient;
   let sanctumService: SanctumService;
 
   const setBaseUrlAndSanctumPrefix = (baseUrl: string | null, sanctumPrefix: string | null) => {
@@ -15,7 +13,6 @@ describe('SanctumService', () => {
     TestBed.overrideProvider(SANCTUM_PREFIX, { useValue: sanctumPrefix });
 
     httpMock = TestBed.inject(HttpTestingController);
-    http = TestBed.inject(HttpClient);
     sanctumService = TestBed.inject(SanctumService);
   };
 
@@ -46,7 +43,7 @@ describe('SanctumService', () => {
   it('should get csrf cookie with base url', done => {
     setBaseUrlAndSanctumPrefix('http://foo.bar/api', '');
 
-    sanctumService.load().then((data: any) => {
+    sanctumService.load().then((data: unknown) => {
       expect(data).toEqual({ cookie: true });
       done();
     });
@@ -57,7 +54,7 @@ describe('SanctumService', () => {
   it('should get csrf cookie with sanctum prefix', done => {
     setBaseUrlAndSanctumPrefix(null, '/foobar/');
 
-    sanctumService.load().then((data: any) => {
+    sanctumService.load().then((data: unknown) => {
       expect(data).toEqual({ cookie: true });
       done();
     });
@@ -68,7 +65,7 @@ describe('SanctumService', () => {
   it('should get csrf cookie with base url and sanctum prefix', done => {
     setBaseUrlAndSanctumPrefix('http://foo.bar/api/', '/foobar');
 
-    sanctumService.load().then((data: any) => {
+    sanctumService.load().then((data: unknown) => {
       expect(data).toEqual({ cookie: true });
       done();
     });

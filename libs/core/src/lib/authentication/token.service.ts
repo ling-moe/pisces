@@ -57,7 +57,7 @@ export class TokenService implements OnDestroy {
     return this.token?.getBearerToken() ?? '';
   }
 
-  getRefreshToken(): string | void {
+  getRefreshToken(): string | void | undefined {
     return this.token?.refresh_token;
   }
 

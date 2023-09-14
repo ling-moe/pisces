@@ -24,11 +24,10 @@ export function pack(str: string) {
   for (let i = 0; i < str.length; i++) {
     bytes.push(...[str.charCodeAt(i)]);
   }
-
   return bytes;
 }
 
-export function unpack(byteArray: any) {
+export function unpack(byteArray: Uint8Array) {
   return String.fromCharCode(...byteArray);
 }
 
@@ -52,6 +51,6 @@ export function filterObject<T extends Record<string, unknown>>(obj: T) {
   );
 }
 
-export function isEmptyObject(obj: Record<string, any>) {
+export function isEmptyObject(obj: Record<string, unknown>) {
   return Object.keys(obj).length === 0;
 }

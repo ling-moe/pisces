@@ -1,16 +1,16 @@
 export interface User {
-  [prop: string]: any;
+  [prop: string]: unknown;
 
   userId?: number | string | null;
   username?: string;
   email?: string;
   avatar?: string;
-  roles?: any[];
-  permissions?: any[];
+  roles?: string[];
+  permissions?: string[];
 }
 
 export interface Token {
-  [prop: string]: any;
+  [prop: string]: unknown;
 
   access_token: string;
   token_type?: string;

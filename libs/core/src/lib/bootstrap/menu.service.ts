@@ -31,6 +31,12 @@ export interface Menu {
   permissions?: MenuPermissions;
 }
 
+interface MenuRoute{
+  item: MenuChildrenItem;
+  parentNamePathList: string[];
+  realRouteArr: string[];
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -90,12 +96,12 @@ export class MenuService {
   }
 
   // Deep clone object could be jsonized
-  private deepClone(obj: any): any {
+  private deepClone<T>(obj: T): T {
     return JSON.parse(JSON.stringify(obj));
   }
 
   // Whether two objects could be jsonized equal
-  private isJsonObjEqual(obj0: any, obj1: any): boolean {
+  private isJsonObjEqual(obj0: unknown, obj1: unknown): boolean {
     return JSON.stringify(obj0) === JSON.stringify(obj1);
   }
 
@@ -108,12 +114,12 @@ export class MenuService {
 
   /** Get the menu level. */
   getLevel(routeArr: string[]): string[] {
-    let tmpArr: any[] = [];
+    let tmpArr: string[] = [];
     this.menu$.value.forEach(item => {
       // Breadth-first traverse
-      let unhandledLayer = [{ item, parentNamePathList: [], realRouteArr: [] }];
+      let unhandledLayer: MenuRoute[] = [{ item, parentNamePathList: [], realRouteArr: [] }];
       while (unhandledLayer.length > 0) {
-        let nextUnhandledLayer: any[] = [];
+        let nextUnhandledLayer: MenuRoute[] = [];
         for (const ele of unhandledLayer) {
           const eachItem = ele.item;
           const currentNamePathList = this.deepClone(ele.parentNamePathList).concat(eachItem.name);
@@ -129,7 +135,7 @@ export class MenuService {
               parentNamePathList: currentNamePathList,
               realRouteArr: currentRealRouteArr,
             }));
-            nextUnhandledLayer = nextUnhandledLayer.concat(wrappedChildren);
+            nextUnhandledLayer = nextUnhandledLayer.concat(wrappedChildren!);
           }
         }
         unhandledLayer = nextUnhandledLayer;

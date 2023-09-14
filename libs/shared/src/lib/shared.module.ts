@@ -15,14 +15,12 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import { ToastrModule } from 'ngx-toastr';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
-import { PageHeaderComponent } from './components/page-header/page-header.component';
 import { ErrorCodeComponent } from './components/error-code/error-code.component';
 import { DisableControlDirective } from './directives/disable-control.directive';
 import { SafeUrlPipe } from './pipes/safe-url.pipe';
 import { ToObservablePipe } from './pipes/to-observable.pipe';
 
-const MODULES: any[] = [
+const MODULES = [
   CommonModule,
   RouterModule,
   ReactiveFormsModule,
@@ -38,14 +36,13 @@ const MODULES: any[] = [
   ToastrModule,
   TranslateModule,
 ];
-const COMPONENTS: any[] = [BreadcrumbComponent, PageHeaderComponent, ErrorCodeComponent];
-const COMPONENTS_DYNAMIC: any[] = [];
-const DIRECTIVES: any[] = [DisableControlDirective];
-const PIPES: any[] = [SafeUrlPipe, ToObservablePipe];
+const COMPONENTS = [ErrorCodeComponent];
+const DIRECTIVES = [DisableControlDirective];
+const PIPES = [SafeUrlPipe, ToObservablePipe];
 
 @NgModule({
   imports: [...MODULES],
   exports: [...MODULES, ...COMPONENTS, ...DIRECTIVES, ...PIPES],
-  declarations: [...COMPONENTS, ...COMPONENTS_DYNAMIC, ...DIRECTIVES, ...PIPES],
+  declarations: [...COMPONENTS, ...DIRECTIVES, ...PIPES],
 })
 export class SharedModule {}

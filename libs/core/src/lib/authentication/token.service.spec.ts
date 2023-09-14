@@ -1,18 +1,16 @@
 import { TestBed } from '@angular/core/testing';
 import { tap } from 'rxjs/operators';
 import { MemoryStorageService, LocalStorageService } from '@pisces/shared';
-import { TokenService, currentTimestamp, TokenFactory, SimpleToken } from './';
+import { TokenService, currentTimestamp } from './';
 
 describe('TokenService', () => {
   let tokenService: TokenService;
-  let tokenFactory: TokenFactory;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [{ provide: LocalStorageService, useClass: MemoryStorageService }],
     });
     tokenService = TestBed.inject(TokenService);
-    tokenFactory = TestBed.inject(TokenFactory);
   });
 
   it('should be created', () => {

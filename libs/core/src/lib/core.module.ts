@@ -1,10 +1,12 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { throwIfAlreadyLoaded } from './module-import-guard';
+import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
+import { PageHeaderComponent } from './components/page-header/page-header.component';
+import { SharedModule } from '@pisces/shared';
 
 @NgModule({
-  declarations: [],
-  imports: [CommonModule],
+  declarations: [BreadcrumbComponent, PageHeaderComponent],
+  imports: [SharedModule],
 })
 export class CoreModule {
   constructor(@Optional() @SkipSelf() parentModule: CoreModule) {

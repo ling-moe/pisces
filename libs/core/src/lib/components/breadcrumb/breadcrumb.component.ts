@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewEncapsulation, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { MenuService } from '@pisces/core';
+import { MenuService } from '../../bootstrap/menu.service';
 
 @Component({
-  selector: 'breadcrumb',
+  selector: 'pisces-core-breadcrumb',
   templateUrl: './breadcrumb.component.html',
   styleUrls: ['./breadcrumb.component.scss'],
   encapsulation: ViewEncapsulation.None,

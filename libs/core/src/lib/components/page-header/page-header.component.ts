@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewEncapsulation, Input, HostBinding } from '@angular/core';
-import { MenuService } from '@pisces/core';
 import { Router } from '@angular/router';
+import { MenuService } from '../../bootstrap/menu.service';
 import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
 
 @Component({
-  selector: 'page-header',
+  selector: 'pisces-core-page-header',
   templateUrl: './page-header.component.html',
   styleUrls: ['./page-header.component.scss'],
   encapsulation: ViewEncapsulation.None,
