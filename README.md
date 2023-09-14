@@ -53,4 +53,4 @@ docker run --name redis -p 6379:6379 -d redis --requirepass "KZMdBNea7Q1bXFVUBQr
 
 docker run --name postgres -p 5432:5432 -e POSTGRES_PASSWORD=VR7HUOH7ZOSRe5LSPHo706e1UwsitBnA -e POSTGRES_USER=root -e POSTGRES_DB=pisces -d postgres
 
-凡是使用async的地方必须要用await调用,不然异常会拦截不到
+
