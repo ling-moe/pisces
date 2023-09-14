@@ -10,7 +10,7 @@ export interface UserRemoteService {
   /**
    * 创建用户
    */
-  create(user: User, id: string): void;
+  create(user: User): void;
   /**
    * 更新用户信息
    */

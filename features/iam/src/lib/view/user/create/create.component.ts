@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { UserRemoteService } from '../../../domain/user.remote';
+import { UserRemoteService } from '../../../domain/user.entity';
 import { RemoteService, Consumer } from '@pisces/musubi/client/remote.service';
 
 @Component({
