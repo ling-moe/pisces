@@ -1,11 +1,10 @@
 import { PrismaService } from '@pisces/core/backend/prisma/prisma.module';
 import { Injectable } from '@nestjs/common';
 import { Prisma, User } from '@prisma/client';
-import { UserRemoteService } from '../domain/user.remote';
 import { Provider } from '@pisces/musubi/server';
 import { BizException } from 'libs/core/src/lib/backend/config/exception/biz-exception'
 import { hash } from 'bcrypt';
-
+import { UserRemoteService } from '../domain/user.entity';
 
 @Injectable()
 export class UserRepository implements Provider<UserRemoteService>{

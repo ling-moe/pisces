@@ -18,12 +18,9 @@ export type MusubiModuleMetadata = ModuleMetadata & {
   remotes?: Type<any>[];
 };
 
-type RemoteKey<T> = T extends string ?  `${T}Rpc` : T;
-
 export type Provider<T> = {
-  [P in keyof T as RemoteKey<P>]: T[P] extends (...args: infer A) => infer R ? (...args: A) => Promise<R | undefined> | R  | undefined : any;
+  [P in keyof T as P extends string ? `${P}Rpc`: never]: T[P] extends (...args: infer A) => infer R ? (...args: A) => Promise<R> | R : any;
 };
-
 /**
  * 在原有module注解的情况下进行增强
  *
