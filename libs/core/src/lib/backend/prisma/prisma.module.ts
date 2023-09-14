@@ -1,6 +1,5 @@
 import { Global, INestApplication, Injectable, Module, OnModuleInit } from '@nestjs/common';
 import { PrismaClient, User } from '@prisma/client';
-import { RequestCacheHelper } from './request-cache.helper';
 import { CacheModule } from '../cache/cache.module';
 import { ClsService } from "nestjs-cls";
 
@@ -39,7 +38,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
   imports: [
     CacheModule
   ],
-  providers: [PrismaService, RequestCacheHelper],
+  providers: [PrismaService],
   exports: [PrismaService],
 })
 export class PrismaModule {}
