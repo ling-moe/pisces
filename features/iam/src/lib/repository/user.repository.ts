@@ -38,7 +38,7 @@ export class UserRepository implements Provider<UserRemoteService>{
    */
   async updateRpc(user: User): Promise<void> {
     // 必填校验
-    this.validUserId(user.userId)
+    await this.validUserId(user.userId);
     await this.prisma.user.update({ where: { userId: user.userId }, data: user });
   }
 
