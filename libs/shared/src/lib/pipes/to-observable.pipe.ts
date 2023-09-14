@@ -3,7 +3,7 @@ import { Observable, of, isObservable } from 'rxjs';
 
 @Pipe({ name: 'toObservable' })
 export class ToObservablePipe implements PipeTransform {
-  transform(value: Observable<unknown> | unknown): Observable<unknown> {
+  transform(value: Observable<unknown> | unknown): Observable<any> {
     return isObservable(value) ? value : of(value);
   }
 }
