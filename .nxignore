@@ -1,0 +1,3 @@
+/features/**/*.frontend.module.ts
+/features/**/view/**
+/features/**/service/**
