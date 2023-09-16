@@ -1,6 +1,8 @@
+import { BigIntModule } from '@pisces/common';
+import { mapValues } from 'lodash';
 import { InjectionToken, Provider } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
-import { extractMethodParams, methodToHttp } from '../method-sigature.util';
+import { methodToHttp } from '../method-sigature.util';
 import { Observable } from 'rxjs';
 
 export type RemoteService<T> = {
@@ -46,7 +48,7 @@ function createProxy(httpClient: HttpClient) {
               const body = {};
               Object.assign(body, args);
               if(method === 'GET'){
-                return httpClient.request(method, `${schema}/${path}`, { params: body });
+                return httpClient.request(method, `${schema}/${path}`, { params: mapValues(body, (v) => JSON.stringify(v, BigIntModule)) });
               }else{
                 return httpClient.request(method, `${schema}/${path}`, { body: body, headers: {'Content-Type':  'application/json'} });
               }

@@ -7,7 +7,7 @@ interface RequestMappingConifg {
   paramType: ParamType;
 }
 
-const GET_MAPPING = ['find', 'query', 'select', 'list', 'get'];
+const GET_MAPPING = ['find', 'query', 'select', 'list', 'get', 'page'];
 const POST_MAPPING = ['create'];
 const PUT_MAPPING = ['modify', 'update'];
 const DELETE_MAPPING = ['delete', 'remove', 'del'];
@@ -38,5 +38,11 @@ export function methodToHttp(name: string): RequestMappingConifg {
 
 export function extractMethodParams(method: Function): string[] {
   const methodStr = method.toString();
-  return methodStr.slice(methodStr.indexOf('(') + 1, methodStr.indexOf(')')).match(/([^\s,]+)/g) ?? [];
+  const args = methodStr.slice(methodStr.indexOf('(') + 1, methodStr.indexOf(')')).match(/([^,]+)/g) ?? [];
+  return args.map(arg => {
+    if(arg.includes('=')){
+      return (arg.match(/([^=]+)/g)?? [])[0]!.trim()
+    }
+    return arg.trim();
+  });
 }

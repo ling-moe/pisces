@@ -14,3 +14,6 @@ declare global {
 export function initStandard(){
   BigInt.prototype.toJSON = function () { return `BIGINT::${this.toString()}`; };
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const EmptyObject = {} as any;

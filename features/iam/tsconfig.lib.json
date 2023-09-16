@@ -13,6 +13,6 @@
     "declarationMap": true,
     "inlineSources": true
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "../../libs/common/src/lib/paginator.ts"],
   "exclude": ["src/test-setup.ts", "jest.config.ts", "src/**/*.spec.ts", "src/**/*.test.ts"]
 }

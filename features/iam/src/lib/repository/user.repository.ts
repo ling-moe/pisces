@@ -1,10 +1,11 @@
 import { PrismaService } from '@pisces/core/backend/prisma/prisma.module';
 import { Injectable } from '@nestjs/common';
-import { Prisma, User } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import { Provider } from '@pisces/musubi/server';
 import { BizException } from 'libs/core/src/lib/backend/config/exception/biz-exception'
 import { hash } from 'bcrypt';
-import { UserRemoteService } from '../domain/user.entity';
+import { User, UserQuery, UserRemoteService } from '../domain/user.entity';
+import { PageRequest, DEFAULT_PAGE, paginator, Page } from '@pisces/common';
 
 @Injectable()
 export class UserRepository implements Provider<UserRemoteService>{
@@ -12,9 +13,8 @@ export class UserRepository implements Provider<UserRemoteService>{
   /**
    * 查询列表
    */
-  async listRpc(): Promise<User[]> {
-    // TODO 需要分页实现
-    return await this.prisma.user.findMany();
+  async pageRpc(pageRequest: PageRequest<User>, query?: UserQuery): Promise<Page<User>> {
+    return await paginator(pageRequest)(this.prisma.user, {where: query});
   }
   /**
    * 创建用户信息

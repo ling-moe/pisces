@@ -1,4 +1,4 @@
-import { ArgumentsHost, Catch, ExceptionFilter, ForbiddenException, UnauthorizedException } from '@nestjs/common';
+import { ArgumentsHost, Catch, ExceptionFilter, ForbiddenException, Logger, UnauthorizedException } from '@nestjs/common';
 import { Response } from 'express';
 import { BizException } from '../biz-exception';
 
@@ -28,8 +28,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       status = 200;
       message = exception.message;
     }
-    console.log('This is GlobalExceptionFilter')
-    console.error(exception.stack);
+    Logger.error(exception.stack);
     response.status(status).json({ error, message });
   }
 }

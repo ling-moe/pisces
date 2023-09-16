@@ -1,4 +1,4 @@
-import { Module, ModuleMetadata, Provider as NestProvider, RequestMethod, Type, assignMetadata } from '@nestjs/common';
+import { ArgumentMetadata, Module, ModuleMetadata, Provider as NestProvider, PipeTransform, RequestMethod, Type, assignMetadata } from '@nestjs/common';
 import {
   CONTROLLER_WATERMARK,
   HOST_METADATA,
@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common/constants';
 import { RouteParamtypes } from '@nestjs/common/enums/route-paramtypes.enum';
 import { extractMethodParams, methodToHttp } from '../method-sigature.util';
+import { BigIntModule } from '@pisces/common';
 
 export declare const MUSUBI_REMOTABLE = '__musubi_remotable__';
 
@@ -96,14 +97,15 @@ function defineMappingParamsMatedata(
   property: string
 ) {
   const params = extractMethodParams(method);
+  let args = {};
   for (let i = 0; i < params.length; i++) {
-    // 添加get方法用的query参数
     if(params[i] === 'req' || params[i] === 'res'){
       // TODO 接入request和response对象
     }else{
+      args = assignMetadata(args, paramType, i, i, JsonPipe);
       Reflect.defineMetadata(
         ROUTE_ARGS_METADATA,
-        assignMetadata({}, paramType, i, i.toString(), ...[]),
+        args,
         classConstructor,
         property
       );
@@ -121,4 +123,26 @@ function toPath(str: string) {
     .replace(/([A-Z])/g, '-$1')
     .toLowerCase()
     .slice(1);
+}
+
+class JsonPipe implements PipeTransform{
+  transform(value?: any, metadata?: ArgumentMetadata) {
+    if(value){
+      if(typeof value === 'object'){
+        return isJsonString(value[metadata!.data!]) ? JSON.parse(value[metadata!.data!], BigIntModule) : value[metadata!.data!];
+      }else{
+        return isJsonString(value)? JSON.parse(value, BigIntModule): value;
+      }
+    }
+    return value;
+  }
+}
+
+function isJsonString(str: any) {
+  try {
+      JSON.parse(str);
+  } catch (e) {
+      return false;
+  }
+  return true;
 }

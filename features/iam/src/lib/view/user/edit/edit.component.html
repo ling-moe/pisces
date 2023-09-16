@@ -1,4 +1,8 @@
-<form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+<button type="button" mat-icon-button class="m-y-4" (click)="close()">
+  <mat-icon>close</mat-icon>
+</button>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
   <div class="row">
     <mat-form-field class="col-12">
       <mat-label>用户名</mat-label>
@@ -9,6 +13,12 @@
     <mat-form-field class="col-12">
       <mat-label>姓名</mat-label>
       <input matInput formControlName="displayName">
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <mat-form-field class="col-12">
+      <mat-label>密码</mat-label>
+      <input matInput formControlName="password" type="password">
     </mat-form-field>
   </div>
   <div class="row">
@@ -27,14 +37,19 @@
     <mat-form-field class="col-12">
       <mat-label>性别</mat-label>
       <mat-select formControlName="sex">
-        <mat-option value="0">女</mat-option>
-        <mat-option value="1">男</mat-option>
-        <mat-option value="2">未知</mat-option>
+        <mat-option value="WOMAN">女</mat-option>
+        <mat-option value="MAN">男</mat-option>
+        <mat-option value="UNKNOWN">未知</mat-option>
       </mat-select>
     </mat-form-field>
   </div>
   <div class="row">
-    <mat-slide-toggle  class="col-12" formControlName="enabledFlag">启用</mat-slide-toggle>
+    <mat-form-field class="col-12">
+      <mat-label>语言</mat-label>
+      <mat-select formControlName="lang">
+        <mat-option value="zh_cn">汉语</mat-option>
+      </mat-select>
+    </mat-form-field>
   </div>
   <div class="row">
     <mat-form-field class="col-12">
@@ -52,5 +67,8 @@
       <mat-datepicker #effectiveEndDatePicker></mat-datepicker>
     </mat-form-field>
   </div>
-  <button mat-raised-button color="primary" type="submit">Submit</button>
+  <div class="row">
+    <mat-slide-toggle class="col-12 m-b-16" formControlName="enabledFlag">是否启用</mat-slide-toggle>
+  </div>
+  <button mat-raised-button color="primary" type="submit">保存</button>
 </form>

@@ -1,16 +1,27 @@
-<mat-drawer-container style="height: calc(100% - 96px);">
+<mat-drawer-container class="h-full">
   <mat-drawer #drawer class="example-sidenav" mode="over" position="end" disableClose="true" autoFocus="false">
-    <button type="button" mat-button (click)="drawer.toggle();"  (closedStart)="close()">
-      <mat-icon>close</mat-icon>
-    </button>
-    <pisces-create *ngIf="!current" (submitClose)="drawer.toggle();"></pisces-create>
-    <pisces-edit *ngIf="current" [data]="current" (submitClose)="drawer.toggle();"></pisces-edit>
+    <pisces-create *ngIf="!current" (closeEvent)="close(drawer)"></pisces-create>
+    <pisces-edit *ngIf="current" [data]="current" (closeEvent)="close(drawer)"></pisces-edit>
   </mat-drawer>
 
-  <button type="button" mat-button color="primary" (click)="drawer.toggle()">
+  <div class="row w-full">
+    <div class="col-md-10">
+      <form class="m-y-4">
+        <formly-form [model]="searchModel" [fields]="searchFields" [form]="searchForm" class="p-y-24 info-fields">
+        </formly-form>
+      </form>
+    </div>
+    <div class="col-md-2">
+      <span class="flex-fill"></span>
+      <button type="submit" mat-raised-button (click)="query()" color="primary" class="m-l-8 m-y-16">查询</button>
+      <button type="submit" mat-raised-button (click)="searchForm.reset()" class="m-l-8 m-y-16">重置</button>
+    </div>
+  </div>
+
+  <button type="button" mat-raised-button color="primary" (click)="drawer.toggle()" class="m-b-16">
     新建
   </button>
-  <table mat-table [dataSource]="data">
+  <table mat-table [dataSource]="this.pageInfo.data">
     <!-- 列定义 -->
     <ng-container matColumnDef="username">
       <th mat-header-cell *matHeaderCellDef>用户名</th>
@@ -62,5 +73,9 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let user; columns: displayedColumns;"></tr>
   </table>
+  <mat-paginator [length]="pageInfo.total"
+              [pageSize]="pageInfo.size"
+              [pageSizeOptions]="[20, 50, 100]" (page)="query($event)">
+</mat-paginator>
 </mat-drawer-container>
 

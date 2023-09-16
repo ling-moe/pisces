@@ -9,34 +9,37 @@ import { RemoteService, Consumer } from '@pisces/musubi/client/remote.service';
   styleUrls: ['./create.component.scss'],
 })
 export class UserCreateComponent implements OnInit {
-  myForm!: FormGroup;
+  form!: FormGroup;
   @Output()
-  submitClose = new EventEmitter<boolean>();
+  closeEvent = new EventEmitter<boolean>();
   constructor(private fb: FormBuilder,
     @Inject(RemoteService) private userRemoteService: Consumer<UserRemoteService, 'user'>,
     ) { }
 
   ngOnInit() {
-    this.myForm = this.fb.group({
+    this.form = this.fb.group({
       username: ['', Validators.required],
       displayName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       phone: ['', Validators.required],
-      sex: ['male', Validators.required],
+      sex: ['MAN', Validators.required],
       effectiveStartDate: ['', Validators.required],
       effectiveEndDate: ['', Validators.required],
-      enabledFlag: [false],
-
-      lang: ['zh_cn'],
+      enabledFlag: [true],
+      lang: ['zh_cn', Validators.required],
       locale: ['zh'],
-      password: ['123456']
+      password: ['', Validators.required]
     });
   }
 
   onSubmit() {
-    console.log('qq')
-    // if (this.myForm.valid) {
-      this.userRemoteService.user.create(this.myForm.value).subscribe(res => this.submitClose.emit(true));
-    // }
+    if (this.form.valid) {
+      this.userRemoteService.user.create(this.form.value).subscribe(() => this.close());
+    }
+  }
+
+  close(){
+    this.form.reset();
+    this.closeEvent.emit(true);
   }
 }
