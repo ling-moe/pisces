@@ -3,13 +3,12 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { User } from '@prisma/client';
 import { MatDrawer } from '@angular/material/sidenav';
 import { UserQuery, UserRemoteService } from '../../../domain/user.entity';
-import { Route, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { FormGroup } from '@angular/forms';
 import { EmptyObject, Page, PageRequest } from "@pisces/common";
-import type { UserRepository } from '../../../repository/user.repository'
 import { PageEvent } from '@angular/material/paginator';
-import { isNumber, pickBy } from 'lodash';
+import { pickBy } from 'lodash';
 
 @Component({
   selector: 'pisces-user-list',
