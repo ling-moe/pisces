@@ -1,10 +1,14 @@
-import { Consumer, RemoteService } from '@pisces/musubi/client/remote.service';
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDrawer } from '@angular/material/sidenav';
-import { Role, RoleRemoteService } from '../../../domain/role.entity';
 import { FormGroup } from '@angular/forms';
+import { PageEvent } from '@angular/material/paginator';
+import { MatDrawer } from '@angular/material/sidenav';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
-import { switchMap, tap } from 'rxjs';
+import { EmptyObject, Page, PageRequest } from '@pisces/common';
+import { Consumer, RemoteService } from '@pisces/musubi/client/remote.service';
+import { pickBy } from 'lodash';
+import { tap } from 'rxjs';
+import { Role, RoleQuery, RoleRemoteService } from '../../../domain/role.entity';
+import { drawerFieldGroup, inputDrawerField, inputSearchField, searchFieldGroup, selectSearchField, textareaDrawerField, toggleDrawerField } from '../../../infra/util/formily-builder';
 
 @Component({
   selector: 'pisces-role-list',
@@ -15,19 +19,39 @@ export class RoleListComponent implements OnInit {
 
   options: FormlyFormOptions = {};
   model: Role | unknown = {};
-  form =  new FormGroup({});
+  form = new FormGroup({});
   data: Role[] = [];
   action: 'create' | 'update' = 'create';
+  pageInfo: Page<Role> = {
+    data: [],
+    total: 0,
+    lastPage: 0,
+    page: 0,
+    size: 20,
+    prev: null,
+    next: null
+  };
 
   displayedColumns = ['roleCode', 'roleName', 'enabledFlag', 'remark', 'operations'];
+
+  searchModel: RoleQuery = EmptyObject;
+  searchForm = new FormGroup({});
+  searchFields: FormlyFieldConfig[] = searchFieldGroup([
+    inputSearchField('roleCode', '角色编码'),
+    inputSearchField('roleName', '角色名称'),
+    selectSearchField('enabledFlag', '是否启用', [
+      { value: true, label: '启用' },
+      { value: false, label: '禁用' },
+    ], true),
+  ]);
 
   constructor(
     @Inject(RemoteService)
     private userRemoteService: Consumer<RoleRemoteService, 'role'>
-  ) {}
+  ) { }
 
   ngOnInit() {
-    this.userRemoteService.role.list().subscribe((roles) => (this.data = roles));
+    this.query();
   }
 
   changeAction(action: 'create' | 'update', role: Role | unknown, drawer: MatDrawer) {
@@ -37,112 +61,47 @@ export class RoleListComponent implements OnInit {
     drawer.toggle();
   }
 
-  create(drawer: MatDrawer){
+  create(drawer: MatDrawer) {
     this.userRemoteService.role.create(this.model as Role)
-    .pipe(tap(() => drawer.toggle()), switchMap(() => this.userRemoteService.role.list()))
-    .subscribe(roles => this.data = roles);
+      .pipe(tap(() => drawer.toggle()))
+      .subscribe(() => this.query());
   }
-  update(drawer: MatDrawer){
+  update(drawer: MatDrawer) {
     this.userRemoteService.role.update(this.model as Role)
-    .pipe(tap(() => drawer.toggle()), switchMap(() => this.userRemoteService.role.list()))
-    .subscribe(roles => this.data = roles);
+      .pipe(tap(() => drawer.toggle()))
+      .subscribe(() => this.query());
   }
 
-  roleCreateFields: FormlyFieldConfig[] = [
-    {
-      fieldGroupClassName: 'row',
-      fieldGroup: [
-        {
-          className: 'col-md-6',
-          key: 'roleCode',
-          type: 'input',
-          props: {
-            label: '角色编码',
-            required: true,
-          },
-        },
-        {
-          className: 'col-md-6',
-          key: 'roleName',
-          type: 'input',
-          props: {
-            label: '角色名称',
-            required: true,
-          },
-        },
+  query(pageEvent?: PageEvent) {
+    const pageRequest = PageRequest.of<Role>(pageEvent?.pageIndex || this.pageInfo.page, pageEvent?.pageSize || this.pageInfo.size);
+    this.userRemoteService.role.page(pageRequest, pickBy(this.searchModel, Boolean) as RoleQuery).subscribe(users => {
+      this.pageInfo = { ...users };
+    });
+  }
 
-        {
-          className: 'col-md-6',
-          key: 'enabledFlag',
-          type: 'toggle',
-          props: {
-            label: '是否启用',
-          },
-          defaultValue: true,
-        },
-        {
-          className: 'col-md-6',
-          key: 'remark',
-          type: 'textarea',
-          props: {
-            label: '备注',
-          },
-        },
-      ],
-    },
-  ];
+  roleCreateFields: FormlyFieldConfig[] =
+    drawerFieldGroup([
+      inputDrawerField('roleCode', '角色编码', true),
+      inputDrawerField('roleName', '角色名称', true),
+      toggleDrawerField('enabledFlag', '是否启用', true, undefined, true),
+      textareaDrawerField('remark', '备注', false, undefined, undefined),
+    ]);
 
-  roleEditFields: FormlyFieldConfig[] = [
-    {
-      fieldGroupClassName: 'row',
-      fieldGroup: [
-        {
-          className: 'col-md-6',
-          key: 'roleId',
-          type: 'input',
-          props: {
-            label: '角色ID',
-            required: true,
-          },
-          hide: true
+  roleEditFields: FormlyFieldConfig[] =
+    drawerFieldGroup([
+      {
+        className: 'col-md-12',
+        key: 'roleId',
+        type: 'input',
+        props: {
+          label: '角色ID',
+          required: true,
         },
-        {
-          className: 'col-md-6',
-          key: 'roleCode',
-          type: 'input',
-          props: {
-            label: '角色编码',
-            required: true,
-          },
-        },
-        {
-          className: 'col-md-6',
-          key: 'roleName',
-          type: 'input',
-          props: {
-            label: '角色名称',
-            required: true,
-          },
-        },
-
-        {
-          className: 'col-md-6',
-          key: 'enabledFlag',
-          type: 'toggle',
-          props: {
-            label: '是否启用',
-          },
-          defaultValue: true,
-        },
-        {
-          className: 'col-md-6',
-          key: 'remark',
-          type: 'textarea',
-          props: {
-            label: '备注',
-          },
-        },
-      ],
-    },
-  ];
+        hide: true
+      },
+      inputDrawerField('roleCode', '角色编码', true),
+      inputDrawerField('roleName', '角色名称', true),
+      toggleDrawerField('enabledFlag', '是否启用', true, undefined, true),
+      textareaDrawerField('remark', '备注', false, undefined, undefined),
+    ]);
 }

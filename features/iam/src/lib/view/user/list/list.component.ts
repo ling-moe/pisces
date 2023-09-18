@@ -9,6 +9,7 @@ import { FormGroup } from '@angular/forms';
 import { EmptyObject, Page, PageRequest } from "@pisces/common";
 import { PageEvent } from '@angular/material/paginator';
 import { pickBy } from 'lodash';
+import { searchFieldGroup, inputSearchField, selectSearchField } from '../../../infra/util/formily-builder';
 
 @Component({
   selector: 'pisces-user-list',
@@ -18,7 +19,6 @@ import { pickBy } from 'lodash';
 export class UserListComponent implements OnInit {
 
   current?: User;
-  ;
 
   pageInfo: Page<User> = {
     data: [],
@@ -28,51 +28,22 @@ export class UserListComponent implements OnInit {
     size: 20,
     prev: null,
     next: null
-  }
+  };
 
   displayedColumns = [
     'username', 'displayName', 'email', 'phone', 'sex', 'effectiveStartDate',
     'effectiveEndDate', 'lockedTime', 'enabledFlag', 'operations',
   ];
-  options: FormlyFormOptions = {};
   searchModel: UserQuery = EmptyObject;
   searchForm = new FormGroup({});
-  searchFields: FormlyFieldConfig[] = [
-    {
-      fieldGroupClassName: 'row',
-      fieldGroup: [
-        {
-          className: 'col-md-2',
-          key: 'username',
-          type: 'input',
-          props: {
-            label: '用户名',
-          },
-        },
-        {
-          className: 'col-md-2',
-          key: 'displayName',
-          type: 'input',
-          props: {
-            label: '姓名',
-          },
-        },
-        {
-          className: 'col-md-2',
-          key: 'enabledFlag',
-          type: 'select',
-          props: {
-            label: '是否启用',
-            options: [
-              { value: true, label: '启用' },
-              { value: false, label: '禁用' },
-            ],
-          },
-          defaultValue: true,
-        },
-      ],
-    },
-  ];
+  searchFields: FormlyFieldConfig[] = searchFieldGroup([
+    inputSearchField('username', '用户名'),
+    inputSearchField('displayName', '姓名'),
+    selectSearchField('enabledFlag', '是否启用', [
+      { value: true, label: '启用' },
+      { value: false, label: '禁用' },
+    ], true),
+  ]);
 
   constructor(
     @Inject(RemoteService) private userRemoteService: Consumer<UserRemoteService, 'user'>,

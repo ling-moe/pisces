@@ -1,19 +1,22 @@
+import { PageRequest, Page } from '@pisces/common';
 import type { Role as PrismaRole } from '@prisma/client';
 import type { GetResult } from '@prisma/client/runtime/library';
 
 export type Role = PrismaRole extends GetResult<infer T, infer K> ? T : unknown;
 
+export type RoleQuery = Pick<Role, 'roleCode' | 'roleName' | 'enabledFlag'>;
+
 export interface RoleRemoteService {
   /**
-   * 获取用户列表
+   * 获取角色列表
    */
-  list(): Role[]
+  page(pageRequest: PageRequest<Role>, query?: RoleQuery): Page<Role>;
   /**
-   * 创建用户
+   * 创建角色
    */
   create(user: Role): void;
   /**
-   * 更新用户信息
+   * 更新角色
    */
   update(user: Role): void;
 }
