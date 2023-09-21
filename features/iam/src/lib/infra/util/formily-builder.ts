@@ -34,6 +34,10 @@ export function inputDrawerField(key: string, label: string, required?: boolean)
   return drawerField(key, 'input', label, required, undefined, undefined);
 }
 
+export function numberDrawerField(key: string, label: string, required?: boolean): FormlyFieldConfig {
+  return drawerField(key, 'number', label, required, undefined, undefined);
+}
+
 export function selectDrawerField(key: string, label: string, required: boolean | undefined, options: { value: string | boolean | number, label: string; }[] | undefined, defaultValue: string | boolean | number | undefined): FormlyFieldConfig {
   return drawerField(key, 'select', label, required, options, defaultValue);
 }
@@ -49,7 +53,7 @@ export function textareaDrawerField(key: string, label: string, required: boolea
 
 // base
 
-export type FieldType = 'input' | 'select' | 'toggle' | 'textarea';
+export type FieldType = 'input' | 'select' | 'toggle' | 'textarea' | 'number';
 
 export function fieldGroup(fields: FormlyFieldConfig[], colnum: number): FormlyFieldConfig[] {
   return chunk(fields, colnum).map(group => ({
