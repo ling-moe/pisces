@@ -4,16 +4,16 @@ import { chunk } from "lodash";
 
 // search
 
-export function searchField(key: string, type: FieldType, label: string, required: boolean | undefined, options: { value: string | boolean | number, label: string; }[] | undefined, defaultValue: string | boolean | number | undefined): FormlyFieldConfig {
-  return field(key, type, label, 'col-md-2', required, options, defaultValue);
+export function searchField(key: string, type: FieldType, label: string, extra?: CommonFieldType): FormlyFieldConfig {
+  return field(key, type, label, {className: 'col-md-2', props:{required: extra?.required, options: extra?.options} , defaultValue: extra?.defaultValue});
 }
 
 export function inputSearchField(key: string, label: string): FormlyFieldConfig {
-  return searchField(key, 'input', label, undefined, undefined, undefined);
+  return searchField(key, 'input', label);
 }
 
-export function selectSearchField(key: string, label: string, options?: { value: string | boolean | number, label: string; }[], defaultValue?: string | boolean | number): FormlyFieldConfig {
-  return searchField(key, 'select', label, undefined, options, defaultValue);
+export function selectSearchField(key: string, label: string, extra?: CommonFieldType): FormlyFieldConfig {
+  return searchField(key, 'select', label, extra);
 }
 
 export function searchFieldGroup(fields: FormlyFieldConfig[]): FormlyFieldConfig[] {
@@ -26,34 +26,42 @@ export function drawerFieldGroup(fields: FormlyFieldConfig[]): FormlyFieldConfig
   return fieldGroup(fields, 1);
 }
 
-export function drawerField(key: string, type: FieldType, label: string, required: boolean | undefined, options: { value: string | boolean | number, label: string; }[] | undefined, defaultValue: string | boolean | number | undefined): FormlyFieldConfig {
-  return field(key, type, label, 'col-md-12', required, options, defaultValue);
+export function drawerField(key: string, type: FieldType, label: string, extra?: CommonFieldType): FormlyFieldConfig {
+
+  return field(key, type, label, {className: 'col-md-12', props:{...extra, defaultValue: undefined, hide: undefined}, defaultValue: extra?.defaultValue, hide: extra?.hide});
 }
 
-export function inputDrawerField(key: string, label: string, required?: boolean): FormlyFieldConfig {
-  return drawerField(key, 'input', label, required, undefined, undefined);
+export function inputDrawerField(key: string, label: string, extra?: CommonFieldType): FormlyFieldConfig {
+  return drawerField(key, 'input', label, extra);
 }
 
-export function numberDrawerField(key: string, label: string, required?: boolean): FormlyFieldConfig {
-  return drawerField(key, 'number', label, required, undefined, undefined);
+export function numberDrawerField(key: string, label: string, extra?: CommonFieldType): FormlyFieldConfig {
+  return drawerField(key, 'number', label, extra);
 }
 
-export function selectDrawerField(key: string, label: string, required: boolean | undefined, options: { value: string | boolean | number, label: string; }[] | undefined, defaultValue: string | boolean | number | undefined): FormlyFieldConfig {
-  return drawerField(key, 'select', label, required, options, defaultValue);
+export function selectDrawerField(key: string, label: string, extra?: CommonFieldType): FormlyFieldConfig {
+  return drawerField(key, 'select', label, extra);
 }
 
-export function toggleDrawerField(key: string, label: string, required: boolean | undefined, options: { value: string | boolean | number, label: string; }[] | undefined, defaultValue: string | boolean | number | undefined): FormlyFieldConfig {
-  return drawerField(key, 'toggle', label, required, options, defaultValue);
+export function toggleDrawerField(key: string, label: string, extra?: CommonFieldType): FormlyFieldConfig {
+  return drawerField(key, 'toggle', label, extra);
 }
 
-export function textareaDrawerField(key: string, label: string, required: boolean | undefined, options: { value: string | boolean | number, label: string; }[] | undefined, defaultValue: string | boolean | number | undefined): FormlyFieldConfig {
-  return drawerField(key, 'textarea', label, required, options, defaultValue);
+export function textareaDrawerField(key: string, label: string, extra?: CommonFieldType): FormlyFieldConfig {
+  return drawerField(key, 'textarea', label, extra);
 }
 
 
-// base
+// base {className: 'col-md-12', props:{required, options} , defaultValue}
 
 export type FieldType = 'input' | 'select' | 'toggle' | 'textarea' | 'number';
+
+export type Props = Pick<Required<Pick<FormlyFieldConfig, 'props'>> extends {props: infer R} ? R : never, 'required' | 'options' | 'disabled'>;
+export type DefaultValue = Pick<FormlyFieldConfig, 'defaultValue'>
+export type Hide = Pick<FormlyFieldConfig, 'hide'>
+export type CommonFieldType = Props & DefaultValue & Hide;
+
+export type FormAction = 'create' | 'update';
 
 export function fieldGroup(fields: FormlyFieldConfig[], colnum: number): FormlyFieldConfig[] {
   return chunk(fields, colnum).map(group => ({
@@ -62,15 +70,14 @@ export function fieldGroup(fields: FormlyFieldConfig[], colnum: number): FormlyF
   }));
 }
 
-export function field(key: string, type: FieldType, label: string, className: string, required: boolean | undefined, options: { value: string | boolean | number, label: string; }[] | undefined, defaultValue: string | boolean | number | undefined): FormlyFieldConfig {
+export function field(key: string, type: FieldType, label: string, extra: FormlyFieldConfig): FormlyFieldConfig {
   return {
-    className: className,
-    key, type,
+    ...extra,
+    key,
+    type,
     props: {
       label,
-      options,
-      required
-    },
-    defaultValue
+      ...extra.props
+    }
   };
 }

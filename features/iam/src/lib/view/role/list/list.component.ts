@@ -39,10 +39,13 @@ export class RoleListComponent implements OnInit {
   searchFields: FormlyFieldConfig[] = searchFieldGroup([
     inputSearchField('roleCode', '角色编码'),
     inputSearchField('roleName', '角色名称'),
-    selectSearchField('enabledFlag', '是否启用', [
-      { value: true, label: '启用' },
-      { value: false, label: '禁用' },
-    ], true),
+    selectSearchField('enabledFlag', '是否启用', {
+      options: [
+        { value: true, label: '启用' },
+        { value: false, label: '禁用' },
+      ],
+      defaultValue: true
+    }),
   ]);
 
   constructor(
@@ -81,27 +84,18 @@ export class RoleListComponent implements OnInit {
 
   roleCreateFields: FormlyFieldConfig[] =
     drawerFieldGroup([
-      inputDrawerField('roleCode', '角色编码', true),
-      inputDrawerField('roleName', '角色名称', true),
-      toggleDrawerField('enabledFlag', '是否启用', true, undefined, true),
-      textareaDrawerField('remark', '备注', false, undefined, undefined),
+      inputDrawerField('roleCode', '角色编码', {required: true}),
+      inputDrawerField('roleName', '角色名称', {required: true}),
+      toggleDrawerField('enabledFlag', '是否启用', {required: true, defaultValue: true}),
+      textareaDrawerField('remark', '备注', {required: false}),
     ]);
 
   roleEditFields: FormlyFieldConfig[] =
     drawerFieldGroup([
-      {
-        className: 'col-md-12',
-        key: 'roleId',
-        type: 'input',
-        props: {
-          label: '角色ID',
-          required: true,
-        },
-        hide: true
-      },
-      inputDrawerField('roleCode', '角色编码', true),
-      inputDrawerField('roleName', '角色名称', true),
-      toggleDrawerField('enabledFlag', '是否启用', true, undefined, true),
-      textareaDrawerField('remark', '备注', false, undefined, undefined),
+      inputDrawerField('roleId', '角色ID', {required: true, hide: true}),
+      inputDrawerField('roleCode', '角色编码', {required: true}),
+      inputDrawerField('roleName', '角色名称', {required: true}),
+      toggleDrawerField('enabledFlag', '是否启用', {required: true, defaultValue: true}),
+      textareaDrawerField('remark', '备注', {required: false}),
     ]);
 }

@@ -3,8 +3,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { User } from '@prisma/client';
 import { MatDrawer } from '@angular/material/sidenav';
 import { UserQuery, UserRemoteService } from '../../../domain/user.entity';
-import { Router } from '@angular/router';
-import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
+import { FormlyFieldConfig } from '@ngx-formly/core';
 import { FormGroup } from '@angular/forms';
 import { EmptyObject, Page, PageRequest } from "@pisces/common";
 import { PageEvent } from '@angular/material/paginator';
@@ -39,21 +38,20 @@ export class UserListComponent implements OnInit {
   searchFields: FormlyFieldConfig[] = searchFieldGroup([
     inputSearchField('username', '用户名'),
     inputSearchField('displayName', '姓名'),
-    selectSearchField('enabledFlag', '是否启用', [
-      { value: true, label: '启用' },
-      { value: false, label: '禁用' },
-    ], true),
+    selectSearchField('enabledFlag', '是否启用', {
+      options: [
+        { value: true, label: '启用' },
+        { value: false, label: '禁用' },
+      ],
+      defaultValue: true
+    }),
   ]);
 
   constructor(
     @Inject(RemoteService) private userRemoteService: Consumer<UserRemoteService, 'user'>,
-    private route: Router
   ) { }
 
   ngOnInit() {
-    const r = this.route.config[2] as any;
-    // 子路由，需要遍历
-    console.log(r._loadedRoutes);
     this.query();
   }
 

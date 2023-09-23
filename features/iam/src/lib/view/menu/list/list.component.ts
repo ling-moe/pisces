@@ -6,9 +6,11 @@ import { Menu, MenuNode, MenuRemoteService } from '../../../domain/menu.entity';
 import { FormGroup } from '@angular/forms';
 import { MatDrawer } from '@angular/material/sidenav';
 import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
-import { drawerFieldGroup, inputDrawerField, selectDrawerField, toggleDrawerField, textareaDrawerField, numberDrawerField } from '../../../infra/util/formily-builder';
+import { drawerFieldGroup, inputDrawerField, selectDrawerField, toggleDrawerField, textareaDrawerField, numberDrawerField, FormAction } from '../../../infra/util/formily-builder';
 import { Role } from '@prisma/client';
 import { tap } from 'rxjs';
+import { EmptyObject } from '@pisces/common';
+import { Route, Router } from '@angular/router';
 
 @Component({
   selector: 'pisces-menu-list',
@@ -18,36 +20,61 @@ import { tap } from 'rxjs';
 export class MenuListComponent implements OnInit {
 
   options: FormlyFormOptions = {};
-  model: Role | unknown = {};
+  model: Menu = EmptyObject;
   form = new FormGroup({});
   data: Role[] = [];
-  action: 'create' | 'update' = 'create';
+  action: FormAction = 'create';
 
   displayedColumns: string[] = ['menuCode','menuName', 'menuType', 'icon', 'route', 'menuSort', 'enabledFlag', 'operations'];
 
   constructor(
     @Inject(RemoteService)
-    private menuRemoteService: Consumer<MenuRemoteService, 'menu'>
+    private menuRemoteService: Consumer<MenuRemoteService, 'menu'>,
+    private router: Router
   ){}
 
   ngOnInit(): void {
     this.query();
   }
 
-  changeAction(action: 'create' | 'update', role: Role | unknown, drawer: MatDrawer) {
+  get allRoutes(){
+    const routes = this.walkRouteTree(this.router.config).map(path => `/${path.filter(i => i).join('/')}`);
+    // 移除/**
+    routes.pop()
+    return routes;
+  }
+
+  walkRouteTree(routes: Route[]): string[][]{
+    const result: string[][] = [];
+    for(const route of routes){
+      if(route.path === undefined){
+        continue;
+      }
+      if(route.children){
+        result.push(...this.walkRouteTree(route.children).map((childPath: string[]) => [route.path!, ...childPath]));
+      }else if(route.loadChildren){
+        result.push(...this.walkRouteTree((route as any)._loadedRoutes).map(childPath => [route.path!, ...childPath]));
+      }else{
+        result.push([route.path])
+      }
+    }
+    return result;
+  }
+
+  changeAction(drawer: MatDrawer, action: FormAction, menu?: Menu | {pid: bigint}) {
     this.action = action;
-    this.options.updateInitialValue?.(role);
+    this.options.updateInitialValue?.({...menu, expandable: undefined, level: undefined, children: undefined});
     this.options.resetModel?.();
     drawer.toggle();
   }
 
   create(drawer: MatDrawer) {
-    this.menuRemoteService.menu.create(this.model as Menu)
+    this.menuRemoteService.menu.create(this.model)
       .pipe(tap(() => drawer.toggle()))
       .subscribe(() => this.query());
   }
   update(drawer: MatDrawer) {
-    this.menuRemoteService.menu.update(this.model as Menu)
+    this.menuRemoteService.menu.update(this.model)
       .pipe(tap(() => drawer.toggle()))
       .subscribe(() => this.query());
   }
@@ -60,38 +87,29 @@ export class MenuListComponent implements OnInit {
 
   menuCreateFields: FormlyFieldConfig[] =
     drawerFieldGroup([
-      inputDrawerField('pid', '上级菜单', false),
-      inputDrawerField('menuCode', '菜单编码', true),
-      inputDrawerField('menuName', '菜单名称', true),
-      selectDrawerField('menuType', '菜单类型', true, [{value: 'DIR',label: '目录'},{value: 'ROUTE',label: '路由'},{value: 'FUNCTION',label: '功能'},{value: 'UI',label: '视图'}], 'MENU'),
-      inputDrawerField('icon', '图标', false),
-      inputDrawerField('route', '路由', false),
-      numberDrawerField('menuSort', '顺序', true),
-      toggleDrawerField('enabledFlag', '是否启用', true, undefined, true),
-      textareaDrawerField('remark', '备注', false, undefined, undefined),
+      inputDrawerField('pid', '上级菜单', {required: false, disabled: true}),
+      inputDrawerField('menuCode', '菜单编码', {required: true}),
+      inputDrawerField('menuName', '菜单名称', {required: true}),
+      selectDrawerField('menuType', '菜单类型', {required: true, options: [{value: 'DIR',label: '目录'},{value: 'ROUTE',label: '路由'},{value: 'FUNCTION',label: '功能'},{value: 'UI',label: '视图'}], defaultValue: 'MENU'}),
+      inputDrawerField('icon', '图标', {required: false}),
+      selectDrawerField('route', '路由', {required: false, options: this.allRoutes.map(route => ({value: route, label: route}))}),
+      numberDrawerField('menuSort', '顺序', {required: true}),
+      toggleDrawerField('enabledFlag', '是否启用', {required: true, defaultValue: true}),
+      textareaDrawerField('remark', '备注', {required: false}),
     ]);
 
   menuEditFields: FormlyFieldConfig[] =
     drawerFieldGroup([
-      {
-        className: 'col-md-12',
-        key: 'roleId',
-        type: 'input',
-        props: {
-          label: '角色ID',
-          required: true,
-        },
-        hide: true
-      },
-      inputDrawerField('pid', '上级菜单', false),
-      inputDrawerField('menuCode', '菜单编码', true),
-      inputDrawerField('menuName', '菜单名称', true),
-      selectDrawerField('menuType', '菜单类型', true, [{value: 'DIR',label: '目录'},{value: 'ROUTE',label: '路由'},{value: 'FUNCTION',label: '功能'},{value: 'UI',label: '视图'}], 'MENU'),
-      inputDrawerField('icon', '图标', false),
-      inputDrawerField('route', '路由', false),
-      numberDrawerField('menuSort', '顺序', true),
-      toggleDrawerField('enabledFlag', '是否启用', true, undefined, true),
-      textareaDrawerField('remark', '备注', false, undefined, undefined),
+      inputDrawerField('menuId', '菜单ID', {required: true, hide: true}),
+      inputDrawerField('pid', '上级菜单', {required: false, disabled: true}),
+      inputDrawerField('menuCode', '菜单编码', {required: true}),
+      inputDrawerField('menuName', '菜单名称', {required: true}),
+      selectDrawerField('menuType', '菜单类型', {required: true, options: [{value: 'DIR',label: '目录'},{value: 'ROUTE',label: '路由'},{value: 'FUNCTION',label: '功能'},{value: 'UI',label: '视图'}], defaultValue: 'MENU'}),
+      inputDrawerField('icon', '图标', {required: false}),
+      selectDrawerField('route', '路由', {required: false, options: this.allRoutes.map(route => ({value: route, label: route}))}),
+      numberDrawerField('menuSort', '顺序', {required: true}),
+      toggleDrawerField('enabledFlag', '是否启用', {required: true, defaultValue: true}),
+      textareaDrawerField('remark', '备注', {required: false}),
     ]);
 
   private transformer = (node: MenuNode, level: number) => {
