@@ -3,11 +3,13 @@ import { Injectable } from '@nestjs/common';
 import { Provider } from '@pisces/musubi/server';
 import { Menu, MenuNode, MenuRemoteService } from '../domain/menu.entity';
 import { camelCase, groupBy, mapKeys } from 'lodash';
+import { HasPermission } from '../infra/permission';
 
 @Injectable()
 export class MenuRepository implements Provider<MenuRemoteService> {
   constructor(private prisma: PrismaService) {}
 
+  @HasPermission('树状查询菜单')
   async treeRpc() {
     const list1 = await this.prisma.$queryRaw<MenuNode[]>`WITH RECURSIVE result AS (
       SELECT *, 1 as level FROM sys_menu WHERE menu_id = 1
@@ -21,9 +23,13 @@ export class MenuRepository implements Provider<MenuRemoteService> {
       return father.pid === 0n;
     });
   }
+
+  @HasPermission('创建菜单')
   async createRpc(menu: Menu) {
     await this.prisma.menu.create({ data: menu });
   }
+
+  @HasPermission('更新菜单')
   async updateRpc(menu: Menu) {
     await this.prisma.menu.update({ where: { menuId: menu.menuId }, data: menu });
   }
