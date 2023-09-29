@@ -128,7 +128,7 @@ function toPath(str: string) {
 class JsonPipe implements PipeTransform{
   transform(value?: any, metadata?: ArgumentMetadata) {
     if(value){
-      if(typeof value === 'object'){
+      if(typeof value === 'object' && !Array.isArray(value)){
         return isJsonString(value[metadata!.data!]) ? JSON.parse(value[metadata!.data!], BigIntModule) : value[metadata!.data!];
       }else{
         return isJsonString(value)? JSON.parse(value, BigIntModule): value;

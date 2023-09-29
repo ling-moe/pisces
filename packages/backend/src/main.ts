@@ -8,7 +8,6 @@ import { NestApplication, NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 import * as bodyParser from 'body-parser';
 import { BigIntModule, initStandard } from '@pisces/common';
-import { prems } from "@pisces/iam/infra/permission";
 
 async function bootstrap() {
   initStandard();
@@ -18,7 +17,6 @@ async function bootstrap() {
   app.setGlobalPrefix(globalPrefix);
   const port = process.env.PORT || 3100;
   await app.listen(port);
-  Logger.log(prems);
   Logger.log(
     `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`
   );

@@ -6,8 +6,10 @@ import { UserCreateComponent } from './view/user/create/create.component';
 import { UserEditComponent } from './view/user/edit/edit.component';
 import { RoleListComponent } from './view/role/list/list.component';
 import { MenuListComponent } from './view/menu/list/list.component';
+import { TransferComponent } from './view/menu/transfer/transfer.component';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
-const COMPONENTS = [UserListComponent,UserCreateComponent, UserEditComponent, MenuListComponent];
+const COMPONENTS = [UserListComponent, UserCreateComponent, UserEditComponent, MenuListComponent];
 
 const iamFrontendRoutes: Route[] = [
   {
@@ -15,21 +17,21 @@ const iamFrontendRoutes: Route[] = [
     children: [
       {
         path: 'user',
-        component: UserListComponent
+        component: UserListComponent,
       },
       {
         path: 'role',
-        component: RoleListComponent
+        component: RoleListComponent,
       },
       {
         path: 'menu',
-        component: MenuListComponent
+        component: MenuListComponent,
       },
     ],
   },
 ];
 @NgModule({
-  imports: [SharedModule, RouterModule.forChild(iamFrontendRoutes)],
-  declarations: [...COMPONENTS, RoleListComponent],
+  imports: [SharedModule, DragDropModule, RouterModule.forChild(iamFrontendRoutes)],
+  declarations: [...COMPONENTS, RoleListComponent, TransferComponent],
 })
 export class IamFrontendModule {}

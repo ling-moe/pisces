@@ -3,11 +3,31 @@ import { Injectable } from '@nestjs/common';
 import { Provider } from '@pisces/musubi/server';
 import { Menu, MenuNode, MenuRemoteService } from '../domain/menu.entity';
 import { camelCase, groupBy, mapKeys } from 'lodash';
-import { HasPermission } from '../infra/permission';
+import { HasPermission, Perm } from '../infra/permission';
+import { prems } from "../infra/permission";
 
 @Injectable()
 export class MenuRepository implements Provider<MenuRemoteService> {
   constructor(private prisma: PrismaService) {}
+
+  @HasPermission('保存菜单中的权限')
+  async savePermsRpc(currentMenu: Menu, addPerms: Perm[], removeMenus: Menu[]): Promise<void> {
+    const menus = addPerms.map(perm => {
+      return <Menu>{menuCode: perm.code, menuName: perm.desc, menuType: 'FUNCTION', pid: currentMenu.menuId};
+    })
+    await this.prisma.menu.createMany({data:menus});
+    await this.prisma.menu.deleteMany({where:{menuId: {in: removeMenus.map(menu => menu.menuId)}}})
+  };
+
+  @HasPermission('获取菜单中已分配的权限')
+  listAssignedPermByMenuIdRpc(menuId: bigint): Menu[] | Promise<Menu[]>{
+    return this.prisma.menu.findMany({where: {pid: menuId}});
+  };
+
+  @HasPermission('获取权限列表')
+  listPermRpc(): Perm[] {
+    return prems;
+  }
 
   @HasPermission('树状查询菜单')
   async treeRpc() {

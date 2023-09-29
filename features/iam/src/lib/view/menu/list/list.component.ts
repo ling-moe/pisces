@@ -1,3 +1,4 @@
+import { TransferComponent } from './../transfer/transfer.component';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
@@ -11,6 +12,7 @@ import { Role } from '@prisma/client';
 import { tap } from 'rxjs';
 import { EmptyObject } from '@pisces/common';
 import { Route, Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'pisces-menu-list',
@@ -30,7 +32,8 @@ export class MenuListComponent implements OnInit {
   constructor(
     @Inject(RemoteService)
     private menuRemoteService: Consumer<MenuRemoteService, 'menu'>,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog,
   ){}
 
   ngOnInit(): void {
@@ -82,6 +85,12 @@ export class MenuListComponent implements OnInit {
   query() {
     this.menuRemoteService.menu.tree().subscribe(tree => {
       this.dataSource.data = tree as MenuNode[];
+    });
+  }
+
+  addPerm(menu: Menu){
+    this.dialog.open(TransferComponent, {
+      data: menu,
     });
   }
 

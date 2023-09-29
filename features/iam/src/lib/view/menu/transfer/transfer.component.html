@@ -1,0 +1,32 @@
+<div class="example-container">
+  <h2>待分配</h2>
+
+  <div
+    cdkDropList
+    #todoList="cdkDropList"
+    [cdkDropListData]="todo"
+    [cdkDropListConnectedTo]="[doneList]"
+    class="example-list"
+    (cdkDropListDropped)="drop($event)">
+    <div class="example-box" *ngFor="let item of todo" cdkDrag>{{item.desc}}</div>
+  </div>
+</div>
+
+<div class="example-container">
+  <h2>已分配</h2>
+
+  <div
+    cdkDropList
+    #doneList="cdkDropList"
+    [cdkDropListData]="done"
+    [cdkDropListConnectedTo]="[todoList]"
+    class="example-list"
+    (cdkDropListDropped)="drop($event)">
+    <div class="example-box" *ngFor="let item of done" cdkDrag>{{item.desc}}</div>
+  </div>
+</div>
+<mat-dialog-actions align="end">
+  <button mat-button color="primary" mat-dialog-close (click)="save()">保存</button>
+<button mat-button mat-dialog-close>关闭</button>
+</mat-dialog-actions>
+

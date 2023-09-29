@@ -13,13 +13,17 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
   async onModuleInit() {
     // 注册拦截器
     this.$use(async (params, next) => {
-      // TODO 获取当前用户id
       const userId = this.authClsStore.get('currentUser')?.userId ?? 1;
       if (params.action === 'create') {
         params.args.data['createBy'] = userId;
         params.args.data['updateBy'] = userId;
+      } else if (params.action === 'createMany') {
+        params.args.data.forEach((item: any) => item['createBy'] = userId);
+        params.args.data.forEach((item: any) => item['updateBy'] = userId);
       } else if (params.action === 'update') {
         params.args.data['updateBy'] = userId;
+      } else if (params.action === 'updateMany') {
+        params.args.data.forEach((item: any) => item['updateBy'] = userId);
       }
       return await next(params);
     });

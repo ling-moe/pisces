@@ -101,8 +101,8 @@ model Perm {
 
 model Menu {
   menuId   BigInt @id @default(autoincrement()) @map("menu_id")
-  menuCode String @map("menu_code") @db.VarChar(30)
-  menuName String @map("menu_name") @db.VarChar(30)
+  menuCode String @map("menu_code") @db.VarChar(120)
+  menuName String @map("menu_name") @db.VarChar(60)
   menuType String @map("menu_type") @db.VarChar(10)
   pid      BigInt @default(0)
   icon           String?  @db.VarChar(30)

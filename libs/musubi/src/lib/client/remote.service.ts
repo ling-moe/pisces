@@ -48,7 +48,7 @@ function createProxy(httpClient: HttpClient) {
               const body = {};
               Object.assign(body, args);
               if(method === 'GET'){
-                return httpClient.request(method, `${schema}/${path}`, { params: mapValues(body, (v) => JSON.stringify(v, BigIntModule)) });
+                return httpClient.request(method, `${schema}/${path}`, { params: mapValues(body, (v) => JSON.stringify(v)) });
               }else{
                 return httpClient.request(method, `${schema}/${path}`, { body: body, headers: {'Content-Type':  'application/json'} });
               }
