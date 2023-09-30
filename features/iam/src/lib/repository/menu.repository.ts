@@ -9,12 +9,16 @@ import { prems } from "../infra/permission";
 @Injectable()
 export class MenuRepository implements Provider<MenuRemoteService> {
   constructor(private prisma: PrismaService) {}
+  async deleteRpc(menuId: bigint): Promise<void>{
+    await this.prisma.menu.delete({where: {menuId: menuId}});
+  };
 
   @HasPermission('保存菜单中的权限')
   async savePermsRpc(currentMenu: Menu, addPerms: Perm[], removeMenus: Menu[]): Promise<void> {
     const menus = addPerms.map(perm => {
       return <Menu>{menuCode: perm.code, menuName: perm.desc, menuType: 'FUNCTION', pid: currentMenu.menuId};
     })
+    this.prisma.$transaction
     await this.prisma.menu.createMany({data:menus});
     await this.prisma.menu.deleteMany({where:{menuId: {in: removeMenus.map(menu => menu.menuId)}}})
   };

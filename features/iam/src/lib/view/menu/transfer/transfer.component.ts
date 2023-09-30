@@ -36,8 +36,8 @@ export class TransferComponent implements OnInit {
   done:Perm[] = [];
 
   save(){
-    const removeMenus = this.assignedMenus.filter(menu => this.done.find(perm => perm.code !== menu.menuCode));
-    const addMenus = this.done.filter(perm => this.assignedMenus.find(menu => perm.code !== menu.menuCode));
+    const removeMenus = this.assignedMenus.filter(menu => !this.done.find(perm => perm.code === menu.menuCode));
+    const addMenus = this.done.filter(perm => !this.assignedMenus.find(menu => perm.code === menu.menuCode));
     this.menuRemoteService.menu.savePerms(this.menu,addMenus, removeMenus).subscribe(console.log);
   }
 

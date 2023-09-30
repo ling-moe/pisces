@@ -33,7 +33,7 @@ export class UserListComponent implements OnInit {
     'username', 'displayName', 'email', 'phone', 'sex', 'effectiveStartDate',
     'effectiveEndDate', 'lockedTime', 'enabledFlag', 'operations',
   ];
-  searchModel: UserQuery = EmptyObject;
+  searchModel: UserQuery = EmptyObject();
   searchForm = new FormGroup({});
   searchFields: FormlyFieldConfig[] = searchFieldGroup([
     inputSearchField('username', '用户名'),

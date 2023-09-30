@@ -28,7 +28,7 @@ export function drawerFieldGroup(fields: FormlyFieldConfig[]): FormlyFieldConfig
 
 export function drawerField(key: string, type: FieldType, label: string, extra?: CommonFieldType): FormlyFieldConfig {
 
-  return field(key, type, label, {className: 'col-md-12', props:{...extra, defaultValue: undefined, hide: undefined}, defaultValue: extra?.defaultValue, hide: extra?.hide});
+  return field(key, type, label, {className: 'col-md-12', props:{...extra, defaultValue: undefined, hide: undefined}, defaultValue: extra?.defaultValue, hide: extra?.hide,expressions: extra?.expressions});
 }
 
 export function inputDrawerField(key: string, label: string, extra?: CommonFieldType): FormlyFieldConfig {
@@ -59,7 +59,8 @@ export type FieldType = 'input' | 'select' | 'toggle' | 'textarea' | 'number';
 export type Props = Pick<Required<Pick<FormlyFieldConfig, 'props'>> extends {props: infer R} ? R : never, 'required' | 'options' | 'disabled'>;
 export type DefaultValue = Pick<FormlyFieldConfig, 'defaultValue'>
 export type Hide = Pick<FormlyFieldConfig, 'hide'>
-export type CommonFieldType = Props & DefaultValue & Hide;
+export type Expressions = Pick<FormlyFieldConfig, 'expressions'>
+export type CommonFieldType = Props & DefaultValue & Hide & Expressions;
 
 export type FormAction = 'create' | 'update';
 

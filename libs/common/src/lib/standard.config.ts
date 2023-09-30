@@ -16,4 +16,4 @@ export function initStandard(){
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const EmptyObject = {} as any;
+export const EmptyObject = () => ({} as any);

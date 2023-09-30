@@ -1,8 +1,6 @@
-import type { Menu as PrismaMenu } from '@prisma/client';
-import type { GetResult } from '@prisma/client/runtime/library';
 import { Perm } from '../infra/permission';
 
-// export type Menu = PrismaMenu extends GetResult<infer T, infer K> ? T : unknown;
+// {value: 'DIR',label: '目录'},{value: 'ROUTE',label: '路由'},{value: 'FUNCTION',label: '功能'},{value: 'UI',label: '视图'}
 export type Menu = {
   menuId: bigint
   menuCode: string
@@ -47,4 +45,6 @@ export interface MenuRemoteService {
   listAssignedPermByMenuId(menuId: bigint): Menu[];
 
   savePerms(currentMenu: Menu,addPerms: Perm[], removeMenus: Menu[]): void;
+
+  delete(menuId: bigint): void;
 }

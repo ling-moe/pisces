@@ -34,7 +34,7 @@ export class RoleListComponent implements OnInit {
 
   displayedColumns = ['roleCode', 'roleName', 'enabledFlag', 'remark', 'operations'];
 
-  searchModel: RoleQuery = EmptyObject;
+  searchModel: RoleQuery = EmptyObject();
   searchForm = new FormGroup({});
   searchFields: FormlyFieldConfig[] = searchFieldGroup([
     inputSearchField('roleCode', '角色编码'),

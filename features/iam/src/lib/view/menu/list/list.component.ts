@@ -22,7 +22,7 @@ import { MatDialog } from '@angular/material/dialog';
 export class MenuListComponent implements OnInit {
 
   options: FormlyFormOptions = {};
-  model: Menu = EmptyObject;
+  model: Menu = EmptyObject();
   form = new FormGroup({});
   data: Role[] = [];
   action: FormAction = 'create';
@@ -71,6 +71,11 @@ export class MenuListComponent implements OnInit {
     drawer.toggle();
   }
 
+  delete(menuId: bigint) {
+    this.menuRemoteService.menu.delete(menuId).subscribe(() => this.query());
+    ;
+  }
+
   create(drawer: MatDrawer) {
     this.menuRemoteService.menu.create(this.model)
       .pipe(tap(() => drawer.toggle()))
@@ -99,9 +104,9 @@ export class MenuListComponent implements OnInit {
       inputDrawerField('pid', '上级菜单', {required: false, disabled: true}),
       inputDrawerField('menuCode', '菜单编码', {required: true}),
       inputDrawerField('menuName', '菜单名称', {required: true}),
-      selectDrawerField('menuType', '菜单类型', {required: true, options: [{value: 'DIR',label: '目录'},{value: 'ROUTE',label: '路由'},{value: 'FUNCTION',label: '功能'},{value: 'UI',label: '视图'}], defaultValue: 'MENU'}),
+      selectDrawerField('menuType', '菜单类型', {required: true, options: [{value: 'DIR',label: '目录'},{value: 'ROUTE',label: '路由'}], defaultValue: 'MENU'}),
       inputDrawerField('icon', '图标', {required: false}),
-      selectDrawerField('route', '路由', {required: false, options: this.allRoutes.map(route => ({value: route, label: route}))}),
+      selectDrawerField('route', '路由', {expressions: {'props.required': 'model.menuType === "ROUTE"', 'hide': 'model.menuType !== "ROUTE"'}, options: this.allRoutes.map(route => ({value: route, label: route}))}),
       numberDrawerField('menuSort', '顺序', {required: true}),
       toggleDrawerField('enabledFlag', '是否启用', {required: true, defaultValue: true}),
       textareaDrawerField('remark', '备注', {required: false}),
@@ -115,7 +120,7 @@ export class MenuListComponent implements OnInit {
       inputDrawerField('menuName', '菜单名称', {required: true}),
       selectDrawerField('menuType', '菜单类型', {required: true, options: [{value: 'DIR',label: '目录'},{value: 'ROUTE',label: '路由'},{value: 'FUNCTION',label: '功能'},{value: 'UI',label: '视图'}], defaultValue: 'MENU'}),
       inputDrawerField('icon', '图标', {required: false}),
-      selectDrawerField('route', '路由', {required: false, options: this.allRoutes.map(route => ({value: route, label: route}))}),
+      selectDrawerField('route', '路由', {expressions: {'props.required': 'model.menuType === "ROUTE"', 'hide': 'model.menuType !== "ROUTE"'}, options: this.allRoutes.map(route => ({value: route, label: route}))}),
       numberDrawerField('menuSort', '顺序', {required: true}),
       toggleDrawerField('enabledFlag', '是否启用', {required: true, defaultValue: true}),
       textareaDrawerField('remark', '备注', {required: false}),
