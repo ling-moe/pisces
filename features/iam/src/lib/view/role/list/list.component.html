@@ -3,11 +3,12 @@
     <button type="button" mat-icon-button class="m-y-4" (click)="drawer.toggle()">
       <mat-icon>close</mat-icon>
     </button>
-    <form (ngSubmit)="this[action](drawer)">
+    <form *ngIf="action === 'create' || action === 'update'" (ngSubmit)="this[action](drawer)">
       <formly-form [model]="model" [fields]="action === 'create' ? roleCreateFields : roleEditFields" [form]="form" [options]="options" class="p-y-24 info-fields">
       </formly-form>
       <button type="submit" mat-raised-button color="primary" [disabled]="!form.valid">保存</button>
     </form>
+    <pisces-role-authorization *ngIf="action === 'authorization'" [roleId]="roleId"></pisces-role-authorization>
   </mat-drawer>
   <div class="row w-full">
     <div class="col-md-10">
@@ -22,7 +23,7 @@
     </div>
   </div>
 
-  <button type="button" mat-raised-button color="primary" class="m-b-16" (click)="changeAction('create', {}, drawer)">新建</button>
+  <button type="button" mat-raised-button color="primary" class="m-b-16" (click)="changeAction('create', drawer)">新建</button>
   <table mat-table [dataSource]="pageInfo.data">
     <!-- 列定义 -->
     <ng-container matColumnDef="roleCode">
@@ -45,9 +46,9 @@
     <ng-container matColumnDef="operations">
       <th mat-header-cell *matHeaderCellDef>操作 </th>
       <td mat-cell *matCellDef="let role">
-        <button mat-button type="button" (click)="changeAction('update', role, drawer)">编辑</button>
-        <button mat-button type="button" (click)="changeAction('update', role, drawer)">用户</button>
-        <button mat-button type="button" (click)="changeAction('update', role, drawer)">授权</button>
+        <button mat-button type="button" (click)="changeAction('update', drawer, role)">编辑</button>
+        <button mat-button type="button" (click)="changeAction('update', drawer, role)">用户</button>
+        <button mat-button type="button" (click)="changeAction('authorization', drawer, role)">授权</button>
       </td>
     </ng-container>
     <!-- 列绑定 -->

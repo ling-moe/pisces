@@ -1,12 +1,25 @@
 import { PrismaService } from '@pisces/core/backend/prisma/prisma.module';
 import { Injectable } from '@nestjs/common';
 import { Provider } from '@pisces/musubi/server';
-import { Role, RoleQuery, RoleRemoteService } from '../domain/role.entity';
+import { Role, RoleMenu, RoleQuery, RoleRemoteService } from '../domain/role.entity';
 import { Page, PageRequest, paginator } from '@pisces/common';
 
 @Injectable()
 export class RoleRepository implements Provider<RoleRemoteService> {
   constructor(private prisma: PrismaService) {}
+
+  async listMenuByRoleIdRpc(roleId: bigint): Promise<RoleMenu[]>{
+    return await this.prisma.roleMenu.findMany({where: {roleId}});
+  }
+
+  async saveRoleMenuRpc(list: RoleMenu[]): Promise<void>{
+    const removeList = list.filter(roleMenu => roleMenu.roleMenuId).map(roleMenu => roleMenu.roleMenuId);
+    const addList = list.filter(roleMenu => !roleMenu.roleMenuId)
+    await this.prisma.$transaction([
+      this.prisma.roleMenu.deleteMany({where: {roleMenuId: {in: removeList}}}),
+      this.prisma.roleMenu.createMany({data: addList})
+    ]);
+  };
   /**
    * 分页查询角色列表
    * @param pageRequest 分页参数

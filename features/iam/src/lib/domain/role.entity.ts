@@ -1,8 +1,37 @@
 import { PageRequest, Page } from '@pisces/common';
-import type { Role as PrismaRole } from '@prisma/client';
-import type { GetResult } from '@prisma/client/runtime/library';
 
-export type Role = PrismaRole extends GetResult<infer T, infer K> ? T : unknown;
+export type Role = {
+  roleId: bigint;
+  roleCode: string;
+  roleName: string;
+  enabledFlag: boolean;
+  remark: string | null;
+  versionNum: bigint;
+  createBy: bigint;
+  createAt: Date;
+  updateBy: bigint;
+  updateAt: Date;
+};
+
+export type RoleMenu = {
+  roleMenuId: bigint;
+  roleId: bigint;
+  menuId: bigint;
+  createBy: bigint;
+  createAt: Date;
+  updateBy: bigint;
+  updateAt: Date;
+};
+
+export type RoleUser = {
+  roleUserId: bigint;
+  roleId: bigint;
+  userId: bigint;
+  createBy: bigint;
+  createAt: Date;
+  updateBy: bigint;
+  updateAt: Date;
+};
 
 export type RoleQuery = Pick<Role, 'roleCode' | 'roleName' | 'enabledFlag'>;
 
@@ -19,4 +48,8 @@ export interface RoleRemoteService {
    * 更新角色
    */
   update(user: Role): void;
+
+  listMenuByRoleId(roleId: bigint): RoleMenu[];
+
+  saveRoleMenu(list: RoleMenu[]): void;
 }

@@ -21,7 +21,7 @@ export class RoleListComponent implements OnInit {
   model: Role | unknown = {};
   form = new FormGroup({});
   data: Role[] = [];
-  action: 'create' | 'update' = 'create';
+  action: 'create' | 'update' | 'authorization' = 'create';
   pageInfo: Page<Role> = {
     data: [],
     total: 0,
@@ -31,6 +31,7 @@ export class RoleListComponent implements OnInit {
     prev: null,
     next: null
   };
+  roleId!: bigint;
 
   displayedColumns = ['roleCode', 'roleName', 'enabledFlag', 'remark', 'operations'];
 
@@ -57,10 +58,11 @@ export class RoleListComponent implements OnInit {
     this.query();
   }
 
-  changeAction(action: 'create' | 'update', role: Role | unknown, drawer: MatDrawer) {
+  changeAction(action: 'create' | 'update' | 'authorization', drawer: MatDrawer, role?: Role) {
     this.action = action;
     this.options.updateInitialValue?.(role);
     this.options.resetModel?.();
+    this.roleId = role!.roleId;
     drawer.toggle();
   }
 
@@ -70,6 +72,12 @@ export class RoleListComponent implements OnInit {
       .subscribe(() => this.query());
   }
   update(drawer: MatDrawer) {
+    this.userRemoteService.role.update(this.model as Role)
+      .pipe(tap(() => drawer.toggle()))
+      .subscribe(() => this.query());
+  }
+
+  authorization(drawer: MatDrawer) {
     this.userRemoteService.role.update(this.model as Role)
       .pipe(tap(() => drawer.toggle()))
       .subscribe(() => this.query());
