@@ -1,17 +1,18 @@
-import { BigIntModule } from '@pisces/common';
 import { mapValues } from 'lodash';
 import { InjectionToken, Provider } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
 import { methodToHttp } from '../method-sigature.util';
 import { Observable } from 'rxjs';
 
-export type RemoteService<T> = {
-  [P in keyof T]: T[P] extends (...args: infer A) => infer R ? (...args: A) => Observable<R> : any;
+export type Remotable<T> = {
+  [P in keyof T]: T[P] extends (...args: infer A) => infer R ? (...args: A) => Observable<R> : never;
 };
 
-export type Consumer<T, S extends string> = Required<Record<S, RemoteService<T>>>;
+export type Consumer<T> = {
+  [P in keyof T]: Remotable<T[P]>
+};
 
-export const RemoteService = new InjectionToken<Consumer<any, string>>('MUSUBI_REMOTE_SERVICE');
+export const RemoteService = new InjectionToken<Consumer<any>>('MUSUBI_REMOTE_SERVICE');
 
 export const musubiProvider: Provider = {
   provide: RemoteService,

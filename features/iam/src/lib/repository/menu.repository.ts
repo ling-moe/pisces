@@ -1,13 +1,13 @@
 import { PrismaService } from '@pisces/core/backend/prisma/prisma.module';
 import { Injectable } from '@nestjs/common';
 import { Provider } from '@pisces/musubi/server';
-import { Menu, MenuNode, MenuRemoteService } from '../domain/menu.entity';
+import { Menu, MenuNode, MenuDomainService } from '../domain/menu.entity';
 import { camelCase, groupBy, mapKeys } from 'lodash';
 import { HasPermission, Perm } from '../infra/permission';
 import { prems } from "../infra/permission";
 
 @Injectable()
-export class MenuRepository implements Provider<MenuRemoteService> {
+export class MenuRepository implements Provider<MenuDomainService> {
   constructor(private prisma: PrismaService) {}
   async deleteRpc(menuId: bigint): Promise<void>{
     await this.prisma.menu.delete({where: {menuId: menuId}});
@@ -40,7 +40,7 @@ export class MenuRepository implements Provider<MenuRemoteService> {
       UNION
       SELECT m.*, p.level + 1 as level FROM sys_menu m JOIN result p ON m.pid = p.menu_id)
       SELECT * FROM result;`;
-    const list = list1.map((i) => mapKeys(i, (_, v) => camelCase(v))) as MenuNode[];
+    const list = list1.map((i) => mapKeys(i, (_, v) => camelCase(v))) as unknown as MenuNode[];
     const group = groupBy(list, 'pid');
     return list.filter((father) => {
       father.children = group[father.menuId.toString()];

@@ -6,7 +6,7 @@ export type User = PrismaUser extends GetResult<infer T, infer K> ? T : unknown;
 export type UserQuery = Pick<User, 'username' | 'displayName' | 'enabledFlag'>;
 
 
-export interface UserRemoteService {
+export interface UserDomainService {
   /**
    * 获取用户列表
    */
@@ -20,3 +20,6 @@ export interface UserRemoteService {
    */
   update(user: User): void;
 }
+
+
+export type UserRemoteService = Record<'user', UserDomainService>;

@@ -4,16 +4,16 @@ import { Prisma } from '@prisma/client';
 import { Provider } from '@pisces/musubi/server';
 import { BizException } from 'libs/core/src/lib/backend/config/exception/biz-exception'
 import { hash } from 'bcrypt';
-import { User, UserQuery, UserRemoteService } from '../domain/user.entity';
+import { User, UserQuery, UserDomainService } from '../domain/user.entity';
 import { PageRequest, DEFAULT_PAGE, paginator, Page } from '@pisces/common';
 
 @Injectable()
-export class UserRepository implements Provider<UserRemoteService>{
+export class UserRepository implements Provider<UserDomainService>{
   constructor(private prisma: PrismaService) { }
   /**
    * 查询列表
    */
-  async pageRpc(pageRequest: PageRequest<User>, query?: UserQuery): Promise<Page<User>> {
+  async pageRpc(pageRequest: PageRequest<User> = DEFAULT_PAGE, query?: UserQuery): Promise<Page<User>> {
     return await paginator(pageRequest)(this.prisma.user, {where: query});
   }
   /**

@@ -2,8 +2,8 @@ import { Perm } from './../../../infra/permission';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Menu, MenuRemoteService } from '../../../domain/menu.entity';
-import { RemoteService, Consumer } from '@pisces/musubi/client/remote.service';
+import { Menu, MenuDomainService, MenuRemoteService } from '../../../domain/menu.entity';
+import { Remotable, Consumer, RemoteService } from '@pisces/musubi/client/remote.service';
 import { forkJoin } from 'rxjs';
 
 @Component({
@@ -12,14 +12,15 @@ import { forkJoin } from 'rxjs';
   styleUrls: ['./transfer.component.scss'],
 })
 export class TransferComponent implements OnInit {
-
+  menuRepository: Remotable<MenuDomainService>;
   constructor(
     @Inject(MAT_DIALOG_DATA) public menu: Menu,
-    @Inject(RemoteService)
-    private menuRemoteService: Consumer<MenuRemoteService, 'menu'>,
-    ){}
+    @Inject(RemoteService) musubiClient: Consumer<MenuRemoteService>,
+    ){
+      this.menuRepository = musubiClient.menu;
+    }
   ngOnInit(): void {
-    forkJoin([this.menuRemoteService.menu.listPerm(), this.menuRemoteService.menu.listAssignedPermByMenuId(this.menu.menuId)])
+    forkJoin([this.menuRepository.listPerm(), this.menuRepository.listAssignedPermByMenuId(this.menu.menuId)])
     .subscribe(([allPerms, assignedMenus]) => {
       this.assignedMenus = assignedMenus;
       const assignedPerms:Perm[] = [];
@@ -38,7 +39,7 @@ export class TransferComponent implements OnInit {
   save(){
     const removeMenus = this.assignedMenus.filter(menu => !this.done.find(perm => perm.code === menu.menuCode));
     const addMenus = this.done.filter(perm => !this.assignedMenus.find(menu => perm.code === menu.menuCode));
-    this.menuRemoteService.menu.savePerms(this.menu,addMenus, removeMenus).subscribe(console.log);
+    this.menuRepository.savePerms(this.menu,addMenus, removeMenus).subscribe(console.log);
   }
 
   drop(event: CdkDragDrop<Perm[]>) {

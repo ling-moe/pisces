@@ -2,9 +2,9 @@ import {SelectionModel} from '@angular/cdk/collections';
 import {FlatTreeControl} from '@angular/cdk/tree';
 import {ChangeDetectorRef, Component, Inject, Input, OnInit} from '@angular/core';
 import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
-import { MenuNode, MenuRemoteService } from '../../../domain/menu.entity';
-import { Consumer, RemoteService } from '@pisces/musubi/client/remote.service';
-import { RoleMenu, RoleRemoteService } from '../../../domain/role.entity';
+import { MenuDomainService, MenuNode, MenuRemoteService } from '../../../domain/menu.entity';
+import { Consumer, Remotable, RemoteService } from '@pisces/musubi/client/remote.service';
+import { RoleDomainService, RoleMenu, RoleRemoteService } from '../../../domain/role.entity';
 import { forkJoin } from 'rxjs';
 
 @Component({
@@ -18,6 +18,9 @@ export class RoleAuthorizationComponent implements OnInit{
   roleId!: bigint;
 
   menuIds!: RoleMenu[];
+
+  menuRepository: Remotable<MenuDomainService>;
+  roleRepository: Remotable<RoleDomainService>;
 
 
   transformer = (node: MenuNode, level: number) => {
@@ -43,16 +46,16 @@ export class RoleAuthorizationComponent implements OnInit{
 
   constructor(
     @Inject(RemoteService)
-    private menuRemoteService: Consumer<MenuRemoteService, 'menu'>,
-    @Inject(RemoteService)
-    private roleRemoteService: Consumer<RoleRemoteService, 'role'>,
+    musubiClient: Consumer<MenuRemoteService & RoleRemoteService>,
     private cdr: ChangeDetectorRef,
     ) {
+      this.menuRepository = musubiClient.menu;
+      this.roleRepository = musubiClient.role;
       this.treeControl.dataNodes = [];
   }
 
   ngOnInit(): void {
-    forkJoin([this.menuRemoteService.menu.tree(), this.roleRemoteService.role.listMenuByRoleId(this.roleId)])
+    forkJoin([this.menuRepository.tree(), this.roleRepository.listMenuByRoleId(this.roleId)])
     .subscribe(([menus, roleMenus]) => {
       this.dataSource.data = menus as MenuNode[];
       this.menuIds = roleMenus;
@@ -69,10 +72,10 @@ export class RoleAuthorizationComponent implements OnInit{
     const removeList = this.menuIds.filter(menuId => !newMenuIds.includes(menuId.menuId));
     const addList = newMenuIds.filter(menuId => !this.menuIds.map(i => i.menuId).includes(menuId));
 
-    this.roleRemoteService.role.saveRoleMenu(removeList.concat(addList.map(i => (<RoleMenu>{
+    this.roleRepository.saveRoleMenu(removeList.concat(addList.map(i => (<RoleMenu>{
       roleId: this.roleId,
       menuId: i
-    })))).subscribe(res => console.log("保存成功"));
+    })))).subscribe(() => console.log("保存成功"));
   }
 
   getLevel = (node: MenuNode) => node.level;

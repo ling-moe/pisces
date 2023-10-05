@@ -4,3 +4,9 @@
 //     item.children ? walkTree(item?.children, cb) : null;
 //   }
 // }
+
+export type TreeNode<T> = {
+  children?: (T&TreeNode<T>)[],
+  level: number,
+  expandable: boolean;
+};

@@ -1,3 +1,4 @@
+import { AuditDomain, OCC, TreeNode } from '@pisces/common';
 import { Perm } from '../infra/permission';
 
 // {value: 'DIR',label: '目录'},{value: 'ROUTE',label: '路由'},{value: 'FUNCTION',label: '功能'},{value: 'UI',label: '视图'}
@@ -12,15 +13,11 @@ export type Menu = {
   menuSort: number
   enabledFlag: boolean
   remark: string | null
-  versionNum: bigint
-  createBy: bigint
-  createAt: Date
-  updateBy: bigint
-  updateAt: Date
-}
-export type MenuNode = Menu & {children?: MenuNode[], level: number, expandable: boolean};
+} & AuditDomain & OCC
 
-export interface MenuRemoteService {
+export type MenuNode = Menu & TreeNode<Menu>;
+
+export interface MenuDomainService {
   /**
    * 获取树形菜单
    */
@@ -48,3 +45,5 @@ export interface MenuRemoteService {
 
   delete(menuId: bigint): void;
 }
+
+export type MenuRemoteService = Record<'menu', MenuDomainService>;

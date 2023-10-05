@@ -35,7 +35,7 @@ export type RoleUser = {
 
 export type RoleQuery = Pick<Role, 'roleCode' | 'roleName' | 'enabledFlag'>;
 
-export interface RoleRemoteService {
+export interface RoleDomainService {
   /**
    * 获取角色列表
    */
@@ -53,3 +53,5 @@ export interface RoleRemoteService {
 
   saveRoleMenu(list: RoleMenu[]): void;
 }
+
+export type RoleRemoteService = Record<'role', RoleDomainService>;

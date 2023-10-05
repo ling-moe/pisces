@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { UserRemoteService } from '../../../domain/user.entity';
-import { RemoteService, Consumer } from '@pisces/musubi/client/remote.service';
+import { UserDomainService, UserRemoteService } from '../../../domain/user.entity';
+import { Remotable, Consumer, RemoteService } from '@pisces/musubi/client/remote.service';
 import { User } from '@prisma/client';
 
 @Component({
@@ -15,11 +15,13 @@ export class UserEditComponent implements OnInit {
   @Output()
   closeEvent = new EventEmitter<boolean>();
   form!: FormGroup;
-
+  userRepository: Remotable<UserDomainService>;
   constructor(
     private fb: FormBuilder,
-    @Inject(RemoteService) private userRemoteService: Consumer<UserRemoteService, 'user'>
-  ) { }
+    @Inject(RemoteService) musubiClient: Consumer<UserRemoteService>
+  ) {
+    this.userRepository = musubiClient.user;
+  }
 
   ngOnInit() {
     this.form = this.fb.group({
@@ -40,7 +42,7 @@ export class UserEditComponent implements OnInit {
 
   onSubmit() {
     if (this.form.valid) {
-      this.userRemoteService.user.update({ userId: this.data.userId, ...this.form.value }).subscribe(() => this.close());
+      this.userRepository.update({ userId: this.data.userId, ...this.form.value }).subscribe(() => this.close());
     }
   }
 

@@ -30,6 +30,10 @@ export interface AuditDomain {
   updateAt: Date;
 }
 
+export interface OCC {
+  versionNum: bigint
+}
+
 
 export interface Page<T> {
   data: T[];

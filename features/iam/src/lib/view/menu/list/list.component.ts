@@ -2,8 +2,8 @@ import { TransferComponent } from './../transfer/transfer.component';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
-import { RemoteService, Consumer } from '@pisces/musubi/client/remote.service';
-import { Menu, MenuNode, MenuRemoteService } from '../../../domain/menu.entity';
+import { Remotable, Consumer, RemoteService } from '@pisces/musubi/client/remote.service';
+import { Menu, MenuDomainService, MenuNode, MenuRemoteService } from '../../../domain/menu.entity';
 import { FormGroup } from '@angular/forms';
 import { MatDrawer } from '@angular/material/sidenav';
 import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
@@ -28,13 +28,14 @@ export class MenuListComponent implements OnInit {
   action: FormAction = 'create';
 
   displayedColumns: string[] = ['menuCode','menuName', 'menuType', 'icon', 'route', 'menuSort', 'enabledFlag', 'operations'];
-
+  menuRepository: Remotable<MenuDomainService>;
   constructor(
-    @Inject(RemoteService)
-    private menuRemoteService: Consumer<MenuRemoteService, 'menu'>,
+    @Inject(RemoteService) musubiClient: Consumer<MenuRemoteService>,
     private router: Router,
     private dialog: MatDialog,
-  ){}
+  ){
+    this.menuRepository = musubiClient.menu;
+  }
 
   ngOnInit(): void {
     this.query();
@@ -72,23 +73,23 @@ export class MenuListComponent implements OnInit {
   }
 
   delete(menuId: bigint) {
-    this.menuRemoteService.menu.delete(menuId).subscribe(() => this.query());
+    this.menuRepository.delete(menuId).subscribe(() => this.query());
     ;
   }
 
   create(drawer: MatDrawer) {
-    this.menuRemoteService.menu.create(this.model)
+    this.menuRepository.create(this.model)
       .pipe(tap(() => drawer.toggle()))
       .subscribe(() => this.query());
   }
   update(drawer: MatDrawer) {
-    this.menuRemoteService.menu.update(this.model)
+    this.menuRepository.update(this.model)
       .pipe(tap(() => drawer.toggle()))
       .subscribe(() => this.query());
   }
 
   query() {
-    this.menuRemoteService.menu.tree().subscribe(tree => {
+    this.menuRepository.tree().subscribe(tree => {
       this.dataSource.data = tree as MenuNode[];
     });
   }
