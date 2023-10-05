@@ -1,12 +1,24 @@
 import { PrismaService } from '@pisces/core/backend/prisma/prisma.module';
 import { Injectable } from '@nestjs/common';
 import { Provider } from '@pisces/musubi/server';
-import { Role, RoleMenu, RoleQuery, RoleDomainService } from '../domain/role.entity';
+import { Role, RoleMenu, RoleQuery, RoleDomainService, RoleUser } from '../domain/role.entity';
 import { Page, PageRequest, paginator } from '@pisces/common';
 
 @Injectable()
 export class RoleRepository implements Provider<RoleDomainService> {
   constructor(private prisma: PrismaService) {}
+  async listUserByRoleIdRpc(roleId: bigint): Promise<RoleUser[]>{
+    return await this.prisma.roleUser.findMany({where: {roleId}});
+  }
+
+  async saveRoleUserRpc(list: RoleUser[]): Promise<void>{
+    const removeList = list.filter(roleMenu => roleMenu.roleUserId).map(roleMenu => roleMenu.roleUserId);
+    const addList = list.filter(roleMenu => !roleMenu.roleUserId)
+    await this.prisma.$transaction([
+      this.prisma.roleUser.deleteMany({where: {roleUserId: {in: removeList}}}),
+      this.prisma.roleUser.createMany({data: addList})
+    ]);
+  }
 
   async listMenuByRoleIdRpc(roleId: bigint): Promise<RoleMenu[]>{
     return await this.prisma.roleMenu.findMany({where: {roleId}});

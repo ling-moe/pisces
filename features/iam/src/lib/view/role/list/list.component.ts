@@ -9,6 +9,8 @@ import { pickBy } from 'lodash';
 import { tap } from 'rxjs';
 import { Role, RoleDomainService, RoleQuery, RoleRemoteService } from '../../../domain/role.entity';
 import { drawerFieldGroup, inputDrawerField, inputSearchField, searchFieldGroup, selectSearchField, textareaDrawerField, toggleDrawerField } from '../../../infra/util/formily-builder';
+import { MatDialog } from '@angular/material/dialog';
+import { UserAssignComponent } from '../user-assign/user-assign.component';
 
 @Component({
   selector: 'pisces-role-list',
@@ -21,7 +23,7 @@ export class RoleListComponent implements OnInit {
   model: Role | unknown = {};
   form = new FormGroup({});
   data: Role[] = [];
-  action: 'create' | 'update' | 'authorization' = 'create';
+  action: 'create' | 'update' | 'authorization' | 'assign' = 'create';
   pageInfo: Page<Role> = {
     data: [],
     total: 0,
@@ -51,7 +53,8 @@ export class RoleListComponent implements OnInit {
   ]);
 
   constructor(
-    @Inject(RemoteService) musubiClient: Consumer<RoleRemoteService>
+    @Inject(RemoteService) musubiClient: Consumer<RoleRemoteService>,
+    private dialog: MatDialog,
   ) {
     this.roleRepository = musubiClient.role;
   }
@@ -60,7 +63,7 @@ export class RoleListComponent implements OnInit {
     this.query();
   }
 
-  changeAction(action: 'create' | 'update' | 'authorization', drawer: MatDrawer, role?: Role) {
+  changeAction(action: 'create' | 'update' | 'authorization' | 'assign', drawer: MatDrawer, role?: Role) {
     this.action = action;
     this.options.updateInitialValue?.(role);
     this.options.resetModel?.();
@@ -83,6 +86,11 @@ export class RoleListComponent implements OnInit {
     this.roleRepository.update(this.model as Role)
       .pipe(tap(() => drawer.toggle()))
       .subscribe(() => this.query());
+  }
+  assignUser(role: Role){
+    this.dialog.open(UserAssignComponent, {
+      data: role,
+    });
   }
 
   query(pageEvent?: PageEvent) {

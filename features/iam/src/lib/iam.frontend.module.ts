@@ -12,7 +12,7 @@ import { RoleAuthorizationComponent } from './view/role/role-authorization/role-
 import { MatTreeModule } from '@angular/material/tree';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { UserAuthorizationComponent } from './view/role/user-authorization/user-authorization.component';
+import { UserAssignComponent } from './view/role/user-assign/user-assign.component';
 
 const COMPONENTS = [UserListComponent, UserCreateComponent, UserEditComponent, MenuListComponent];
 
@@ -49,7 +49,7 @@ const iamFrontendRoutes: Route[] = [
     RoleListComponent,
     TransferComponent,
     RoleAuthorizationComponent,
-    UserAuthorizationComponent,
+    UserAssignComponent,
   ],
 })
 export class IamFrontendModule {}

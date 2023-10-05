@@ -1,0 +1,9 @@
+<mtx-grid [data]="list"
+          [columns]="columns"
+          [rowSelected]="rowSelected"
+          [multiSelectable]="true"
+          [rowSelectable]="true"
+          (rowSelectionChange)="log($event)">
+</mtx-grid>
+<button type="button" mat-raised-button color="primary" (click)="save()">保存</button>
+

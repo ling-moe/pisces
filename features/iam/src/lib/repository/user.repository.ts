@@ -1,26 +1,33 @@
 import { PrismaService } from '@pisces/core/backend/prisma/prisma.module';
 import { Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { Prisma, RoleUser } from '@prisma/client';
 import { Provider } from '@pisces/musubi/server';
-import { BizException } from 'libs/core/src/lib/backend/config/exception/biz-exception'
+import { BizException } from 'libs/core/src/lib/backend/config/exception/biz-exception';
 import { hash } from 'bcrypt';
 import { User, UserQuery, UserDomainService } from '../domain/user.entity';
 import { PageRequest, DEFAULT_PAGE, paginator, Page } from '@pisces/common';
+import { camelCase, mapKeys } from 'lodash';
 
 @Injectable()
 export class UserRepository implements Provider<UserDomainService>{
   constructor(private prisma: PrismaService) { }
+
+  async listUnassignedUserRpc(roleId: bigint): Promise<(User & RoleUser)[]> {
+    return (await this.prisma
+    .$queryRaw<(User & RoleUser)[]>`SELECT su.username, su.display_name, su.user_id, sru.role_id, sru.role_user_id FROM sys_user su LEFT JOIN sys_role_user sru ON su.user_id = sru.user_id AND sru.role_id = ${roleId};`
+    ).map((i) => mapKeys(i, (_, v) => camelCase(v)) as unknown as (User & RoleUser));
+  }
   /**
    * 查询列表
    */
   async pageRpc(pageRequest: PageRequest<User> = DEFAULT_PAGE, query?: UserQuery): Promise<Page<User>> {
-    return await paginator(pageRequest)(this.prisma.user, {where: query});
+    return await paginator(pageRequest)(this.prisma.user, { where: query });
   }
   /**
    * 创建用户信息
    */
   async createRpc(user: User): Promise<void> {
-    console.log("[User][createRpc]==>", JSON.stringify(user))
+    console.log("[User][createRpc]==>", JSON.stringify(user));
     // 处理密码
     const pwd = await hash(user.password, 10);
     user.password = pwd;
@@ -28,7 +35,7 @@ export class UserRepository implements Provider<UserDomainService>{
     // 处理用户唯一 不能重复
     const dbUser = await this.findByUsername(user.username);
     if (dbUser !== null) {
-      throw new BizException("该用户信息已存在,不能重复创建!")
+      throw new BizException("该用户信息已存在,不能重复创建!");
     }
     await this.prisma.user.create({ data: user });
   }
@@ -45,13 +52,13 @@ export class UserRepository implements Provider<UserDomainService>{
    * 重置用户密码
    */
   async resetPassword(userId: string, user: User): Promise<void> {
-   this.validUserId(user.userId)
+    this.validUserId(user.userId);
   }
 
   async validUserId(userId: bigint): Promise<void> {
     const dbUser = await this.findByUserId(userId);
     if (dbUser === null) {
-      throw new BizException("您操作的用户信息异常,请检查后重试!")
+      throw new BizException("您操作的用户信息异常,请检查后重试!");
     }
   }
 
@@ -100,7 +107,7 @@ export class UserRepository implements Provider<UserDomainService>{
   }
 
 
-  async updateUser(options: { where: Prisma.UserWhereUniqueInput; data: Prisma.UserUpdateInput }) {
+  async updateUser(options: { where: Prisma.UserWhereUniqueInput; data: Prisma.UserUpdateInput; }) {
     const { where, data } = options;
     return this.prisma.user.update({
       data,

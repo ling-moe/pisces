@@ -1,10 +1,25 @@
-import { Page, PageRequest } from '@pisces/common';
-import { User as PrismaUser } from "@prisma/client";
-import type { GetResult } from '@prisma/client/runtime/library';
+import { AuditDomain, OCC, Page, PageRequest } from '@pisces/common';
+import { RoleUser } from './role.entity';
 
-export type User = PrismaUser extends GetResult<infer T, infer K> ? T : unknown;
+export type User = {
+  userId: bigint
+  username: string
+  displayName: string
+  lang: string
+  locale: string
+  email: string
+  phone: string
+  sex: string
+  avatar: string | null
+  password: string
+  effectiveStartDate: Date
+  effectiveEndDate: Date | null
+  activedFlag: boolean
+  lockedTime: Date | null
+  enabledFlag: boolean
+} & AuditDomain & OCC;
+
 export type UserQuery = Pick<User, 'username' | 'displayName' | 'enabledFlag'>;
-
 
 export interface UserDomainService {
   /**
@@ -19,6 +34,12 @@ export interface UserDomainService {
    * 更新用户信息
    */
   update(user: User): void;
+
+  /**
+   * 查询未分配的用户
+   * @param roleId 角色ID
+   */
+  listUnassignedUser(roleId: bigint): (User & RoleUser)[]
 }
 
 
