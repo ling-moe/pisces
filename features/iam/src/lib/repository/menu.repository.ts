@@ -59,4 +59,55 @@ export class MenuRepository implements Provider<MenuRemoteService> {
   async update$menu(menu: Menu) {
     await this.prisma.menu.update({ where: { menuId: menu.menuId }, data: menu });
   }
+
+  @HasPermission('当前用户的菜单')
+  async querySelf$menu() {
+    // const user = this.menu();
+    // console.log("[getUserInfo]user==> ",JSON.stringify(user))
+    return {
+      "menu": [
+        {
+          "route": "iam/user",
+          "name": "user",
+          "type": "link",
+          "icon": "dashboard",
+        },
+        {
+          "route": "iam/role",
+          "name": "role",
+          "type": "link",
+          "icon": "dashboard",
+        },
+        {
+          "route": "iam/menu",
+          "name": "menu",
+          "type": "link",
+          "icon": "dashboard",
+        },
+        {
+          "route": "/",
+          "name": "sessions",
+          "type": "sub",
+          "icon": "question_answer",
+          "children": [
+            {
+              "route": "403",
+              "name": "403",
+              "type": "link"
+            },
+            {
+              "route": "404",
+              "name": "404",
+              "type": "link"
+            },
+            {
+              "route": "500",
+              "name": "500",
+              "type": "link"
+            }
+          ]
+        }
+      ]
+    }
+  }
 }

@@ -39,7 +39,9 @@ export interface UserDomainService {
    * 查询未分配的用户
    * @param roleId 角色ID
    */
-  listUnassignedUser(roleId: bigint): (User & RoleUser)[]
+  listUnassignedUser(roleId: bigint): (User & RoleUser)[];
+
+  querySelf(): User;
 }
 
 

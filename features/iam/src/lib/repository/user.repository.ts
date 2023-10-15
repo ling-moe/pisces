@@ -7,10 +7,15 @@ import { hash } from 'bcrypt';
 import { User, UserQuery, UserRemoteService } from '../domain/user.entity';
 import { PageRequest, DEFAULT_PAGE, paginator, Page } from '@pisces/common';
 import { camelCase, mapKeys } from 'lodash';
+import { ClsService } from 'nestjs-cls';
 
 @Injectable()
 export class UserRepository implements Provider<UserRemoteService>{
-  constructor(private prisma: PrismaService) { }
+
+  constructor(
+    private prisma: PrismaService,
+    private readonly authClsStore: ClsService<{'currentUser': User}>,
+    ) { }
 
   async listUnassignedUser$user(roleId: bigint): Promise<(User & RoleUser)[]> {
     return (await this.prisma
@@ -46,6 +51,10 @@ export class UserRepository implements Provider<UserRemoteService>{
     // 必填校验
     await this.validUserId(user.userId);
     await this.prisma.user.update({ where: { userId: user.userId }, data: user });
+  }
+
+  querySelf$user(): User{
+    return this.authClsStore.get('currentUser')
   }
 
   /**

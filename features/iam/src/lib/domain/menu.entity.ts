@@ -44,6 +44,8 @@ export interface MenuDomainService {
   savePerms(currentMenu: Menu,addPerms: Perm[], removeMenus: Menu[]): void;
 
   delete(menuId: bigint): void;
+
+  querySelf(): any;
 }
 
 export type MenuRemoteService = Record<'menu', MenuDomainService>;

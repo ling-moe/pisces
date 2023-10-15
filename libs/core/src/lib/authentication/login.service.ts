@@ -26,10 +26,10 @@ export class LoginService {
   }
 
   me() {
-    return this.http.get<User>('/self');
+    return this.http.get<User>('/user/querySelf');
   }
 
   menu() {
-    return this.http.get<{ menu: Menu[] }>('/self/menu').pipe(map(res => res.menu));
+    return this.http.get<{ menu: Menu[] }>('/menu/querySelf').pipe(map(res => res.menu));
   }
 }
