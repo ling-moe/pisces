@@ -4,15 +4,15 @@ import { Prisma, RoleUser } from '@prisma/client';
 import { Provider } from '@pisces/musubi/server';
 import { BizException } from 'libs/core/src/lib/backend/config/exception/biz-exception';
 import { hash } from 'bcrypt';
-import { User, UserQuery, UserDomainService } from '../domain/user.entity';
+import { User, UserQuery, UserRemoteService } from '../domain/user.entity';
 import { PageRequest, DEFAULT_PAGE, paginator, Page } from '@pisces/common';
 import { camelCase, mapKeys } from 'lodash';
 
 @Injectable()
-export class UserRepository implements Provider<UserDomainService>{
+export class UserRepository implements Provider<UserRemoteService>{
   constructor(private prisma: PrismaService) { }
 
-  async listUnassignedUserRpc(roleId: bigint): Promise<(User & RoleUser)[]> {
+  async listUnassignedUser$user(roleId: bigint): Promise<(User & RoleUser)[]> {
     return (await this.prisma
     .$queryRaw<(User & RoleUser)[]>`SELECT su.username, su.display_name, su.user_id, sru.role_id, sru.role_user_id FROM sys_user su LEFT JOIN sys_role_user sru ON su.user_id = sru.user_id AND sru.role_id = ${roleId};`
     ).map((i) => mapKeys(i, (_, v) => camelCase(v)) as unknown as (User & RoleUser));
@@ -20,13 +20,13 @@ export class UserRepository implements Provider<UserDomainService>{
   /**
    * 查询列表
    */
-  async pageRpc(pageRequest: PageRequest<User> = DEFAULT_PAGE, query?: UserQuery): Promise<Page<User>> {
+  async page$user(pageRequest: PageRequest<User> = DEFAULT_PAGE, query?: UserQuery): Promise<Page<User>> {
     return await paginator(pageRequest)(this.prisma.user, { where: query });
   }
   /**
    * 创建用户信息
    */
-  async createRpc(user: User): Promise<void> {
+  async create$user(user: User): Promise<void> {
     console.log("[User][createRpc]==>", JSON.stringify(user));
     // 处理密码
     const pwd = await hash(user.password, 10);
@@ -42,7 +42,7 @@ export class UserRepository implements Provider<UserDomainService>{
   /**
    * 更新用户信息
    */
-  async updateRpc(user: User): Promise<void> {
+  async update$user(user: User): Promise<void> {
     // 必填校验
     await this.validUserId(user.userId);
     await this.prisma.user.update({ where: { userId: user.userId }, data: user });

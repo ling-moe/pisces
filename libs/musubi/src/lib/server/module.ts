@@ -19,9 +19,13 @@ export type MusubiModuleMetadata = ModuleMetadata & {
   remotes?: Type<any>[];
 };
 
-export type Provider<T> = {
-  [P in keyof T as P extends string ? `${P}Rpc`: P]: T[P] extends (...args: infer A) => infer R ? (...args: A) => Promise<R> | R : any;
-};
+export type SchemaKey<T, S> = T extends string ? S extends string ? `${T}$${S}` : never : never;
+
+export type Provider<R> =
+R extends Record<infer S, infer T> ?
+{
+  [P in keyof T as SchemaKey<P, S>]: T[P] extends (...args: infer A) => infer R ? (...args: A) => Promise<R> | R : any;
+}: never;
 /**
  * 在原有module注解的情况下进行增强
  *
@@ -57,7 +61,7 @@ function createController(module: string | undefined, remotableServices: NestPro
   const result = [];
   for (const provider of remotableServices) {
     const proxyController = provider as any;
-    const path = module ??  toPath(proxyController.name);
+    const path = module ?? '';
     Reflect.defineMetadata(CONTROLLER_WATERMARK, true, proxyController);
     Reflect.defineMetadata(PATH_METADATA, path, proxyController);
     Reflect.defineMetadata(HOST_METADATA, undefined, proxyController);
@@ -74,7 +78,7 @@ function createController(module: string | undefined, remotableServices: NestPro
 function defineMappingMatedata(proxyController: Type<any>) {
   const obj = Object.getOwnPropertyDescriptors(proxyController.prototype);
   for (const property in obj) {
-    if (property === 'constructor' || !property.endsWith('Rpc')) {
+    if (property === 'constructor' || !property.includes('$')) {
       continue;
     }
     const { method, path, paramType } = methodToHttp(obj[property].value.name);

@@ -1,12 +1,8 @@
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component, Inject, Input, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { RoleDomainService, RoleRemoteService } from '../../../domain/role.entity';
-import { User, UserDomainService, UserRemoteService } from '../../../domain/user.entity';
-import { Remotable, RemoteService, Consumer } from '@pisces/musubi/client/remote.service';
-import { Role, Menu, RoleUser } from '@prisma/client';
-import { forkJoin } from 'rxjs';
 import { MtxGridColumn } from '@ng-matero/extensions/grid';
+import { Consumer, Remotable, RemoteService } from '@pisces/musubi/client/remote.service';
+import { RoleDomainService, RoleRemoteService, RoleUser } from '../../../domain/role.entity';
+import { User, UserDomainService, UserRemoteService } from '../../../domain/user.entity';
 
 @Component({
   selector: 'pisces-user-assign',

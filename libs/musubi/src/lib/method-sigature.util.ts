@@ -14,6 +14,7 @@ const DELETE_MAPPING = ['delete', 'remove', 'del'];
 
 export function methodToHttp(name: string): RequestMappingConifg {
   const lowerName = name.toLowerCase();
+  const schemaPosition = name.indexOf('$');
   let method: Method = 'POST';
   let paramType: ParamType = 'BODY';
   if (GET_MAPPING.find(i => lowerName.startsWith(i))) {
@@ -31,7 +32,7 @@ export function methodToHttp(name: string): RequestMappingConifg {
   }
   return {
     method,
-    path: name.endsWith('Rpc') ? name.slice(0,-3) : name,
+    path: schemaPosition !== -1 ? `${name.slice(schemaPosition+1)}/${name.slice(0, schemaPosition)}` : name,
     paramType,
   };
 }
