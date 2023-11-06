@@ -8,6 +8,7 @@ import { User, UserQuery, UserRemoteService } from '../domain/user.entity';
 import { PageRequest, DEFAULT_PAGE, paginator, Page } from '@pisces/common';
 import { camelCase, mapKeys } from 'lodash';
 import { ClsService } from 'nestjs-cls';
+import { HasPermission } from '../infra/permission';
 
 @Injectable()
 export class UserRepository implements Provider<UserRemoteService>{
@@ -47,6 +48,7 @@ export class UserRepository implements Provider<UserRemoteService>{
   /**
    * 更新用户信息
    */
+  @HasPermission('当前用户信息')
   async update$user(user: User): Promise<void> {
     // 必填校验
     await this.validUserId(user.userId);

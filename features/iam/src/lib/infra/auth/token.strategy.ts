@@ -1,14 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { Strategy } from 'passport-http-bearer';
 import { AuthService } from './auth.service';
-import {UniqueTokenStrategy} from 'passport-unique-token'
+import { Strategy } from 'passport-http-bearer';
 
 /**
  * 用于实现本地身份验证逻辑。在 validate 方法中，可以编写自定义的身份验证逻辑
  */
 @Injectable()
-export class TokenStrategy extends PassportStrategy(UniqueTokenStrategy) {
+export class TokenStrategy extends PassportStrategy(Strategy) {
   constructor(private authService: AuthService) {
     super();
   }

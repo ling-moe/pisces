@@ -1,9 +1,12 @@
 import { AuthGuard } from '@nestjs/passport';
-import { CanActivate, ExecutionContext, Injectable, UnauthorizedException, mixin } from '@nestjs/common';
+import { ExecutionContext, Injectable, UnauthorizedException, mixin } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { ClsService } from 'nestjs-cls';
 import { User } from '@prisma/client';
+import { SetMetadata } from '@nestjs/common';
 
+export const IS_PUBLIC_KEY = 'isPublic';
+export const Public = () => SetMetadata(IS_PUBLIC_KEY, true);
 
 /**
  * A guard that takes a list of roles for its parameters and checks if the user has at least
@@ -28,14 +31,16 @@ export function RolesGuard<R extends string>(...roles: Array<R>) {
     throw new Error('RolesGuard cannot be instantiated directly. Use RolesGuard() instead.');
 
   @Injectable()
-  class MixinRolesGuard extends AuthGuard('unique-token') {
+  class MixinRolesGuard extends AuthGuard('bearer') {
     constructor(
       readonly reflector: Reflector,
-      private readonly authClsStore: ClsService<{currentUser: User}>,) {
-      super()
+      readonly authClsStore: ClsService<{currentUser: User}>,) {
+      super({
+        tokenHeader: 'Authorization'
+      })
     }
 
-    async canActivate(context: ExecutionContext) {
+    override async canActivate(context: ExecutionContext) {
       let req;
       const type = context.getType();
 
@@ -45,6 +50,14 @@ export function RolesGuard<R extends string>(...roles: Array<R>) {
         throw new UnauthorizedException(`Context ${type} not supported`);
       }
 
+      const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
+        context.getHandler(),
+        context.getClass(),
+      ]);
+      if (isPublic) {
+        return true;
+      }
+
       if (!req.user) await super.canActivate(context);
       this.authClsStore.set('currentUser', req.user as User)
       if (roles.length === 0) return true;
@@ -52,7 +65,7 @@ export function RolesGuard<R extends string>(...roles: Array<R>) {
       return rbacLogic(req.user.roles, roles);
     }
 
-    getRequest(context: ExecutionContext) {
+    override getRequest(context: ExecutionContext) {
       const type = context.getType();
       if (type === 'http') {
         return context.switchToHttp().getRequest();
