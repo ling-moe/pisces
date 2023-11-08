@@ -3,19 +3,22 @@ import { Injectable } from '@nestjs/common';
 import { Prisma, RoleUser } from '@prisma/client';
 import { Provider } from '@pisces/musubi/server';
 import { BizException } from 'libs/core/src/lib/backend/config/exception/biz-exception';
-import { hash } from 'bcrypt';
+import { hash,compare } from 'bcrypt';
 import { User, UserQuery, UserRemoteService } from '../domain/user.entity';
 import { PageRequest, DEFAULT_PAGE, paginator, Page } from '@pisces/common';
 import { camelCase, mapKeys } from 'lodash';
 import { ClsService } from 'nestjs-cls';
 import { HasPermission } from '../infra/permission';
+import { CacheHelper } from '@pisces/core/backend/cache/cache.helper';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class UserRepository implements Provider<UserRemoteService>{
 
   constructor(
-    private prisma: PrismaService,
+    private readonly prisma: PrismaService,
     private readonly authClsStore: ClsService<{'currentUser': User}>,
+    private readonly cachehelper: CacheHelper
     ) { }
 
   async listUnassignedUser$user(roleId: bigint): Promise<(User & RoleUser)[]> {
@@ -57,6 +60,37 @@ export class UserRepository implements Provider<UserRemoteService>{
 
   querySelf$user(): User{
     return this.authClsStore.get('currentUser')
+  }
+
+  async login(user: User) {
+    // const userData = await this.validateUser(user.username, user.password);
+    // FIXME 临时
+    const userData = {
+      userId: 1,
+      username: 'admin',
+      password: '123456',
+      email: 'nzb329@163.com',
+      avatar: './assets/images/avatar.jpg',
+    };
+    const token = uuidv4(); // Generate a unique token (you can use other token generation methods)
+    console.log('result==>', userData);
+    await this.cachehelper.set(token, userData, 3600000); // Cache the user data with the token (ttl is in seconds)
+    return { access_token: token, token_type: 'bearer' };
+  }
+
+  async validateUser(username: string, password: string): Promise<any> {
+    // 在此处实现用户身份验证逻辑（例如从数据库中验证用户凭据） 如果验证成功，返回用户对象；否则返回 null
+    const user = await this.findByUsername(username);
+    // 校验用户信息
+    if (user && (await this.comparePasswords(password, user.password))) {
+      console.log('user==>', user);
+      return user;
+    }
+    throw new Error('Incorrect username or password');
+  }
+
+  async comparePasswords(password: string, hashedPassword: string): Promise<boolean> {
+    return compare(password, hashedPassword);
   }
 
   /**

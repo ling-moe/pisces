@@ -22,10 +22,10 @@ export type MusubiModuleMetadata = ModuleMetadata & {
 export type SchemaKey<T, S> = T extends string ? S extends string ? `${T}$${S}` : never : never;
 
 export type Provider<R> =
-R extends Record<infer S, infer T> ?
-{
-  [P in keyof T as SchemaKey<P, S>]: T[P] extends (...args: infer A) => infer R ? (...args: A) => Promise<R> | R : any;
-}: never;
+  R extends Record<infer S, infer T> ?
+  {
+    [P in keyof T as SchemaKey<P, S>]: T[P] extends (...args: infer A) => infer R ? (...args: A) => Promise<R> | R : any;
+  } : never;
 /**
  * 在原有module注解的情况下进行增强
  *
@@ -46,15 +46,19 @@ R extends Record<infer S, infer T> ?
 export function MusubiModule(metadata: MusubiModuleMetadata): ClassDecorator {
 
   return (target: Function) => {
-      // 加载controller
-      Reflect.defineMetadata('controllers', createController(metadata.alias, metadata.remotes ?? []).concat(metadata.controllers ?? []), target);
-      // 将service追加到service中
-      metadata.remotes?.forEach(remote => metadata.providers?.push(remote))
-      // 移除增强的属性
-      delete metadata.alias;
-      delete metadata.remotes;
-      // 调用原本的module
-      Module(metadata)(target)
+    // 加载controller
+    const controllers = createController(metadata.alias, metadata.remotes ?? []).concat(metadata.controllers ?? []);
+    Reflect.defineMetadata('controllers', controllers, target);
+    metadata.providers = (metadata.providers??[]);
+    metadata.controllers = controllers;
+    // 将service追加到service中
+    metadata.remotes?.forEach(remote => metadata.providers!.push(remote));
+    // 移除增强的属性
+    delete metadata.alias;
+    delete metadata.remotes;
+    // 调用原本的module
+    console.log(metadata)
+    Module(metadata)(target);
   };
 }
 function createController(module: string | undefined, remotableServices: NestProvider[]) {
@@ -103,9 +107,9 @@ function defineMappingParamsMatedata(
   const params = extractMethodParams(method);
   let args = {};
   for (let i = 0; i < params.length; i++) {
-    if(params[i] === 'req' || params[i] === 'res'){
+    if (params[i] === 'req' || params[i] === 'res') {
       // TODO 接入request和response对象
-    }else{
+    } else {
       args = assignMetadata(args, paramType, i, i, JsonPipe);
       Reflect.defineMetadata(
         ROUTE_ARGS_METADATA,
@@ -129,13 +133,13 @@ function toPath(str: string) {
     .slice(1);
 }
 
-class JsonPipe implements PipeTransform{
+class JsonPipe implements PipeTransform {
   transform(value?: any, metadata?: ArgumentMetadata) {
-    if(value){
-      if(typeof value === 'object' && !Array.isArray(value)){
+    if (value) {
+      if (typeof value === 'object' && !Array.isArray(value)) {
         return isJsonString(value[metadata!.data!]) ? JSON.parse(value[metadata!.data!], BigIntModule) : value[metadata!.data!];
-      }else{
-        return isJsonString(value)? JSON.parse(value, BigIntModule): value;
+      } else {
+        return isJsonString(value) ? JSON.parse(value, BigIntModule) : value;
       }
     }
     return value;
@@ -144,9 +148,9 @@ class JsonPipe implements PipeTransform{
 
 function isJsonString(str: any) {
   try {
-      JSON.parse(str);
+    JSON.parse(str);
   } catch (e) {
-      return false;
+    return false;
   }
   return true;
 }
