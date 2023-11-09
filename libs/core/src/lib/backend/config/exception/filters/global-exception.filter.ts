@@ -1,6 +1,5 @@
-import { ArgumentsHost, Catch, ExceptionFilter, ForbiddenException, Logger, UnauthorizedException } from '@nestjs/common';
+import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus, Logger } from '@nestjs/common';
 import { Response } from 'express';
-import { BizException } from '../biz-exception';
 
 @Catch() // 可以指定要捕获的异常类型，例如 @Catch(HttpException)
 export class GlobalExceptionFilter implements ExceptionFilter {
@@ -8,27 +7,12 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
 
-    let status = 500;
-    let error = 'error';
-    let message = 'Internal server error';
-
-    if (exception instanceof UnauthorizedException) {
-      status = 401;
-      error = status.toString();
-      message = 'Unauthorized';
-    } else if (exception instanceof ForbiddenException) {
-      status = 403;
-      error = status.toString();
-      message = 'Forbidden';
-    } else if (exception instanceof BizException) {
-      status = 500;
-      error = status.toString();
-      message = exception.message;
-    } else {
-      status = 200;
-      message = exception.message;
-    }
     Logger.error(exception.stack);
-    response.status(status).json({ error, message });
+
+    if (exception instanceof HttpException) {
+      response.status(exception.getStatus()).json(exception.message);
+    } else {
+      response.status(HttpStatus.INTERNAL_SERVER_ERROR).json(exception.message);
+    }
   }
 }

@@ -1,3 +1,4 @@
+import { Token } from './../../../../../libs/core/src/lib/backend/auth/auth.types';
 import { PrismaService } from '@pisces/core/backend/prisma/prisma.module';
 import { Injectable } from '@nestjs/common';
 import { Prisma, RoleUser } from '@prisma/client';
@@ -62,31 +63,22 @@ export class UserRepository implements Provider<UserRemoteService>{
     return this.authClsStore.get('currentUser')
   }
 
-  async login(user: User) {
-    // const userData = await this.validateUser(user.username, user.password);
-    // FIXME 临时
-    const userData = {
-      userId: 1,
-      username: 'admin',
-      password: '123456',
-      email: 'nzb329@163.com',
-      avatar: './assets/images/avatar.jpg',
-    };
-    const token = uuidv4(); // Generate a unique token (you can use other token generation methods)
+  async login(user: User): Promise<Token> {
+    const userData = await this.validateUser(user.username, user.password);
+    const token = uuidv4();
     console.log('result==>', userData);
-    await this.cachehelper.set(token, userData, 3600000); // Cache the user data with the token (ttl is in seconds)
+    await this.cachehelper.set(token, userData, 3600000);
     return { access_token: token, token_type: 'bearer' };
   }
 
-  async validateUser(username: string, password: string): Promise<any> {
+  async validateUser(username: string, password: string): Promise<User> {
     // 在此处实现用户身份验证逻辑（例如从数据库中验证用户凭据） 如果验证成功，返回用户对象；否则返回 null
     const user = await this.findByUsername(username);
     // 校验用户信息
     if (user && (await this.comparePasswords(password, user.password))) {
-      console.log('user==>', user);
       return user;
     }
-    throw new Error('Incorrect username or password');
+    throw new BizException('Incorrect username or password');
   }
 
   async comparePasswords(password: string, hashedPassword: string): Promise<boolean> {
