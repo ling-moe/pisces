@@ -160,7 +160,8 @@ export class RoleAuthorizationComponent implements OnInit{
     const descendants = this.treeControl.getDescendants(node);
     const descAllSelected =
       descendants.length > 0 &&
-      descendants.every(child => {
+      // 只要有一个后代被选中，就认为父级被选中
+      descendants.some(child => {
         return this.checklistSelection.isSelected(child);
       });
     if (nodeSelected && !descAllSelected) {

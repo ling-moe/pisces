@@ -1,17 +1,17 @@
-import { Perm } from './../../../infra/permission';
-import { Component, EventEmitter, Inject, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { Menu, MenuDomainService, MenuRemoteService } from '../../../domain/menu.entity';
-import { Remotable, Consumer, RemoteService } from '@pisces/musubi/client/remote.service';
-import { forkJoin } from 'rxjs';
-import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
+import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
+import { Consumer, Remotable, RemoteService } from '@pisces/musubi/client/remote.service';
+import { forkJoin } from 'rxjs';
+import { Menu, MenuDomainService, MenuRemoteService } from '../../../domain/menu.entity';
+import { Perm } from './../../../infra/permission';
 
 @Component({
   selector: 'pisces-transfer',
   templateUrl: './transfer.component.html',
   styleUrls: ['./transfer.component.scss'],
 })
-export class TransferComponent implements OnChanges {
+export class TransferComponent implements OnInit {
 
   @Input()
   menuId!: bigint;
@@ -30,7 +30,7 @@ export class TransferComponent implements OnChanges {
     ){
       this.menuRepository = musubiClient.menu;
     }
-  ngOnChanges(): void {
+  ngOnInit(): void {
     forkJoin([this.menuRepository.listPerm(), this.menuRepository.listAssignedPermByMenuId(this.menuId)])
     .subscribe(([allPerms, assignedMenus]) => {
       this.assignedMenus = assignedMenus;

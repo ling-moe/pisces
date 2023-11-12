@@ -1,4 +1,3 @@
-import { TransferComponent } from './../transfer/transfer.component';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
