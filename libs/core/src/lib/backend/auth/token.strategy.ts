@@ -13,8 +13,6 @@ export class TokenStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(token: string) {
-    // 接口鉴权实现逻辑
-    console.log("[TokenStrategy][validate]==>",token)
-    return await this.authService.validate(token);
+    return await this.authService.getUserByToken(token);
   }
 }

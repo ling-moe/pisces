@@ -8,26 +8,26 @@ import { prems } from "../infra/permission";
 
 @Injectable()
 export class MenuRepository implements Provider<MenuRemoteService> {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
-  async delete$menu(menuId: bigint): Promise<void>{
-    await this.prisma.menu.delete({where: {menuId: menuId}});
+  async delete$menu(menuId: bigint): Promise<void> {
+    await this.prisma.menu.delete({ where: { menuId: menuId } });
   };
 
   @HasPermission('保存菜单中的权限')
   async savePerms$menu(menuId: bigint, addPerms: Perm[], removeMenus: Menu[]): Promise<void> {
     const menus = addPerms.map(perm => {
-      return <Menu>{menuCode: perm.code, menuName: perm.desc, menuType: 'FUNCTION', pid: menuId};
-    })
+      return <Menu>{ menuCode: perm.code, menuName: perm.desc, menuType: 'FUNCTION', pid: menuId };
+    });
     await this.prisma.$transaction([
-      this.prisma.menu.createMany({data:menus}),
-      this.prisma.menu.deleteMany({where:{menuId: {in: removeMenus.map(menu => menu.menuId)}}})
+      this.prisma.menu.createMany({ data: menus }),
+      this.prisma.menu.deleteMany({ where: { menuId: { in: removeMenus.map(menu => menu.menuId) } } })
     ]);
   };
 
   @HasPermission('获取菜单中已分配的权限')
-  listAssignedPermByMenuId$menu(menuId: bigint): Menu[] | Promise<Menu[]>{
-    return this.prisma.menu.findMany({where: {pid: menuId}});
+  listAssignedPermByMenuId$menu(menuId: bigint): Menu[] | Promise<Menu[]> {
+    return this.prisma.menu.findMany({ where: { pid: menuId } });
   };
 
   @HasPermission('获取权限列表')
@@ -36,12 +36,13 @@ export class MenuRepository implements Provider<MenuRemoteService> {
   }
 
   @HasPermission('树状查询菜单')
-  async tree$menu() {
-    const list1 = await this.prisma.$queryRaw<MenuNode[]>`WITH RECURSIVE result AS (
+  async tree$menu(isIncludeFunction: boolean) {
+    const list1 = await this.prisma.$queryRawUnsafe<MenuNode[]>(`WITH RECURSIVE result AS (
       SELECT *, 1 as level FROM sys_menu WHERE menu_id = 1
       UNION
-      SELECT m.*, p.level + 1 as level FROM sys_menu m JOIN result p ON m.pid = p.menu_id AND m.menu_type != 'FUNCTION')
-      SELECT * FROM result;`;
+      SELECT m.*, p.level + 1 as level FROM sys_menu m JOIN result p ON m.pid = p.menu_id ${isIncludeFunction ? '' : 'AND m.menu_type != \'FUNCTION\''})
+      SELECT * FROM result;`);
+
     const list = list1.map((i) => mapKeys(i, (_, v) => camelCase(v))) as unknown as MenuNode[];
     const group = groupBy(list, 'pid');
     return list.filter((father) => {
@@ -108,6 +109,6 @@ export class MenuRepository implements Provider<MenuRemoteService> {
           ]
         }
       ]
-    }
+    };
   }
 }

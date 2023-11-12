@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { MtxGridColumn } from '@ng-matero/extensions/grid';
 import { Consumer, Remotable, RemoteService } from '@pisces/musubi/client/remote.service';
 import { RoleDomainService, RoleRemoteService, RoleUser } from '../../../domain/role.entity';
@@ -12,6 +12,9 @@ import { User, UserDomainService, UserRemoteService } from '../../../domain/user
 export class UserAssignComponent implements OnInit{
   @Input()
   roleId!: bigint;
+  @Output()
+  submitted = new EventEmitter<boolean>();
+
   roleRepository: Remotable<RoleDomainService>;
   userRepository: Remotable<UserDomainService>;
   list: (User & RoleUser)[] = [];
@@ -40,7 +43,7 @@ export class UserAssignComponent implements OnInit{
   save(){
     const removeUsers = this.sourceList.filter(user => !this.doneList.find(perm => perm.userId === user.userId));
     const addUsers = this.doneList.filter(user => !user.roleId).map(user => ({userId: user.userId, roleId: this.roleId} as RoleUser));
-    this.roleRepository.saveRoleUser(addUsers.concat(removeUsers)).subscribe(console.log);
+    this.roleRepository.saveRoleUser(addUsers.concat(removeUsers)).subscribe(() => this.submitted.emit(true));
   }
 
   log(e: (User & RoleUser)[]) {

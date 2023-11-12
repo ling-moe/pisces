@@ -30,7 +30,7 @@ export class TransferComponent implements OnChanges {
     ){
       this.menuRepository = musubiClient.menu;
     }
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(): void {
     forkJoin([this.menuRepository.listPerm(), this.menuRepository.listAssignedPermByMenuId(this.menuId)])
     .subscribe(([allPerms, assignedMenus]) => {
       this.assignedMenus = assignedMenus;

@@ -10,8 +10,8 @@ import { Observable, of, throwError } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
 import { ToastrService } from 'ngx-toastr';
+import { ErrorMessage } from '../backend/config/exception/filters/exception.types';
 
-type Error = {error?: string, message?: string};
 
 @Injectable()
 export class DefaultInterceptor implements HttpInterceptor {
@@ -22,13 +22,13 @@ export class DefaultInterceptor implements HttpInterceptor {
       return next.handle(req);
     }
 
-    return next.handle(req).pipe(mergeMap((event: HttpEvent<Error>) => this.handleOkReq(event)));
+    return next.handle(req).pipe(mergeMap((event: HttpEvent<ErrorMessage>) => this.handleOkReq(event)));
   }
 
-  private handleOkReq(event: HttpEvent<Error>): Observable<HttpEvent<unknown>> {
+  private handleOkReq(event: HttpEvent<ErrorMessage>): Observable<HttpEvent<unknown>> {
     if (event instanceof HttpResponse) {
       const body = event.body;
-      if (body && body?.error) {
+      if (body && body?.fail) {
         this.toast.error(body.message);
         return throwError(() => []);
       }

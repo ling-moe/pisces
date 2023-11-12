@@ -1,11 +1,11 @@
-import {SelectionModel} from '@angular/cdk/collections';
-import {FlatTreeControl} from '@angular/cdk/tree';
-import {ChangeDetectorRef, Component, Inject, Input, OnInit} from '@angular/core';
-import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
-import { MenuDomainService, MenuNode, MenuRemoteService } from '../../../domain/menu.entity';
+import { SelectionModel } from '@angular/cdk/collections';
+import { FlatTreeControl } from '@angular/cdk/tree';
+import { ChangeDetectorRef, Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
+import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { Consumer, Remotable, RemoteService } from '@pisces/musubi/client/remote.service';
-import { RoleDomainService, RoleMenu, RoleRemoteService } from '../../../domain/role.entity';
 import { forkJoin } from 'rxjs';
+import { MenuDomainService, MenuNode, MenuRemoteService } from '../../../domain/menu.entity';
+import { RoleDomainService, RoleMenu, RoleRemoteService } from '../../../domain/role.entity';
 
 @Component({
   selector: 'pisces-role-authorization',
@@ -16,6 +16,8 @@ export class RoleAuthorizationComponent implements OnInit{
 
   @Input()
   roleId!: bigint;
+  @Output()
+  submitted = new EventEmitter<boolean>();
 
   menuIds!: RoleMenu[];
 
@@ -55,15 +57,11 @@ export class RoleAuthorizationComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    forkJoin([this.menuRepository.tree(), this.roleRepository.listMenuByRoleId(this.roleId)])
+    forkJoin([this.menuRepository.tree(true), this.roleRepository.listMenuByRoleId(this.roleId)])
     .subscribe(([menus, roleMenus]) => {
       this.dataSource.data = menus as MenuNode[];
       this.menuIds = roleMenus;
-      for (const item of this.treeControl.dataNodes) {
-        if(this.menuIds.map(i => i.menuId).includes(item.menuId)){
-          this.checklistSelection.select(item)
-          }
-        };
+      this.checklistSelection.setSelection(...this.treeControl.dataNodes.filter(item => this.menuIds.map(i => i.menuId).includes(item.menuId)));
     });
   }
 
@@ -75,7 +73,7 @@ export class RoleAuthorizationComponent implements OnInit{
     this.roleRepository.saveRoleMenu(removeList.concat(addList.map(i => (<RoleMenu>{
       roleId: this.roleId,
       menuId: i
-    })))).subscribe(() => console.log("保存成功"));
+    })))).subscribe(() => this.submitted.emit(true));
   }
 
   getLevel = (node: MenuNode) => node.level;

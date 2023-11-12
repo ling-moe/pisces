@@ -23,7 +23,7 @@ export class RoleListComponent implements OnInit {
   model: Role | unknown = {};
   form = new FormGroup({});
   data: Role[] = [];
-  action: 'create' | 'update' | 'authorization' | 'assign' = 'create';
+  action?: 'create' | 'update' | 'authorization' | 'assign' = 'create';
   pageInfo: Page<Role> = {
     data: [],
     total: 0,
@@ -94,10 +94,15 @@ export class RoleListComponent implements OnInit {
   }
 
   query(pageEvent?: PageEvent) {
+    this.action = undefined;
     const pageRequest = PageRequest.of<Role>(pageEvent?.pageIndex || this.pageInfo.page, pageEvent?.pageSize || this.pageInfo.size);
     this.roleRepository.page(pageRequest, pickBy(this.searchModel, Boolean) as RoleQuery).subscribe(users => {
       this.pageInfo = { ...users };
     });
+  }
+  closeDrawer(drawer: MatDrawer){
+    drawer.toggle();
+    this.query();
   }
 
   roleCreateFields: FormlyFieldConfig[] =

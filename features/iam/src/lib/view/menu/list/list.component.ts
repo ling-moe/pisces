@@ -25,7 +25,7 @@ export class MenuListComponent implements OnInit {
   model: Menu = EmptyObject();
   form = new FormGroup({});
   data: Role[] = [];
-  action: FormAction | 'addPerm' = 'create';
+  action?: FormAction | 'addPerm' = 'create';
   menuId!: bigint;
 
   displayedColumns: string[] = ['menuCode','menuName', 'menuType', 'icon', 'route', 'menuSort', 'enabledFlag', 'operations'];
@@ -91,9 +91,14 @@ export class MenuListComponent implements OnInit {
   }
 
   query() {
-    this.menuRepository.tree().subscribe(tree => {
+    this.action = undefined;
+    this.menuRepository.tree(false).subscribe(tree => {
       this.dataSource.data = tree as MenuNode[];
     });
+  }
+  closeDrawer(drawer: MatDrawer){
+    drawer.toggle();
+    this.query();
   }
 
   menuCreateFields: FormlyFieldConfig[] =

@@ -21,7 +21,7 @@ export interface MenuDomainService {
   /**
    * 获取树形菜单
    */
-  tree(): Menu[]
+  tree(isIncludeFunction: boolean): Menu[]
   /**
    * 创建菜单
    */

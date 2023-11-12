@@ -13,7 +13,6 @@ export class AuthService {
   ) {}
 
   async getUser(token: string) {
-    // throw new Error("Method not implemented.");
     const user = await this.cachehelper.get(token.split(' ')[1]);
     if (user === null) {
       throw new UnauthorizedException();
@@ -21,8 +20,7 @@ export class AuthService {
     return user as User;
   }
 
-  async validate(token: string) {
-    console.log('[validate]this.toke==>', token);
+  async getUserByToken(token: string) {
     // 根据token查询缓存信息中是否存在用户信息，不存在直接抛异常
     if (token === null || token === '') {
       throw new UnauthorizedException();
@@ -36,8 +34,7 @@ export class AuthService {
   }
 
   async hashPassword(password: string): Promise<string> {
-    const saltOrRounds = 10; // 盐的轮数，一般建议设置为 10
-    return hash(password, saltOrRounds);
+    return hash(password, 10);
   }
 
 
