@@ -25,7 +25,8 @@ export class MenuListComponent implements OnInit {
   model: Menu = EmptyObject();
   form = new FormGroup({});
   data: Role[] = [];
-  action: FormAction = 'create';
+  action: FormAction | 'addPerm' = 'create';
+  menuId!: bigint;
 
   displayedColumns: string[] = ['menuCode','menuName', 'menuType', 'icon', 'route', 'menuSort', 'enabledFlag', 'operations'];
   menuRepository: Remotable<MenuDomainService>;
@@ -65,10 +66,11 @@ export class MenuListComponent implements OnInit {
     return result;
   }
 
-  changeAction(drawer: MatDrawer, action: FormAction, menu?: Menu | {pid: bigint}) {
+  changeAction(drawer: MatDrawer, action: FormAction | 'addPerm', menu?: Menu | {pid: bigint, menuId?: bigint}) {
     this.action = action;
     this.options.updateInitialValue?.({...menu, expandable: undefined, level: undefined, children: undefined});
     this.options.resetModel?.();
+    this.menuId = menu?.menuId ?? 0n;
     drawer.toggle();
   }
 
@@ -91,12 +93,6 @@ export class MenuListComponent implements OnInit {
   query() {
     this.menuRepository.tree().subscribe(tree => {
       this.dataSource.data = tree as MenuNode[];
-    });
-  }
-
-  addPerm(menu: Menu){
-    this.dialog.open(TransferComponent, {
-      data: menu,
     });
   }
 

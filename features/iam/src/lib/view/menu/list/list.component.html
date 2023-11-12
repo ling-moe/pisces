@@ -3,11 +3,12 @@
     <button type="button" mat-icon-button class="m-y-4" (click)="drawer.toggle()">
       <mat-icon>close</mat-icon>
     </button>
-    <form (ngSubmit)="this[action](drawer)">
+    <form *ngIf="action !== 'addPerm'" (ngSubmit)="this[action](drawer)">
       <formly-form [model]="model" [fields]="action === 'create' ? menuCreateFields : menuEditFields" [form]="form" [options]="options" class="p-y-24 info-fields">
       </formly-form>
       <button type="submit" mat-raised-button color="primary" [disabled]="!form.valid">保存</button>
     </form>
+    <pisces-transfer *ngIf="action === 'addPerm'" [menuId]="menuId" (submitted)="drawer.toggle();this.query();"></pisces-transfer>
   </mat-drawer>
 <button type="button" mat-raised-button color="primary" class="m-b-16" (click)="changeAction(drawer, 'create')">新建</button>
 
@@ -61,7 +62,7 @@
       <button mat-button type="button" (click)="changeAction(drawer, 'update', menu)">编辑</button>
       <button mat-button type="button" (click)="delete(menu.menuId)">删除</button>
       <button mat-button type="button" *ngIf="menu.menuType === 'DIR'" (click)="changeAction(drawer, 'create', {pid: menu.menuId})">添加子菜单</button>
-      <button mat-button type="button" *ngIf="menu.menuType === 'ROUTE'" (click)="addPerm(menu)">添加权限</button>
+      <button mat-button type="button" *ngIf="menu.menuType === 'ROUTE'" (click)="changeAction(drawer, 'addPerm', menu)">添加权限</button>
     </td>
   </ng-container>
 

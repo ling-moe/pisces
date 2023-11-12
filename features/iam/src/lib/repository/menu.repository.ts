@@ -15,9 +15,9 @@ export class MenuRepository implements Provider<MenuRemoteService> {
   };
 
   @HasPermission('保存菜单中的权限')
-  async savePerms$menu(currentMenu: Menu, addPerms: Perm[], removeMenus: Menu[]): Promise<void> {
+  async savePerms$menu(menuId: bigint, addPerms: Perm[], removeMenus: Menu[]): Promise<void> {
     const menus = addPerms.map(perm => {
-      return <Menu>{menuCode: perm.code, menuName: perm.desc, menuType: 'FUNCTION', pid: currentMenu.menuId};
+      return <Menu>{menuCode: perm.code, menuName: perm.desc, menuType: 'FUNCTION', pid: menuId};
     })
     await this.prisma.$transaction([
       this.prisma.menu.createMany({data:menus}),
@@ -40,7 +40,7 @@ export class MenuRepository implements Provider<MenuRemoteService> {
     const list1 = await this.prisma.$queryRaw<MenuNode[]>`WITH RECURSIVE result AS (
       SELECT *, 1 as level FROM sys_menu WHERE menu_id = 1
       UNION
-      SELECT m.*, p.level + 1 as level FROM sys_menu m JOIN result p ON m.pid = p.menu_id)
+      SELECT m.*, p.level + 1 as level FROM sys_menu m JOIN result p ON m.pid = p.menu_id AND m.menu_type != 'FUNCTION')
       SELECT * FROM result;`;
     const list = list1.map((i) => mapKeys(i, (_, v) => camelCase(v))) as unknown as MenuNode[];
     const group = groupBy(list, 'pid');

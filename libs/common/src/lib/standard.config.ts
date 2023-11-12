@@ -11,8 +11,12 @@ declare global {
   }
 }
 
-export function initStandard(){
+export function initStandard() {
   BigInt.prototype.toJSON = function () { return `BIGINT::${this.toString()}`; };
+  const sourceParse = JSON.parse;
+  JSON.parse = function (text, reviver) {
+    return sourceParse(text, reviver ?? BigIntModule);
+  };
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -41,7 +41,7 @@ export interface MenuDomainService {
    */
   listAssignedPermByMenuId(menuId: bigint): Menu[];
 
-  savePerms(currentMenu: Menu,addPerms: Perm[], removeMenus: Menu[]): void;
+  savePerms(menuId: bigint,addPerms: Perm[], removeMenus: Menu[]): void;
 
   delete(menuId: bigint): void;
 
