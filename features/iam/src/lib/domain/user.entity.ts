@@ -17,6 +17,7 @@ export type User = {
   activedFlag: boolean
   lockedTime: Date | null
   enabledFlag: boolean
+  roles?: bigint[]
 } & AuditDomain & OCC;
 
 export type UserQuery = Pick<User, 'username' | 'displayName' | 'enabledFlag'>;

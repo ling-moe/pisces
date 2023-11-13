@@ -75,10 +75,12 @@ export class UserRepository implements Provider<UserRemoteService>{
     // 在此处实现用户身份验证逻辑（例如从数据库中验证用户凭据） 如果验证成功，返回用户对象；否则返回 null
     const user = await this.findByUsername(username);
     // 校验用户信息
-    if (user && (await this.comparePasswords(password, user.password))) {
-      return user;
+    if (!user || !await this.comparePasswords(password, user.password)) {
+      throw new BizException('Incorrect username or password');
     }
-    throw new BizException('Incorrect username or password');
+    const roleUsers = await this.prisma.roleUser.findMany({where: {userId: user.userId}});
+    user.roles = roleUsers.map(roleUser => roleUser.roleId)
+    return user;
   }
 
   async comparePasswords(password: string, hashedPassword: string): Promise<boolean> {

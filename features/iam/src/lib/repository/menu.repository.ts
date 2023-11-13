@@ -5,10 +5,15 @@ import { Menu, MenuNode, MenuRemoteService } from '../domain/menu.entity';
 import { camelCase, groupBy, mapKeys } from 'lodash';
 import { HasPermission, Perm } from '../infra/permission';
 import { prems } from "../infra/permission";
+import { ClsService } from 'nestjs-cls';
+import { User } from '../domain/user.entity';
 
 @Injectable()
 export class MenuRepository implements Provider<MenuRemoteService> {
-  constructor(private prisma: PrismaService) { }
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly authClsStore: ClsService<{ 'currentUser': User; }>,
+  ) { }
 
   async delete$menu(menuId: bigint): Promise<void> {
     await this.prisma.menu.delete({ where: { menuId: menuId } });
@@ -63,8 +68,15 @@ export class MenuRepository implements Provider<MenuRemoteService> {
 
   @HasPermission('当前用户的菜单')
   async querySelf$menu() {
-    // const user = this.menu();
-    // console.log("[getUserInfo]user==> ",JSON.stringify(user))
+    const user = this.authClsStore.get('currentUser');
+
+    const roleMenus = await this.prisma.roleMenu.findMany({ where: { roleId: { in: user.roles } } });
+    const menus = await this.prisma.menu.findMany({ where: { menuId: { in: roleMenus.map(i => i.menuId) } } }) as MenuNode[];
+    const group = groupBy(menus.map(menu => ({...menu, name: menu.menuName, type: 'link'})), 'pid');
+    return {'menu': menus.map(menu => ({...menu, name: menu.menuName, type: menu.menuType === 'ROUTE' ? 'link' : 'sub'})).filter((father) => {
+      father.children = group[father.menuId.toString()];
+      return father.pid === 0n;
+    })};
     return {
       "menu": [
         {

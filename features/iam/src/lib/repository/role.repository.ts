@@ -6,7 +6,9 @@ import { Page, PageRequest, paginator } from '@pisces/common';
 
 @Injectable()
 export class RoleRepository implements Provider<RoleRemoteService> {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService
+    ) {}
   async listUserByRoleId$role(roleId: bigint): Promise<RoleUser[]>{
     return await this.prisma.roleUser.findMany({where: {roleId}});
   }
