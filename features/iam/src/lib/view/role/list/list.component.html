@@ -8,8 +8,8 @@
       </formly-form>
       <button type="submit" mat-raised-button color="primary" [disabled]="!form.valid">保存</button>
     </form>
-    <pisces-role-authorization *ngIf="action === 'authorization'" [roleId]="roleId" (submitted)="closeDrawer(drawer)"></pisces-role-authorization>
-    <pisces-user-assign *ngIf="action === 'assign'" [roleId]="roleId" (submitted)="closeDrawer(drawer)"></pisces-user-assign>
+    <pisces-role-authorization *ngIf="action === 'authorization'" [roleId]="roleId!" (submitted)="closeDrawer(drawer)"></pisces-role-authorization>
+    <pisces-user-assign *ngIf="action === 'assign'" [roleId]="roleId!" (submitted)="closeDrawer(drawer)"></pisces-user-assign>
   </mat-drawer>
   <div class="row w-full">
     <div class="col-md-10">

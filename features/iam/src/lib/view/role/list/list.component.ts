@@ -33,7 +33,7 @@ export class RoleListComponent implements OnInit {
     prev: null,
     next: null
   };
-  roleId!: bigint;
+  roleId?: bigint;
   roleRepository: Remotable<RoleDomainService>;
 
   displayedColumns = ['roleCode', 'roleName', 'enabledFlag', 'remark', 'operations'];
@@ -67,7 +67,7 @@ export class RoleListComponent implements OnInit {
     this.action = action;
     this.options.updateInitialValue?.(role);
     this.options.resetModel?.();
-    this.roleId = role!.roleId;
+    this.roleId = role?.roleId;
     drawer.toggle();
   }
 

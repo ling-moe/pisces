@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 import { CoreModule } from '@pisces/core';
 import { ThemeModule } from '../theme';
 import { SharedModule } from '@pisces/shared';
-import { RoutesModule } from './routes/routes.module';
+import { DefaultRoutesModule } from './routes/default-routes.module';
 import { FormlyConfigModule } from './formly-config.module';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { ToastrModule } from 'ngx-toastr';
@@ -32,7 +32,7 @@ import { musubiProvider } from '@pisces/musubi/client';
     HttpClientModule,
     CoreModule,
     ThemeModule,
-    RoutesModule,
+    DefaultRoutesModule,
     SharedModule,
     FormlyConfigModule.forRoot(),
     NgxPermissionsModule.forRoot(),
@@ -51,7 +51,6 @@ import { musubiProvider } from '@pisces/musubi/client';
     musubiProvider,
     httpInterceptorProviders,
     appInitializerProviders,
-  ],
-  bootstrap: [AppComponent],
+  ]
 })
 export class AppModule {}
