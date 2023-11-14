@@ -25,6 +25,40 @@
           "codeCoverage": true
         }
       }
+    },
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/features/iam",
+        "main": "features/iam/src/main-backend.ts",
+        "tsConfig": "features/iam/tsconfig.app.json",
+        "assets": ["features/iam/src/resource/assets"],
+        "isolatedConfig": true,
+        "webpackConfig": "packages/backend/webpack.config.js"
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "iam:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "iam:build:development"
+        },
+        "production": {
+          "buildTarget": "iam:build:production"
+        }
+      }
     }
   },
   "tags": []

@@ -1,5 +1,4 @@
 import { CoreBackendModule } from '@pisces/core/backend/core.backend.module';
-import { IamBackendModule } from '@pisces/iam/iam.backend.module';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { ClsModule } from "nestjs-cls";
@@ -13,10 +12,7 @@ import { ClsModule } from "nestjs-cls";
     ClsModule.forRoot({
       global: true,
       middleware: { mount: true },
-    }),
-    IamBackendModule,
-  ],
-  controllers: [],
-
+    })
+  ]
 })
 export class AppModule {}

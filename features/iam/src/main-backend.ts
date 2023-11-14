@@ -3,22 +3,31 @@
  * This is only a minimal backend to get started.
  */
 
-import { Logger } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { NestApplication, NestFactory } from '@nestjs/core';
-import { AppModule } from './app/app.module';
+import { AppModule } from '@pisces/backend';
 import * as bodyParser from 'body-parser';
 import { BigIntModule, initStandard } from '@pisces/common';
+import { IamBackendModule } from './lib/iam.backend.module';
+
+@Module({
+  imports: [
+    AppModule,
+    IamBackendModule,
+  ]
+})
+export class IamModule {}
 
 async function bootstrap() {
   initStandard();
-  const app = await NestFactory.create<NestApplication>(AppModule);
+  const app = await NestFactory.create<NestApplication>(IamModule);
   app.use(bodyParser.json({ reviver: BigIntModule }))
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
   const port = process.env.PORT || 3100;
   await app.listen(port);
   Logger.log(
-    `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`
+    `🚀 IamApplication is running on: http://localhost:${port}/${globalPrefix}`
   );
 }
 

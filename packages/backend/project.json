@@ -4,40 +4,6 @@
   "sourceRoot": "packages/backend/src",
   "projectType": "application",
   "targets": {
-    "build": {
-      "executor": "@nx/webpack:webpack",
-      "outputs": ["{options.outputPath}"],
-      "defaultConfiguration": "production",
-      "options": {
-        "target": "node",
-        "compiler": "tsc",
-        "outputPath": "dist/packages/backend",
-        "main": "packages/backend/src/main.ts",
-        "tsConfig": "packages/backend/tsconfig.app.json",
-        "assets": ["packages/backend/src/assets"],
-        "isolatedConfig": true,
-        "webpackConfig": "packages/backend/webpack.config.js"
-      },
-      "configurations": {
-        "development": {},
-        "production": {}
-      }
-    },
-    "serve": {
-      "executor": "@nx/js:node",
-      "defaultConfiguration": "development",
-      "options": {
-        "buildTarget": "backend:build"
-      },
-      "configurations": {
-        "development": {
-          "buildTarget": "backend:build:development"
-        },
-        "production": {
-          "buildTarget": "backend:build:production"
-        }
-      }
-    },
     "lint": {
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
