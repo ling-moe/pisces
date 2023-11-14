@@ -30,6 +30,6 @@ export class LoginService {
   }
 
   menu() {
-    return this.http.get<{ menu: Menu[] }>('/menu/querySelf').pipe(map(res => res.menu));
+    return this.http.get<Menu[]>('/menu/querySelf');
   }
 }

@@ -36,7 +36,8 @@ export class StartupService {
   }
 
   private setMenu(menu: Menu[]) {
-    this.menuService.addNamespace(menu, 'menu');
+    // * 添加菜单的命名空间，现在暂时不需要这个
+    // this.menuService.addNamespace(menu, 'menu');
     this.menuService.set(menu);
   }
 

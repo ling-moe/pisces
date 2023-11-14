@@ -3,23 +3,18 @@
     <ng-template [ngxPermissionsOnly]="menuItem.permissions?.only!"
                  [ngxPermissionsExcept]="menuItem.permissions?.except!">
 
-      <a *ngIf="menuItem.type === 'link'" mat-button
+      <a *ngIf="menuItem.menuType === 'ROUTE'" mat-button
          [routerLink]="buildRoute([menuItem.route])" routerLinkActive="active">
         <ng-container [ngTemplateOutlet]="linkTypeTpl" [ngTemplateOutletContext]="{item: menuItem}">
         </ng-container>
       </a>
 
-      <a *ngIf="menuItem.type === 'extLink'" mat-button [href]="menuItem.route">
+      <a *ngIf="menuItem.menuType === 'EXT_LINK'" mat-button [href]="menuItem.route">
         <ng-container [ngTemplateOutlet]="linkTypeTpl" [ngTemplateOutletContext]="{item: menuItem}">
         </ng-container>
       </a>
 
-      <a *ngIf="menuItem.type === 'extTabLink'" mat-button [href]="menuItem.route" target="_blank">
-        <ng-container [ngTemplateOutlet]="linkTypeTpl" [ngTemplateOutletContext]="{item: menuItem}">
-        </ng-container>
-      </a>
-
-      <button *ngIf="menuItem.type === 'sub'" mat-button
+      <button *ngIf="menuItem.menuType === 'DIR'" mat-button
               [matMenuTriggerFor]="submenu.menuPanel" routerLinkActive="active"
               [class.active]="menuStates[index].active">
         <ng-container [ngTemplateOutlet]="linkTypeTpl" [ngTemplateOutletContext]="{item: menuItem}">
@@ -40,10 +35,11 @@
 
 <ng-template #linkTypeTpl let-item="item" let-level="level">
   <mat-icon class="menu-icon">{{item.icon}}</mat-icon>
-  <span class="menu-name">{{item.name | translate}}</span>
+  <span class="menu-name">{{item.menuName | translate}}</span>
   <span class="menu-label bg-{{item.label.color}}" *ngIf="item.label">{{item.label.value}}</span>
   <span class="menu-badge bg-{{item.badge.color}}" *ngIf="item.badge">{{item.badge.value}}</span>
-  <mat-icon class="menu-caret" *ngIf="item.type!=='link'">
-    {{item.type==='sub' ? 'arrow_drop_down' : 'launch'}}
+  <mat-icon class="menu-caret" *ngIf="item.menuType!=='ROUTE'">
+    {{item.menuType==='DIR' ? 'arrow_drop_down' : 'launch'}}
   </mat-icon>
 </ng-template>
+

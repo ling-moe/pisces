@@ -14,16 +14,16 @@ export interface MenuPermissions {
 
 export interface MenuChildrenItem {
   route: string;
-  name: string;
-  type: 'link' | 'sub' | 'extLink' | 'extTabLink';
+  menuName: string;
+  menuType: 'DIR' | 'ROUTE' | 'EXT_LINK';
   children?: MenuChildrenItem[];
   permissions?: MenuPermissions;
 }
 
 export interface Menu {
   route: string;
-  name: string;
-  type: 'link' | 'sub' | 'extLink' | 'extTabLink';
+  menuName: string;
+  menuType: 'DIR' | 'ROUTE' | 'EXT_LINK';
   icon: string;
   label?: MenuTag;
   badge?: MenuTag;
@@ -122,7 +122,7 @@ export class MenuService {
         let nextUnhandledLayer: MenuRoute[] = [];
         for (const ele of unhandledLayer) {
           const eachItem = ele.item;
-          const currentNamePathList = this.deepClone(ele.parentNamePathList).concat(eachItem.name);
+          const currentNamePathList = this.deepClone(ele.parentNamePathList).concat(eachItem.menuName);
           const currentRealRouteArr = this.deepClone(ele.realRouteArr).concat(eachItem.route);
           // Compare the full Array for expandable
           if (this.isRouteEqual(routeArr, currentRealRouteArr)) {
@@ -147,9 +147,9 @@ export class MenuService {
   /** Add namespace for translation. */
   addNamespace(menu: Menu[] | MenuChildrenItem[], namespace: string) {
     menu.forEach(menuItem => {
-      menuItem.name = `${namespace}.${menuItem.name}`;
+      menuItem.menuName = `${namespace}.${menuItem.menuName}`;
       if (menuItem.children && menuItem.children.length > 0) {
-        this.addNamespace(menuItem.children, menuItem.name);
+        this.addNamespace(menuItem.children, menuItem.menuName);
       }
     });
   }

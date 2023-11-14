@@ -72,55 +72,10 @@ export class MenuRepository implements Provider<MenuRemoteService> {
 
     const roleMenus = await this.prisma.roleMenu.findMany({ where: { roleId: { in: user.roles } } });
     const menus = await this.prisma.menu.findMany({ where: { menuId: { in: roleMenus.map(i => i.menuId) } } }) as MenuNode[];
-    const group = groupBy(menus.map(menu => ({...menu, name: menu.menuName, type: 'link'})), 'pid');
-    return {'menu': menus.map(menu => ({...menu, name: menu.menuName, type: menu.menuType === 'ROUTE' ? 'link' : 'sub'})).filter((father) => {
+    const group = groupBy(menus, 'pid');
+    return menus.filter((father) => {
       father.children = group[father.menuId.toString()];
       return father.pid === 0n;
-    })};
-    return {
-      "menu": [
-        {
-          "route": "iam/user",
-          "name": "user",
-          "type": "link",
-          "icon": "dashboard",
-        },
-        {
-          "route": "iam/role",
-          "name": "role",
-          "type": "link",
-          "icon": "dashboard",
-        },
-        {
-          "route": "iam/menu",
-          "name": "menu",
-          "type": "link",
-          "icon": "dashboard",
-        },
-        {
-          "route": "/",
-          "name": "sessions",
-          "type": "sub",
-          "icon": "question_answer",
-          "children": [
-            {
-              "route": "403",
-              "name": "403",
-              "type": "link"
-            },
-            {
-              "route": "404",
-              "name": "404",
-              "type": "link"
-            },
-            {
-              "route": "500",
-              "name": "500",
-              "type": "link"
-            }
-          ]
-        }
-      ]
-    };
+    });
   }
 }

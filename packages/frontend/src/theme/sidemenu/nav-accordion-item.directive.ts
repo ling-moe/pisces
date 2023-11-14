@@ -9,7 +9,7 @@ export class NavAccordionItemDirective implements OnInit, OnDestroy {
   protected isExpanded = false;
 
   @Input() route = '';
-  @Input() type: 'link' | 'sub' | 'extLink' | 'extTabLink' = 'link';
+  @Input() menuType: 'DIR' | 'ROUTE' | 'EXT_LINK' = 'ROUTE';
 
   @HostBinding('class.expanded')
   @Input()
@@ -18,7 +18,7 @@ export class NavAccordionItemDirective implements OnInit, OnDestroy {
   }
   set expanded(value: boolean) {
     // Only sub menu can be expanded
-    this.isExpanded = this.type === 'sub' && value;
+    this.isExpanded = this.menuType === 'DIR' && value;
 
     if (value) {
       this.nav.closeOtherLinks(this);

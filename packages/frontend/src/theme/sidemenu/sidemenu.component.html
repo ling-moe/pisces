@@ -9,32 +9,25 @@
                    [ngxPermissionsExcept]="menuItem.permissions?.except">
 
         <li navAccordionItem class="menu-item" routerLinkActive="active"
-            [route]="menuItem.route" [type]="menuItem.type">
+            [route]="menuItem.route" [menuType]="menuItem.menuType">
 
           <a class="menu-heading"
              [routerLink]="buildRoute(parentRoute.concat([menuItem.route]))"
-             *ngIf="menuItem.type==='link'" matRipple [matRippleDisabled]="!ripple">
+             *ngIf="menuItem.menuType==='ROUTE'" matRipple [matRippleDisabled]="!ripple">
             <ng-container [ngTemplateOutlet]="linkTypeTpl"
                           [ngTemplateOutletContext]="{item: menuItem, level: level}">
             </ng-container>
           </a>
 
           <a class="menu-heading" [href]="menuItem.route"
-             *ngIf="menuItem.type==='extLink'" matRipple [matRippleDisabled]="!ripple">
-            <ng-container [ngTemplateOutlet]="linkTypeTpl"
-                          [ngTemplateOutletContext]="{item: menuItem, level: level}">
-            </ng-container>
-          </a>
-
-          <a class="menu-heading" [href]="menuItem.route" target="_blank"
-             *ngIf="menuItem.type==='extTabLink'" matRipple [matRippleDisabled]="!ripple">
+             *ngIf="menuItem.menuType==='EXT_LINK'" matRipple [matRippleDisabled]="!ripple">
             <ng-container [ngTemplateOutlet]="linkTypeTpl"
                           [ngTemplateOutletContext]="{item: menuItem, level: level}">
             </ng-container>
           </a>
 
           <button navAccordionToggle class="menu-heading menu-toggle"
-                  *ngIf="menuItem.type==='sub'" matRipple [matRippleDisabled]="!ripple">
+                  *ngIf="menuItem.menuType==='DIR'" matRipple [matRippleDisabled]="!ripple">
             <ng-container [ngTemplateOutlet]="linkTypeTpl"
                           [ngTemplateOutletContext]="{item: menuItem, level: level}">
             </ng-container>
@@ -56,10 +49,10 @@
 
 <ng-template #linkTypeTpl let-item="item" let-level="level">
   <mat-icon class="menu-icon" *ngIf="level===0">{{item.icon}}</mat-icon>
-  <span class="menu-name">{{item.name | translate}}</span>
+  <span class="menu-name">{{item.menuName | translate}}</span>
   <span class="menu-label bg-{{item.label.color}}" *ngIf="item.label">{{item.label.value}}</span>
   <span class="menu-badge bg-{{item.badge.color}}" *ngIf="item.badge">{{item.badge.value}}</span>
-  <mat-icon class="menu-caret" *ngIf="item.type!=='link'">
-    {{item.type==='sub' ? 'arrow_drop_down' : 'launch'}}
+  <mat-icon class="menu-caret" *ngIf="item.menuType!=='ROUTE'">
+    {{item.menuType==='DIR' ? 'arrow_drop_down' : 'launch'}}
   </mat-icon>
 </ng-template>
