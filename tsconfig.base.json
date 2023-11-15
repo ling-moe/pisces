@@ -23,7 +23,7 @@
       "@pisces/prisma-tool": ["packages/prisma-tool/src/index.ts"],
       "@pisces/shared": ["libs/shared/src/index.ts"],
       "@pisces/theme": ["libs/theme/src/index.ts"],
-      "@pisces/backend": ["packages/backend/src/index.ts"],
+      "@pisces/backend": ["libs/backend/src/index.ts"],
       "@pisces/frontend": ["libs/frontend/src/index.ts"]
     }
   },

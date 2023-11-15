@@ -41,7 +41,7 @@
         "tsConfig": "features/iam/tsconfig.backend.app.json",
         "assets": ["features/iam/src/resource"],
         "isolatedConfig": true,
-        "webpackConfig": "packages/backend/webpack.config.js"
+        "webpackConfig": "libs/backend/webpack.config.js"
       },
       "configurations": {
         "development": {},
