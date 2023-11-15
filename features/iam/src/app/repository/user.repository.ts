@@ -1,4 +1,4 @@
-import { Token } from './../../../../../libs/core/src/lib/backend/auth/auth.types';
+import { Token } from '../../../../../libs/core/src/lib/backend/auth/auth.types';
 import { PrismaService } from '@pisces/core/backend/prisma/prisma.module';
 import { Injectable } from '@nestjs/common';
 import { Prisma, RoleUser } from '@prisma/client';

@@ -2,7 +2,7 @@
   "name": "backend",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/backend/src",
-  "projectType": "application",
+  "projectType": "library",
   "targets": {
     "lint": {
       "executor": "@nx/linter:eslint",

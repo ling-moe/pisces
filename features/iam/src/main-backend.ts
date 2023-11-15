@@ -8,7 +8,7 @@ import { NestApplication, NestFactory } from '@nestjs/core';
 import { AppModule } from '@pisces/backend';
 import * as bodyParser from 'body-parser';
 import { BigIntModule, initStandard } from '@pisces/common';
-import { IamBackendModule } from './lib/iam.backend.module';
+import { IamBackendModule } from './app/iam.backend.module';
 
 @Module({
   imports: [

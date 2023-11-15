@@ -16,7 +16,7 @@ const routes = buildRoutes([
     component: AdminLayoutComponent,
     canActivate: [authGuard],
     canActivateChild: [authGuard],
-    loadChildren: () => import('@pisces/iam/iam.frontend.module').then((m) => m.IamFrontendModule)
+    loadChildren: () => import('features/iam/src/app/iam.frontend.module').then((m) => m.IamFrontendModule)
   },
 ])
 
