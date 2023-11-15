@@ -1,8 +1,8 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { SettingsService } from '@pisces/core';
-import { AuthService, User } from '@pisces/core';
 import { debounceTime, tap } from 'rxjs/operators';
+import { AuthService, User } from '../../lib/authentication';
+import { SettingsService } from '../../lib/bootstrap/settings.service';
 
 @Component({
   selector: 'app-user',

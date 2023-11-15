@@ -1,9 +1,8 @@
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
-import { AppModule, buildRoutes, AppComponent, AdminLayoutComponent, environment } from '@pisces/frontend';
+import { buildRoutes, AppComponent, AdminLayoutComponent, environment, authGuard, CoreFrontendModule } from '@pisces/frontend';
 import { initStandard } from '@pisces/common';
 import { NgModule } from '@angular/core';
-import { authGuard } from '@pisces/core';
 import { RouterModule } from '@angular/router';
 
 const routes = buildRoutes([
@@ -27,7 +26,7 @@ const routes = buildRoutes([
 class RoutesRoutingModule {}
 
 @NgModule({
-  imports: [AppModule, RoutesRoutingModule],
+  imports: [CoreFrontendModule, RoutesRoutingModule],
   bootstrap: [AppComponent],
 })
 class IamAppModule {}

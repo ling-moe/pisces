@@ -3,11 +3,15 @@ import { PrismaClient, User } from '@prisma/client';
 import { CacheModule } from '../cache/cache.module';
 import { ClsService } from "nestjs-cls";
 
+interface Record {
+  [x: string]: number | bigint;
+}
+
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit {
   constructor(
-    private readonly authClsStore: ClsService<{'currentUser': User}>,
-  ){
+    private readonly authClsStore: ClsService<{ 'currentUser': User; }>,
+  ) {
     super();
   }
   async onModuleInit() {
@@ -18,12 +22,12 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
         params.args.data['createBy'] = userId;
         params.args.data['updateBy'] = userId;
       } else if (params.action === 'createMany') {
-        params.args.data.forEach((item: any) => item['createBy'] = userId);
-        params.args.data.forEach((item: any) => item['updateBy'] = userId);
+        params.args.data.forEach((item: Record) => item['createBy'] = userId);
+        params.args.data.forEach((item: Record) => item['updateBy'] = userId);
       } else if (params.action === 'update') {
         params.args.data['updateBy'] = userId;
       } else if (params.action === 'updateMany') {
-        params.args.data.forEach((item: any) => item['updateBy'] = userId);
+        params.args.data.forEach((item: Record) => item['updateBy'] = userId);
       }
       return await next(params);
     });
@@ -45,4 +49,4 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
   providers: [PrismaService],
   exports: [PrismaService],
 })
-export class PrismaModule {}
+export class PrismaModule { }

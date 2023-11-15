@@ -1,16 +1,13 @@
-import { Token } from '../../../../../libs/core/src/lib/backend/auth/auth.types';
-import { PrismaService } from '@pisces/core/backend/prisma/prisma.module';
+import { PrismaService, CacheHelper, BizException, Token } from '@pisces/backend';
 import { Injectable } from '@nestjs/common';
 import { Prisma, RoleUser } from '@prisma/client';
 import { Provider } from '@pisces/musubi/server';
-import { BizException } from 'libs/core/src/lib/backend/config/exception/biz-exception';
-import { hash,compare } from 'bcrypt';
+import { hash, compare } from 'bcrypt';
 import { User, UserQuery, UserRemoteService } from '../domain/user.entity';
 import { PageRequest, DEFAULT_PAGE, paginator, Page } from '@pisces/common';
 import { camelCase, mapKeys } from 'lodash';
 import { ClsService } from 'nestjs-cls';
 import { HasPermission } from '../infra/permission';
-import { CacheHelper } from '@pisces/core/backend/cache/cache.helper';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
@@ -18,13 +15,13 @@ export class UserRepository implements Provider<UserRemoteService>{
 
   constructor(
     private readonly prisma: PrismaService,
-    private readonly authClsStore: ClsService<{'currentUser': User}>,
+    private readonly authClsStore: ClsService<{ 'currentUser': User; }>,
     private readonly cachehelper: CacheHelper
-    ) { }
+  ) { }
 
   async listUnassignedUser$user(roleId: bigint): Promise<(User & RoleUser)[]> {
     return (await this.prisma
-    .$queryRaw<(User & RoleUser)[]>`SELECT su.username, su.display_name, su.user_id, sru.role_id, sru.role_user_id FROM sys_user su LEFT JOIN sys_role_user sru ON su.user_id = sru.user_id AND sru.role_id = ${roleId};`
+      .$queryRaw<(User & RoleUser)[]>`SELECT su.username, su.display_name, su.user_id, sru.role_id, sru.role_user_id FROM sys_user su LEFT JOIN sys_role_user sru ON su.user_id = sru.user_id AND sru.role_id = ${roleId};`
     ).map((i) => mapKeys(i, (_, v) => camelCase(v)) as unknown as (User & RoleUser));
   }
   /**
@@ -59,8 +56,8 @@ export class UserRepository implements Provider<UserRemoteService>{
     await this.prisma.user.update({ where: { userId: user.userId }, data: user });
   }
 
-  querySelf$user(): User{
-    return this.authClsStore.get('currentUser')
+  querySelf$user(): User {
+    return this.authClsStore.get('currentUser');
   }
 
   async login(user: User): Promise<Token> {
@@ -78,8 +75,8 @@ export class UserRepository implements Provider<UserRemoteService>{
     if (!user || !await this.comparePasswords(password, user.password)) {
       throw new BizException('Incorrect username or password');
     }
-    const roleUsers = await this.prisma.roleUser.findMany({where: {userId: user.userId}});
-    user.roles = roleUsers.map(roleUser => roleUser.roleId)
+    const roleUsers = await this.prisma.roleUser.findMany({ where: { userId: user.userId } });
+    user.roles = roleUsers.map(roleUser => roleUser.roleId);
     return user;
   }
 

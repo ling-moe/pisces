@@ -1,10 +1,9 @@
-
 import { MusubiModule } from "@pisces/musubi/server";
 import { UserRepository } from "./repository/user.repository";
 import { RoleRepository } from "./repository/role.repository";
 import { MenuRepository } from "./repository/menu.repository";
 import { AuthController } from "./controller/auth.controller";
-import { CacheModule } from "@pisces/core/backend/cache/cache.module";
+import { CacheModule } from "@pisces/backend";
 
 @MusubiModule({
   imports: [

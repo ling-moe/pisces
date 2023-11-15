@@ -3,7 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { filter } from 'rxjs/operators';
-import { AuthService } from '@pisces/core';
+import { AuthService } from '../../../authentication';
 
 @Component({
   selector: 'app-login',

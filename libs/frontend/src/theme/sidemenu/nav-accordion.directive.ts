@@ -1,8 +1,8 @@
 import { Directive } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { MenuService } from '@pisces/core';
 import { filter } from 'rxjs/operators';
 import { NavAccordionItemDirective } from './nav-accordion-item.directive';
+import { MenuService } from '../../lib/bootstrap/menu.service';
 
 @Directive({
   selector: '[navAccordion]',

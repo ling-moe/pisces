@@ -1,8 +1,8 @@
 import { Component, HostBinding, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { NavigationEnd, Router, RouterLinkActive } from '@angular/router';
-import { Menu, MenuService } from '@pisces/core';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { Menu, MenuService } from '../../lib/bootstrap/menu.service';
 
 export interface TopmenuState {
   active: boolean;

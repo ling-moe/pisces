@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { SettingsService } from '@pisces/core';
+import { SettingsService } from '../../lib/bootstrap/settings.service';
 
 @Component({
   selector: 'app-translate',

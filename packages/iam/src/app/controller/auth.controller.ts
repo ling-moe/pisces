@@ -4,7 +4,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { User } from '@prisma/client';
-import { Public } from '@pisces/core/backend/auth/roles.guard';
+import { Public } from '@pisces/backend';
 import { UserRepository } from '../repository/user.repository';
 
 @Controller('/auth')

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
-import { admin, LoginService, Menu } from '@pisces/core';
 import { map } from 'rxjs/operators';
+import { LoginService } from './authentication';
 
 /**
  * You should delete this file in the real APP.

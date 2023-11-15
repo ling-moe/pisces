@@ -1,5 +1,5 @@
 import { Component, Input, ViewEncapsulation } from '@angular/core';
-import { MenuService } from '@pisces/core';
+import { MenuService } from '../../lib/bootstrap/menu.service';
 
 @Component({
   selector: 'app-sidemenu',

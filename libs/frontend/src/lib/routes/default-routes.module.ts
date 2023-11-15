@@ -8,8 +8,8 @@ import { Error403Component } from './sessions/403.component';
 import { Error404Component } from './sessions/404.component';
 import { Error500Component } from './sessions/500.component';
 import { Routes } from '@angular/router';
-import { authGuard } from '@pisces/core';
 import { AdminLayoutComponent, AuthLayoutComponent } from '../../theme';
+import { authGuard } from '../authentication';
 
 export function buildRoutes(routes: Routes): Routes{
   return [

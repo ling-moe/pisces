@@ -1,3 +1,4 @@
+import { ErrorMessage } from '@pisces/backend';
 import { Injectable } from '@angular/core';
 import {
   HttpEvent,
@@ -10,19 +11,19 @@ import { Observable, of, throwError } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
 import { ToastrService } from 'ngx-toastr';
-import { ErrorMessage } from '../backend/config/exception/filters/exception.types';
 
 
 @Injectable()
 export class DefaultInterceptor implements HttpInterceptor {
-  constructor(private toast: ToastrService) {}
+  constructor(private toast: ToastrService) { }
 
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if (!req.url.includes('/api/')) {
       return next.handle(req);
     }
 
-    return next.handle(req).pipe(mergeMap((event: HttpEvent<ErrorMessage>) => this.handleOkReq(event)));
+    return next.handle(req)
+    .pipe(mergeMap((event: HttpEvent<ErrorMessage>) => this.handleOkReq(event)));
   }
 
   private handleOkReq(event: HttpEvent<ErrorMessage>): Observable<HttpEvent<unknown>> {

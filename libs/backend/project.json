@@ -4,6 +4,15 @@
   "sourceRoot": "packages/backend/src",
   "projectType": "library",
   "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/backend",
+        "main": "libs/backend/src/index.ts",
+        "tsConfig": "libs/backend/tsconfig.lib.json"
+      }
+    },
     "lint": {
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],

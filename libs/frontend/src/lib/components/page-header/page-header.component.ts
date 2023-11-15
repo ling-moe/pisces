@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewEncapsulation, Input, HostBinding } from '@angular/core';
 import { Router } from '@angular/router';
-import { MenuService } from '../../bootstrap/menu.service';
 import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
+import { MenuService } from '../../bootstrap/menu.service';
 
 @Component({
   selector: 'pisces-core-page-header',

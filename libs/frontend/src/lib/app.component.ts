@@ -1,5 +1,6 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { PreloaderService, SettingsService } from '@pisces/core';
+import { SettingsService } from './bootstrap/settings.service';
+import { PreloaderService } from './bootstrap/preloader.service';
 
 @Component({
   selector: 'app-root',

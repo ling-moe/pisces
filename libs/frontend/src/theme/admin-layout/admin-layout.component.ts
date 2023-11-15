@@ -4,7 +4,8 @@ import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
-import { SettingsService, AppSettings } from '@pisces/core';
+import { SettingsService } from '../../lib/bootstrap/settings.service';
+import { AppSettings } from '../../lib/settings';
 
 const MOBILE_MEDIAQUERY = 'screen and (max-width: 599px)';
 const TABLET_MEDIAQUERY = 'screen and (min-width: 600px) and (max-width: 959px)';

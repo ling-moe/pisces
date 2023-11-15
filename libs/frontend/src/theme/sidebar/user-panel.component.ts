@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService, User } from '@pisces/core';
+import { AuthService, User } from '../../lib/authentication';
 
 @Component({
   selector: 'app-user-panel',

@@ -1,10 +1,9 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 
-import { CoreModule } from '@pisces/core';
 import { ThemeModule } from '../theme';
 import { SharedModule } from '@pisces/shared';
 import { DefaultRoutesModule } from './routes/default-routes.module';
@@ -15,7 +14,6 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { environment } from '../environments/environment';
-import { BASE_URL, httpInterceptorProviders, appInitializerProviders } from '@pisces/core';
 
 // Required for AOT compilation
 export function TranslateHttpLoaderFactory(http: HttpClient) {
@@ -24,13 +22,21 @@ export function TranslateHttpLoaderFactory(http: HttpClient) {
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { musubiProvider } from '@pisces/musubi/client';
+import { throwIfAlreadyLoaded } from './module-import-guard';
+import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
+import { PageHeaderComponent } from './components/page-header/page-header.component';
+import { BASE_URL, httpInterceptorProviders } from './interceptors';
+import { appInitializerProviders } from './initializers';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [
+    AppComponent,
+    BreadcrumbComponent,
+    PageHeaderComponent,
+  ],
   imports: [
     BrowserModule,
     HttpClientModule,
-    CoreModule,
     ThemeModule,
     DefaultRoutesModule,
     SharedModule,
@@ -53,4 +59,8 @@ import { musubiProvider } from '@pisces/musubi/client';
     appInitializerProviders,
   ]
 })
-export class AppModule {}
+export class CoreFrontendModule {
+  constructor(@Optional() @SkipSelf() parentModule: CoreFrontendModule) {
+    throwIfAlreadyLoaded(parentModule, 'CoreModule');
+  }
+}

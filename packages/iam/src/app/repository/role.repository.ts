@@ -1,4 +1,4 @@
-import { PrismaService } from '@pisces/core/backend/prisma/prisma.module';
+import { PrismaService } from '@pisces/backend';
 import { Injectable } from '@nestjs/common';
 import { Provider } from '@pisces/musubi/server';
 import { Role, RoleMenu, RoleQuery, RoleUser, RoleRemoteService } from '../domain/role.entity';
