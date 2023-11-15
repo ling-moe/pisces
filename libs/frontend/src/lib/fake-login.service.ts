@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { LoginService } from './authentication';
+import { LoginService, admin } from './authentication';
+import { Menu } from './bootstrap/menu.service';
 
 /**
  * You should delete this file in the real APP.
@@ -20,7 +21,7 @@ export class FakeLoginService extends LoginService {
   }
 
   override logout() {
-    return of({});
+    return of();
   }
 
   override me() {
