@@ -1,7 +1,7 @@
 {
   "name": "iam",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "features/iam/src",
+  "sourceRoot": "packages/iam/src",
   "prefix": "pisces",
   "projectType": "application",
   "targets": {
@@ -10,8 +10,8 @@
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": [
-          "features/iam/**/*.ts",
-          "features/iam/**/*.html"
+          "packages/iam/**/*.ts",
+          "packages/iam/**/*.html"
         ]
       }
     },
@@ -19,7 +19,7 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "features/iam/jest.config.ts",
+        "jestConfig": "packages/iam/jest.config.ts",
         "passWithNoTests": true
       },
       "configurations": {
@@ -36,10 +36,10 @@
       "options": {
         "target": "node",
         "compiler": "tsc",
-        "outputPath": "dist/features/iam",
-        "main": "features/iam/src/main-backend.ts",
-        "tsConfig": "features/iam/tsconfig.backend.app.json",
-        "assets": ["features/iam/src/resource"],
+        "outputPath": "dist/packages/iam",
+        "main": "packages/iam/src/main-backend.ts",
+        "tsConfig": "packages/iam/tsconfig.backend.app.json",
+        "assets": ["packages/iam/src/resource"],
         "isolatedConfig": true,
         "webpackConfig": "libs/backend/webpack.config.js"
       },
@@ -67,13 +67,13 @@
       "executor": "@nx/angular:webpack-browser",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/features/iam",
+        "outputPath": "dist/packages/iam",
         "index": "libs/frontend/src/index.html",
-        "main": "features/iam/src/main-frontend.ts",
+        "main": "packages/iam/src/main-frontend.ts",
         "polyfills": ["zone.js"],
-        "tsConfig": "features/iam/tsconfig.frontend.app.json",
+        "tsConfig": "packages/iam/tsconfig.frontend.app.json",
         "assets": [
-          "features/iam/src/assets"
+          "packages/iam/src/assets"
         ],
         "allowedCommonJsDependencies": [
           "base64-js",
@@ -123,7 +123,7 @@
       },
       "defaultConfiguration": "development",
       "options": {
-        "browserTarget": "features/iam:build-frontend",
+        "browserTarget": "packages/iam:build-frontend",
         "host": "0.0.0.0",
         "port": 4300,
         "hmr": true,

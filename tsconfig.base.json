@@ -18,7 +18,7 @@
       "@pisces/common": ["libs/common/src/index.ts"],
       "@pisces/core": ["libs/core/src/index.ts"],
       "@pisces/core/*": ["libs/core/src/lib/*"],
-      "@pisces/iam/*": ["features/iam/src/lib/*"],
+      "@pisces/iam/*": ["packages/iam/src/lib/*"],
       "@pisces/musubi/*": ["libs/musubi/src/lib/*"],
       "@pisces/prisma-tool": ["packages/prisma-tool/src/index.ts"],
       "@pisces/shared": ["libs/shared/src/index.ts"],
