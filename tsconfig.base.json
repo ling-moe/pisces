@@ -24,7 +24,7 @@
       "@pisces/shared": ["libs/shared/src/index.ts"],
       "@pisces/theme": ["libs/theme/src/index.ts"],
       "@pisces/backend": ["packages/backend/src/index.ts"],
-      "@pisces/frontend": ["packages/frontend/src/index.ts"]
+      "@pisces/frontend": ["libs/frontend/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

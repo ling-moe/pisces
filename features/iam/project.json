@@ -67,8 +67,8 @@
       "executor": "@nx/angular:webpack-browser",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/packages/frontend",
-        "index": "packages/frontend/src/index.html",
+        "outputPath": "dist/features/iam",
+        "index": "libs/frontend/src/index.html",
         "main": "features/iam/src/main-frontend.ts",
         "polyfills": ["zone.js"],
         "tsConfig": "features/iam/tsconfig.app.json",
@@ -81,7 +81,7 @@
           "moment",
           "photoviewer"
         ],
-        "styles": ["packages/frontend/src/styles.scss"],
+        "styles": ["libs/frontend/src/styles.scss"],
         "scripts": []
       },
       "configurations": {
@@ -128,7 +128,7 @@
         "port": 4300,
         "hmr": true,
         "disableHostCheck": true,
-        "proxyConfig": "packages/frontend/proxy.config.js"
+        "proxyConfig": "libs/frontend/proxy.config.js"
       }
     },
     "extract-i18n": {

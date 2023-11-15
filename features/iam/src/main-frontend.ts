@@ -1,14 +1,11 @@
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
-import { AppModule, buildRoutes } from '@pisces/frontend';
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import { AppModule, buildRoutes, AppComponent, AdminLayoutComponent, environment } from '@pisces/frontend';
 import { initStandard } from '@pisces/common';
-import { AppComponent } from 'packages/frontend/src/app/app.component';
 import { NgModule } from '@angular/core';
 import { authGuard } from '@pisces/core';
-import { environment } from 'packages/frontend/src/environments/environment';
-import { AdminLayoutComponent } from 'packages/frontend/src/theme';
 import { RouterModule } from '@angular/router';
-
 
 const routes = buildRoutes([
   {
@@ -16,9 +13,9 @@ const routes = buildRoutes([
     component: AdminLayoutComponent,
     canActivate: [authGuard],
     canActivateChild: [authGuard],
-    loadChildren: () => import('features/iam/src/app/iam.frontend.module').then((m) => m.IamFrontendModule)
+    loadChildren: () => import('./app/iam.frontend.module').then((m) => m.IamFrontendModule),
   },
-])
+]);
 
 @NgModule({
   imports: [
@@ -31,16 +28,12 @@ const routes = buildRoutes([
 class RoutesRoutingModule {}
 
 @NgModule({
-  imports: [
-    AppModule,
-    RoutesRoutingModule
-  ],
+  imports: [AppModule, RoutesRoutingModule],
   bootstrap: [AppComponent],
 })
 class IamAppModule {}
 
 initStandard();
-platformBrowserDynamic().bootstrapModule(IamAppModule)
-  .catch(err => console.error(err));
-
-
+platformBrowserDynamic()
+  .bootstrapModule(IamAppModule)
+  .catch((err) => console.error(err));

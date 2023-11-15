@@ -11,8 +11,6 @@
     "downlevelIteration": true,
     "declaration": false,
     "module": "es2020",
-      // "@env": ["packages/frontend/src/environments"],
-      // "@env/*": ["packages/frontend/src/environments/*"]
   },
   "files": [],
   "include": [],
