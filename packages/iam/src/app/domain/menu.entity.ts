@@ -45,7 +45,7 @@ export interface MenuDomainService {
 
   delete(menuId: bigint): void;
 
-  querySelf(): any;
+  querySelf(): MenuNode[];
 }
 
 export type MenuRemoteService = Record<'menu', MenuDomainService>;
