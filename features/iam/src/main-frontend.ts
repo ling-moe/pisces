@@ -1,6 +1,5 @@
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
-// eslint-disable-next-line @nx/enforce-module-boundaries
 import { AppModule, buildRoutes, AppComponent, AdminLayoutComponent, environment } from '@pisces/frontend';
 import { initStandard } from '@pisces/common';
 import { NgModule } from '@angular/core';

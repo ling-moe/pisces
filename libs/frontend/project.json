@@ -17,8 +17,8 @@
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": [
-          "packages/frontend/**/*.ts",
-          "packages/frontend/**/*.html"
+          "libs/frontend/**/*.ts",
+          "libs/frontend/**/*.html"
         ]
       }
     },
@@ -26,7 +26,7 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "packages/frontend/jest.config.ts",
+        "jestConfig": "libs/frontend/jest.config.ts",
         "passWithNoTests": true
       },
       "configurations": {
@@ -34,12 +34,6 @@
           "ci": true,
           "codeCoverage": true
         }
-      }
-    },
-    "serve-static": {
-      "executor": "@nx/web:file-server",
-      "options": {
-        "buildTarget": "frontend:build"
       }
     }
   }
