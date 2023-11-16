@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { tap } from 'rxjs/operators';
-import { MemoryStorageService, LocalStorageService } from '@pisces/shared';
+import { MemoryStorageService, LocalStorageService } from '../shared';
 import { TokenService, currentTimestamp } from './';
 
 describe('TokenService', () => {

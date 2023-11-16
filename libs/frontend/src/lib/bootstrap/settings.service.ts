@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { AppDirectionality, LocalStorageService } from '@pisces/shared';
+import { AppDirectionality, LocalStorageService } from '../shared';
 import { BehaviorSubject } from 'rxjs';
 import { AppSettings, defaults } from '../settings';
 import { DOCUMENT } from '@angular/common';

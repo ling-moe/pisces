@@ -6,7 +6,7 @@ import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { STATUS } from 'angular-in-memory-web-api';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
-import { LocalStorageService, MemoryStorageService } from '@pisces/shared';
+import { LocalStorageService, MemoryStorageService } from '../shared';
 import { TokenService, User } from '../authentication';
 import { BASE_URL } from './base-url-interceptor';
 

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Route } from '@angular/router';
-import { SharedModule } from '@pisces/shared';
+import { SharedModule } from '@pisces/frontend';
 import { UserListComponent } from './view/user/list/list.component';
 import { UserCreateComponent } from './view/user/create/create.component';
 import { UserEditComponent } from './view/user/edit/edit.component';

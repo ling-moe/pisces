@@ -1,7 +1,7 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { NgxPermissionsModule, NgxPermissionsService, NgxRolesService } from 'ngx-permissions';
-import { LocalStorageService, MemoryStorageService } from '@pisces/shared';
+import { LocalStorageService, MemoryStorageService } from '../shared';
 import { admin, TokenService } from '../authentication';
 import { MenuService } from '../bootstrap/menu.service';
 import { StartupService } from '../bootstrap/startup.service';

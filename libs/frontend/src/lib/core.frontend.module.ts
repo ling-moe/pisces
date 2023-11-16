@@ -5,7 +5,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 
 import { ThemeModule } from '../theme';
-import { SharedModule } from '@pisces/shared';
+import { SharedModule } from './shared';
 import { DefaultRoutesModule } from './routes/default-routes.module';
 import { FormlyConfigModule } from './formly-config.module';
 import { NgxPermissionsModule } from 'ngx-permissions';

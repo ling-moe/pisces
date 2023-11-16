@@ -6,7 +6,7 @@
 @use '../theme/sidebar/sidebar-theme';
 @use '../theme/sidemenu/sidemenu-theme';
 @use '../theme/topmenu/topmenu-theme';
-@use '@pisces/shared/components/error-code/error-code-theme';
+@use '../lib/shared/components/error-code/error-code-theme';
 
 @use './custom/table-theme';
 

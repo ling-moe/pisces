@@ -4,7 +4,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { LocalStorageService, MemoryStorageService } from '@pisces/shared';
+import { LocalStorageService, MemoryStorageService } from '../shared';
 import { AuthService, TokenService, authGuard } from './';
 
 @Component({ template: '' })

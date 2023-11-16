@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { SharedModule } from '@pisces/shared';
+import { SharedModule } from '../lib/shared';
 
 import { AdminLayoutComponent } from './admin-layout/admin-layout.component';
 import { AuthLayoutComponent } from './auth-layout/auth-layout.component';

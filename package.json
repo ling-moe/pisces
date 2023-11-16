@@ -95,7 +95,6 @@
     "@ngx-formly/material": "^6.1.3",
     "@ngx-translate/core": "^15.0.0",
     "@ngx-translate/http-loader": "^8.0.0",
-    "@pisces/shared": "file:libs/shared/src/lib",
     "@prisma/client": "^5.0.0",
     "axios": "^1.0.0",
     "bcrypt": "^5.1.0",

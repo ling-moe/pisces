@@ -1,7 +1,7 @@
 import { HttpRequest } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { LocalStorageService, MemoryStorageService } from '@pisces/shared';
+import { LocalStorageService, MemoryStorageService } from '../shared';
 import { Observable } from 'rxjs';
 import { skip } from 'rxjs/operators';
 import { AuthService, BaseToken, LoginService, TokenService, User } from './';
@@ -70,7 +70,7 @@ describe('AuthService', () => {
     expect(authService.check()).toBeTruthy();
     httpMock.expectOne('/me').flush(user);
 
-    user$.pipe(skip(1)).subscribe(currentUser => expect(currentUser['id']).toBeUndefined());
+    user$.pipe(skip(1)).subscribe(currentUser => expect(currentUser.id).toBeUndefined());
     authService.logout().subscribe();
     httpMock.expectOne('/auth/logout').flush({});
 

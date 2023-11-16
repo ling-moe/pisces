@@ -1,5 +1,5 @@
 import { NgModule, ModuleWithProviders, Provider } from '@angular/core';
-import { SharedModule } from '@pisces/shared';
+import { SharedModule } from './shared';
 
 import { FormlyModule } from '@ngx-formly/core';
 import { FormlyMatToggleModule } from '@ngx-formly/material/toggle';

@@ -20,3 +20,5 @@ export * from './lib/interceptors';
 
 // Authentication
 export * from './lib/authentication';
+
+export * from './lib/shared';
