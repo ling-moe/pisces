@@ -4,6 +4,8 @@ import { buildRoutes, AppComponent, AdminLayoutComponent, environment, authGuard
 import { initStandard } from '@pisces/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { provideClientHydration } from '@angular/platform-browser';
+
 
 const routes = buildRoutes([
   {
@@ -23,13 +25,14 @@ const routes = buildRoutes([
   ],
   exports: [RouterModule],
 })
-class RoutesRoutingModule {}
+export class RoutesRoutingModule {}
 
 @NgModule({
   imports: [CoreFrontendModule, RoutesRoutingModule],
+  providers: [provideClientHydration()],
   bootstrap: [AppComponent],
 })
-class IamAppModule {}
+export class IamAppModule {}
 
 initStandard();
 platformBrowserDynamic()

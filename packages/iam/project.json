@@ -7,7 +7,9 @@
   "targets": {
     "lint": {
       "executor": "@nx/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+      "outputs": [
+        "{options.outputFile}"
+      ],
       "options": {
         "lintFilePatterns": [
           "packages/iam/**/*.ts",
@@ -17,7 +19,9 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
       "options": {
         "jestConfig": "packages/iam/jest.config.ts",
         "passWithNoTests": true
@@ -31,7 +35,9 @@
     },
     "build-backend": {
       "executor": "@nx/webpack:webpack",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "defaultConfiguration": "production",
       "options": {
         "target": "node",
@@ -39,7 +45,9 @@
         "outputPath": "dist/packages/iam",
         "main": "packages/iam/src/main-backend.ts",
         "tsConfig": "packages/iam/tsconfig.backend.app.json",
-        "assets": ["packages/iam/src/resource"],
+        "assets": [
+          "packages/iam/src/resource"
+        ],
         "isolatedConfig": true,
         "webpackConfig": "libs/backend/webpack.config.js"
       },
@@ -63,14 +71,18 @@
         }
       }
     },
-    "build-frontend": {
+    "build": {
       "executor": "@angular-devkit/build-angular:browser-esbuild",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
-        "outputPath": "dist/packages/iam",
+        "outputPath": "dist/iam/browser",
         "index": "libs/frontend/src/index.html",
         "main": "packages/iam/src/main-frontend.ts",
-        "polyfills": ["zone.js"],
+        "polyfills": [
+          "zone.js"
+        ],
         "tsConfig": "packages/iam/tsconfig.frontend.app.json",
         "assets": [
           "packages/iam/src/assets"
@@ -81,7 +93,9 @@
           "moment",
           "photoviewer"
         ],
-        "styles": ["libs/frontend/src/styles.scss"],
+        "styles": [
+          "libs/frontend/src/styles.scss"
+        ],
         "scripts": []
       },
       "configurations": {
@@ -113,15 +127,15 @@
       "executor": "@nx/angular:webpack-dev-server",
       "configurations": {
         "production": {
-          "browserTarget": "iam:build-frontend:production"
+          "browserTarget": "iam:build:production"
         },
         "development": {
-          "browserTarget": "iam:build-frontend:development"
+          "browserTarget": "iam:build:development"
         }
       },
       "defaultConfiguration": "development",
       "options": {
-        "browserTarget": "packages/iam:build-frontend",
+        "browserTarget": "packages/iam:build",
         "host": "0.0.0.0",
         "port": 4300,
         "hmr": true,
@@ -140,6 +154,58 @@
       "options": {
         "buildTarget": "frontend:build"
       }
+    },
+    "server": {
+      "executor": "@angular-devkit/build-angular:server",
+      "options": {
+        "outputPath": "dist/iam/server",
+        "main": "packages/iam/server.ts",
+        "tsConfig": "packages/iam/tsconfig.server.json"
+      },
+      "configurations": {
+        "production": {
+          "outputHashing": "media"
+        },
+        "development": {
+          "optimization": false,
+          "sourceMap": true,
+          "extractLicenses": false
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve-ssr": {
+      "executor": "@angular-devkit/build-angular:ssr-dev-server",
+      "configurations": {
+        "development": {
+          "browserTarget": "iam:build:development",
+          "serverTarget": "iam:server:development"
+        },
+        "production": {
+          "browserTarget": "iam:build:production",
+          "serverTarget": "iam:server:production"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "prerender": {
+      "executor": "@angular-devkit/build-angular:prerender",
+      "options": {
+        "routes": [
+          "/"
+        ]
+      },
+      "configurations": {
+        "production": {
+          "browserTarget": "iam:build:production",
+          "serverTarget": "iam:server:production"
+        },
+        "development": {
+          "browserTarget": "iam:build:development",
+          "serverTarget": "iam:server:development"
+        }
+      },
+      "defaultConfiguration": "production"
     }
   },
   "tags": []
