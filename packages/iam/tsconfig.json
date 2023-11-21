@@ -3,7 +3,7 @@
   "compilerOptions": {
     "types": ["node"],
     "target": "es2022",
-    "module": "commonjs",
+    "module": "esnext",
     "outDir": "../../dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
