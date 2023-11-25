@@ -1,8 +1,7 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { UserDomainService, UserRemoteService } from '../../../domain/user.entity';
+import { UserDomainService, UserRemoteService,User } from '../../../domain/user.entity';
 import { Remotable, Consumer, RemoteService } from '@pisces/musubi/client/remote.service';
-import { User } from '@prisma/client';
 
 @Component({
   selector: 'pisces-edit',

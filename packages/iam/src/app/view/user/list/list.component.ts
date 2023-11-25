@@ -1,8 +1,7 @@
 import { Consumer, Remotable, RemoteService } from '@pisces/musubi/client/remote.service';
 import { Component, Inject, OnInit } from '@angular/core';
-import { User } from '@prisma/client';
 import { MatDrawer } from '@angular/material/sidenav';
-import { UserDomainService, UserQuery, UserRemoteService } from '../../../domain/user.entity';
+import { UserDomainService, UserQuery, UserRemoteService, User } from '../../../domain/user.entity';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { FormGroup } from '@angular/forms';
 import { EmptyObject, Page, PageRequest } from "@pisces/common";

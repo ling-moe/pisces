@@ -7,7 +7,7 @@ import { FormGroup } from '@angular/forms';
 import { MatDrawer } from '@angular/material/sidenav';
 import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 import { drawerFieldGroup, inputDrawerField, selectDrawerField, toggleDrawerField, textareaDrawerField, numberDrawerField, FormAction } from '../../../infra/util/formily-builder';
-import { Role } from '@prisma/client';
+import { Role } from '../../../domain/role.entity';
 import { tap } from 'rxjs';
 import { EmptyObject } from '@pisces/common';
 import { Route, Router } from '@angular/router';
