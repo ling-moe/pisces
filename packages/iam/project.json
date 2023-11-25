@@ -64,12 +64,12 @@
       }
     },
     "build-frontend": {
-      "executor": "@nx/angular:browser-esbuild",
+      "executor": "@angular-devkit/build-angular:application",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/packages/iam",
         "index": "libs/frontend/src/index.html",
-        "main": "packages/iam/src/main-frontend.ts",
+        "browser": "packages/iam/src/main-frontend.ts",
         "polyfills": ["zone.js"],
         "tsConfig": "packages/iam/tsconfig.frontend.app.json",
         "assets": [
@@ -110,18 +110,38 @@
       "defaultConfiguration": "production"
     },
     "serve-frontend": {
-      "executor": "@nx/angular:webpack-dev-server",
+      "executor": "@angular-devkit/build-angular:dev-server",
       "configurations": {
         "production": {
-          "browserTarget": "iam:build-frontend:production"
+          "buildTarget": "iam:build-frontend:production"
         },
         "development": {
-          "browserTarget": "iam:build-frontend:development"
+          "buildTarget": "iam:build-frontend:development"
         }
       },
       "defaultConfiguration": "development",
       "options": {
-        "browserTarget": "packages/iam:build-frontend",
+        "buildTarget": "packages/iam:build-frontend",
+        "host": "0.0.0.0",
+        "port": 4300,
+        "hmr": true,
+        "disableHostCheck": true,
+        "proxyConfig": "libs/frontend/proxy.config.js"
+      }
+    },
+    "test-serve": {
+      "executor": "@pisces/executor:union-application",
+      "configurations": {
+        "production": {
+          "buildTarget": "iam:build-frontend:production"
+        },
+        "development": {
+          "buildTarget": "iam:build-frontend:development"
+        }
+      },
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "packages/iam:build-frontend",
         "host": "0.0.0.0",
         "port": 4300,
         "hmr": true,
