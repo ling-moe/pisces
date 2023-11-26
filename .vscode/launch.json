@@ -10,7 +10,7 @@
             "name": "后端Debug",
             "port": 9229,
             "restart": true,
-            "cwd": "${workspaceFolder}/packages/backend/",
+            "cwd": "${workspaceFolder}/packages/iam/",
         }
     ],
 }

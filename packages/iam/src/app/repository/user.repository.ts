@@ -34,7 +34,6 @@ export class UserRepository implements Provider<UserRemoteService>{
    * 创建用户信息
    */
   async create$user(user: User): Promise<void> {
-    console.log("[User][createRpc]==>", JSON.stringify(user));
     // 处理密码
     const pwd = await hash(user.password, 10);
     user.password = pwd;

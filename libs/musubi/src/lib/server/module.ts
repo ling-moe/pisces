@@ -57,7 +57,6 @@ export function MusubiModule(metadata: MusubiModuleMetadata): ClassDecorator {
     delete metadata.alias;
     delete metadata.remotes;
     // 调用原本的module
-    console.log(metadata)
     Module(metadata)(target);
   };
 }
@@ -120,17 +119,6 @@ function defineMappingParamsMatedata(
     }
 
   }
-}
-
-function toPath(str: string) {
-  let path = str;
-  if (path.endsWith('Repository')) {
-    path = path.slice(0, -10);
-  }
-  return path
-    .replace(/([A-Z])/g, '-$1')
-    .toLowerCase()
-    .slice(1);
 }
 
 class JsonPipe implements PipeTransform {
