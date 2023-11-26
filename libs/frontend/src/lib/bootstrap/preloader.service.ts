@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Inject, Injectable, afterNextRender } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 
 @Injectable({
@@ -7,7 +7,14 @@ import { DOCUMENT } from '@angular/common';
 export class PreloaderService {
   private selector = 'globalLoader';
 
-  constructor(@Inject(DOCUMENT) private document: Document) {}
+  constructor(@Inject(DOCUMENT) private document: Document) {
+    afterNextRender(()=>{
+      const el = this.getElement();
+      if(el){
+        el.className = 'global-loader-hidden';
+      }
+    });
+  }
 
   private getElement() {
     return this.document.getElementById(this.selector);

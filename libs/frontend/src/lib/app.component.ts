@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, afterNextRender } from '@angular/core';
 import { SettingsService } from './bootstrap/settings.service';
 import { PreloaderService } from './bootstrap/preloader.service';
 

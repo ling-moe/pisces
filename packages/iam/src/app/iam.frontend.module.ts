@@ -1,18 +1,18 @@
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NgModule } from '@angular/core';
-import { RouterModule, Route } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTreeModule } from '@angular/material/tree';
+import { Route, RouterModule } from '@angular/router';
 import { SharedModule } from '@pisces/frontend';
-import { UserListComponent } from './view/user/list/list.component';
-import { UserCreateComponent } from './view/user/create/create.component';
-import { UserEditComponent } from './view/user/edit/edit.component';
-import { RoleListComponent } from './view/role/list/list.component';
 import { MenuListComponent } from './view/menu/list/list.component';
 import { TransferComponent } from './view/menu/transfer/transfer.component';
-import { DragDropModule } from '@angular/cdk/drag-drop';
+import { RoleListComponent } from './view/role/list/list.component';
 import { RoleAuthorizationComponent } from './view/role/role-authorization/role-authorization.component';
-import { MatTreeModule } from '@angular/material/tree';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
 import { UserAssignComponent } from './view/role/user-assign/user-assign.component';
+import { UserCreateComponent } from './view/user/create/create.component';
+import { UserEditComponent } from './view/user/edit/edit.component';
+import { UserListComponent } from './view/user/list/list.component';
 
 const COMPONENTS = [UserListComponent, UserCreateComponent, UserEditComponent, MenuListComponent];
 

@@ -7,7 +7,9 @@
   "targets": {
     "lint": {
       "executor": "@nx/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+      "outputs": [
+        "{options.outputFile}"
+      ],
       "options": {
         "lintFilePatterns": [
           "packages/iam/**/*.ts",
@@ -17,7 +19,9 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
       "options": {
         "jestConfig": "packages/iam/jest.config.ts",
         "passWithNoTests": true
@@ -31,7 +35,9 @@
     },
     "build-backend": {
       "executor": "@nx/webpack:webpack",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "defaultConfiguration": "production",
       "options": {
         "target": "node",
@@ -39,7 +45,9 @@
         "outputPath": "dist/packages/iam",
         "main": "packages/iam/src/main-backend.ts",
         "tsConfig": "packages/iam/tsconfig.backend.app.json",
-        "assets": ["packages/iam/src/resource"],
+        "assets": [
+          "packages/iam/src/resource"
+        ],
         "isolatedConfig": true,
         "webpackConfig": "libs/backend/webpack.config.js"
       },
@@ -63,14 +71,18 @@
         }
       }
     },
-    "build-frontend": {
+    "build": {
       "executor": "@angular-devkit/build-angular:application",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/packages/iam",
         "index": "libs/frontend/src/index.html",
         "browser": "packages/iam/src/main-frontend.ts",
-        "polyfills": ["zone.js"],
+        "polyfills": [
+          "zone.js"
+        ],
         "tsConfig": "packages/iam/tsconfig.frontend.app.json",
         "assets": [
           "packages/iam/src/assets"
@@ -78,11 +90,17 @@
         "allowedCommonJsDependencies": [
           "base64-js",
           "lodash",
-          "moment",
-          "photoviewer"
+          "moment"
         ],
-        "styles": ["libs/frontend/src/styles.scss"],
-        "scripts": []
+        "styles": [
+          "libs/frontend/src/styles.scss"
+        ],
+        "scripts": [],
+        "server": "packages/iam/src/main.server.ts",
+        "prerender": true,
+        "ssr": {
+          "entry": "packages/iam/server.ts"
+        }
       },
       "configurations": {
         "production": {
@@ -109,19 +127,19 @@
       },
       "defaultConfiguration": "production"
     },
-    "serve-frontend": {
+    "serve": {
       "executor": "@angular-devkit/build-angular:dev-server",
       "configurations": {
         "production": {
-          "buildTarget": "iam:build-frontend:production"
+          "buildTarget": "iam:build:production"
         },
         "development": {
-          "buildTarget": "iam:build-frontend:development"
+          "buildTarget": "iam:build:development"
         }
       },
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "packages/iam:build-frontend",
+        "buildTarget": "packages/iam:build",
         "host": "0.0.0.0",
         "port": 4300,
         "hmr": true,

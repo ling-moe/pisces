@@ -1,11 +1,11 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClientModule, HttpClient, provideHttpClient, withFetch } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 
 import { ThemeModule } from '../theme';
-import { SharedModule } from './shared';
+import { LOCAL_STORAGE, SharedModule } from './shared';
 import { DefaultRoutesModule } from './routes/default-routes.module';
 import { FormlyConfigModule } from './formly-config.module';
 import { NgxPermissionsModule } from 'ngx-permissions';

@@ -1,7 +1,9 @@
-import { Injectable, Injector } from '@angular/core';
+import { Inject, Injectable, InjectionToken, Injector } from '@angular/core';
 import { LOCATION_INITIALIZED } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
 import { SettingsService } from './settings.service';
+
+export const NAVIGATOR = new InjectionToken('NAVIGATOR');
 
 @Injectable({
   providedIn: 'root',
@@ -10,14 +12,15 @@ export class TranslateLangService {
   constructor(
     private injector: Injector,
     private translate: TranslateService,
-    private settings: SettingsService
+    private settings: SettingsService,
+    @Inject(NAVIGATOR) private navigator: Navigator,
   ) {}
 
   load() {
     return new Promise<void>(resolve => {
       const locationInitialized = this.injector.get(LOCATION_INITIALIZED, Promise.resolve());
       locationInitialized.then(() => {
-        const browserLang = navigator.language;
+        const browserLang = this.navigator.language;
         const defaultLang = browserLang.match(/en-US|zh-CN|zh-TW/) ? browserLang : 'en-US';
 
         this.settings.setLanguage(defaultLang);

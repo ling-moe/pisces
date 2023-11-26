@@ -27,7 +27,7 @@ import { MtxMomentDatetimeModule } from '@ng-matero/extensions-moment-adapter';
     MtxDatetimepickerModule,
     MtxDialogModule,
     MtxDrawerModule,
-    MtxGridModule,
+    // MtxGridModule,
     MtxLoaderModule,
     MtxPopoverModule,
     MtxProgressModule,
