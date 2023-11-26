@@ -1,43 +1,43 @@
 {
   "name": "musubi",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "packages/musubi/src",
+  "sourceRoot": "libs/musubi/src",
   "projectType": "library",
   "targets": {
     "build": {
       "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/packages/musubi",
-        "main": "packages/musubi/src/index.ts",
-        "tsConfig": "packages/musubi/tsconfig.lib.json",
-        "assets": ["packages/musubi/*.md"]
+        "outputPath": "dist/libs/musubi",
+        "main": "libs/musubi/src/index.ts",
+        "tsConfig": "libs/musubi/tsconfig.lib.json",
+        "assets": ["libs/musubi/*.md"]
       }
     },
     "tsc": {
       "command": "tsc -p tsconfig.schematics.json",
       "options": {
-        "cwd": "packages/musubi"
+        "cwd": "libs/musubi"
       }
     },
     "update": {
       "command": "schematics .:update --debug==false",
       "options": {
-        "cwd": "packages/musubi"
+        "cwd": "libs/musubi"
       }
     },
     "lint": {
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/musubi/**/*.ts"]
+        "lintFilePatterns": ["libs/musubi/**/*.ts"]
       }
     },
     "test": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "packages/musubi/jest.config.ts",
+        "jestConfig": "libs/musubi/jest.config.ts",
         "passWithNoTests": true
       },
       "configurations": {

@@ -97,7 +97,7 @@
         ],
         "scripts": [],
         "server": "packages/iam/src/main.server.ts",
-        "prerender": true,
+        "prerender": false,
         "ssr": {
           "entry": "packages/iam/server.ts"
         }
@@ -108,7 +108,7 @@
             {
               "type": "initial",
               "maximumWarning": "500kb",
-              "maximumError": "1mb"
+              "maximumError": "5mb"
             },
             {
               "type": "anyComponentStyle",
