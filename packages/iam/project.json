@@ -77,7 +77,7 @@
         "{options.outputPath}"
       ],
       "options": {
-        "outputPath": "dist/packages/iam",
+        "outputPath": "dist/iam/browser",
         "index": "libs/frontend/src/index.html",
         "browser": "packages/iam/src/main-frontend.ts",
         "polyfills": [
@@ -178,6 +178,58 @@
       "options": {
         "buildTarget": "frontend:build"
       }
+    },
+    "server": {
+      "executor": "@angular-devkit/build-angular:server",
+      "options": {
+        "outputPath": "dist/iam/server",
+        "main": "packages/iam/server.ts",
+        "tsConfig": "packages/iam/tsconfig.server.json"
+      },
+      "configurations": {
+        "production": {
+          "outputHashing": "media"
+        },
+        "development": {
+          "optimization": false,
+          "sourceMap": true,
+          "extractLicenses": false
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve-ssr": {
+      "executor": "@angular-devkit/build-angular:ssr-dev-server",
+      "configurations": {
+        "development": {
+          "browserTarget": "iam:build:development",
+          "serverTarget": "iam:server:development"
+        },
+        "production": {
+          "browserTarget": "iam:build:production",
+          "serverTarget": "iam:server:production"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "prerender": {
+      "executor": "@angular-devkit/build-angular:prerender",
+      "options": {
+        "routes": [
+          "/"
+        ]
+      },
+      "configurations": {
+        "production": {
+          "browserTarget": "iam:build:production",
+          "serverTarget": "iam:server:production"
+        },
+        "development": {
+          "browserTarget": "iam:build:development",
+          "serverTarget": "iam:server:development"
+        }
+      },
+      "defaultConfiguration": "production"
     }
   },
   "tags": []
