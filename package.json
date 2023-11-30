@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "test": "npx nx run backend:serve",
+    "test": "npx nx run iam:build --watch=true --configuration=development",
     "db:studio": "prisma studio --schema=packages/iam/src/resource/schema.prisma",
     "musubi:tsc": "packages/musubi/tsconfig.schematics.json",
     "musubi:update": "schematics ./packages/musubi:update --debug==false",

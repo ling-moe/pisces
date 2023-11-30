@@ -4,6 +4,8 @@ import { CoreBackendModule } from '@pisces/backend';
 import * as bodyParser from 'body-parser';
 import { BigIntModule, initStandard } from '@pisces/common';
 import { IamBackendModule } from './app/iam.backend.module';
+import * as express from 'express'
+import * as path from 'path';
 
 @Module({
   imports: [
@@ -19,10 +21,24 @@ async function bootstrap() {
   app.use(bodyParser.json({ reviver: BigIntModule }))
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
+
+
+  // 静态文件目录，用于存放 Angular 应用的构建结果
+  app.use(express.static(path.join(__dirname, '../../../dist/iam/browser')));
+
+  // 所有其他路由都指向 Angular 应用的入口文件
+  app.getHttpAdapter().get('*', (req, res,next) => {
+    if (req.url.startsWith('/api')) {
+      next?.();
+    }else{
+      res.sendFile(path.join(__dirname, '../../../dist/iam/browser/index.html'));
+    }
+  });
+
   const port = process.env.PORT || 3100;
   await app.listen(port);
   Logger.log(
-    `🚀 IamApplication is running on: http://localhost:${port}/${globalPrefix}`
+    `🚀 IamApplication is running on: http://localhost:${port}`
   );
 }
 

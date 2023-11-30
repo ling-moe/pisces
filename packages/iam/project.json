@@ -77,7 +77,7 @@
         "{options.outputPath}"
       ],
       "options": {
-        "outputPath": "dist/iam/browser",
+        "outputPath": "dist/iam",
         "index": "libs/frontend/src/index.html",
         "browser": "packages/iam/src/main-frontend.ts",
         "polyfills": [
