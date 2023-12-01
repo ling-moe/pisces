@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { MtxGridColumn } from '@ng-matero/extensions/grid';
-import { Consumer, Remotable, RemoteService } from '@pisces/musubi/client/remote.service';
+import { Consumer, Remotable, RemoteService } from '@pisces/musubi/client';
 import { RoleDomainService, RoleRemoteService, RoleUser } from '../../../domain/role.entity';
 import { User, UserDomainService, UserRemoteService } from '../../../domain/user.entity';
 

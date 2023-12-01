@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
-import { Remotable, Consumer, RemoteService } from '@pisces/musubi/client/remote.service';
+import { Remotable, Consumer, RemoteService } from '@pisces/musubi/client';
 import { Menu, MenuDomainService, MenuNode, MenuRemoteService } from '../../../domain/menu.entity';
 import { FormGroup } from '@angular/forms';
 import { MatDrawer } from '@angular/material/sidenav';

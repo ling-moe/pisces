@@ -4,7 +4,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { MatDrawer } from '@angular/material/sidenav';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { EmptyObject, Page, PageRequest } from '@pisces/common';
-import { Consumer, Remotable, RemoteService } from '@pisces/musubi/client/remote.service';
+import { Consumer, Remotable, RemoteService } from '@pisces/musubi/client';
 import { pickBy } from 'lodash';
 import { tap } from 'rxjs';
 import { Role, RoleDomainService, RoleQuery, RoleRemoteService } from '../../../domain/role.entity';

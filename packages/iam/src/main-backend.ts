@@ -24,16 +24,7 @@ async function bootstrap() {
 
 
   // 静态文件目录，用于存放 Angular 应用的构建结果
-  app.use(express.static(path.join(__dirname, '../../../dist/iam/browser')));
-
-  // 所有其他路由都指向 Angular 应用的入口文件
-  app.getHttpAdapter().get('*', (req, res,next) => {
-    if (req.url.startsWith('/api')) {
-      next?.();
-    }else{
-      res.sendFile(path.join(__dirname, '../../../dist/iam/browser/index.html'));
-    }
-  });
+  loadFrontend(app);
 
   const port = process.env.PORT || 3100;
   await app.listen(port);
@@ -43,3 +34,15 @@ async function bootstrap() {
 }
 
 bootstrap();
+function loadFrontend(app: NestApplication) {
+  app.use(express.static(path.join(__dirname, '../../../dist/iam/browser')));
+
+  // 所有其他路由都指向 Angular 应用的入口文件
+  app.getHttpAdapter().get('*', (req, res, next) => {
+    if (req.url.startsWith('/api')) {
+      next?.();
+    } else {
+      res.sendFile(path.join(__dirname, '../../../dist/iam/browser/index.html'));
+    }
+  });
+}

@@ -2,7 +2,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { ChangeDetectorRef, Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
-import { Consumer, Remotable, RemoteService } from '@pisces/musubi/client/remote.service';
+import { Consumer, Remotable, RemoteService } from '@pisces/musubi/client';
 import { forkJoin } from 'rxjs';
 import { MenuDomainService, MenuNode, MenuRemoteService } from '../../../domain/menu.entity';
 import { RoleDomainService, RoleMenu, RoleRemoteService } from '../../../domain/role.entity';

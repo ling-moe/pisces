@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UserDomainService, UserRemoteService } from '../../../domain/user.entity';
-import { Remotable, Consumer, RemoteService } from '@pisces/musubi/client/remote.service';
+import { Remotable, Consumer, RemoteService } from '@pisces/musubi/client';
 
 @Component({
   selector: 'pisces-create',

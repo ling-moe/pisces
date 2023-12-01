@@ -13,6 +13,7 @@
     "src/**/*.ts"
   ],
   "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
     "types": [
       "node"
     ]

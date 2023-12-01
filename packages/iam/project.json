@@ -34,7 +34,7 @@
         "index": "libs/frontend/src/index.html",
         "browser": "packages/iam/src/main-frontend.ts",
         "polyfills": ["zone.js"],
-        "tsConfig": "packages/iam/tsconfig.frontend.app.json",
+        "tsConfig": "packages/iam/tsconfig.frontend.json",
         "assets": ["packages/iam/src/assets"],
         "allowedCommonJsDependencies": ["base64-js", "lodash", "moment"],
         "styles": ["libs/frontend/src/styles.scss"],
@@ -80,7 +80,7 @@
         "compiler": "tsc",
         "outputPath": "dist/packages/iam",
         "main": "packages/iam/src/main-backend.ts",
-        "tsConfig": "packages/iam/tsconfig.backend.app.json",
+        "tsConfig": "packages/iam/tsconfig.backend.json",
         "assets": ["packages/iam/src/resource"],
         "isolatedConfig": true,
         "webpackConfig": "libs/backend/webpack.config.js"

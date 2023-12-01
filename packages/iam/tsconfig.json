@@ -21,10 +21,10 @@
   "include": [],
   "references": [
     {
-      "path": "./tsconfig.backend.app.json"
+      "path": "./tsconfig.backend.json"
     },
     {
-      "path": "./tsconfig.frontend.app.json"
+      "path": "./tsconfig.frontend.json"
     },
     {
       "path": "./tsconfig.spec.json"
