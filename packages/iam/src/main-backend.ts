@@ -35,14 +35,14 @@ async function bootstrap() {
 
 bootstrap();
 function loadFrontend(app: NestApplication) {
-  app.use(express.static(path.join(__dirname, '../../../dist/iam/browser')));
+  app.use(express.static(path.join(__dirname, '../frontend/browser')));
 
   // 所有其他路由都指向 Angular 应用的入口文件
   app.getHttpAdapter().get('*', (req, res, next) => {
     if (req.url.startsWith('/api')) {
       next?.();
     } else {
-      res.sendFile(path.join(__dirname, '../../../dist/iam/browser/index.html'));
+      res.sendFile(path.join(__dirname, '../frontend/browser/index.html'));
     }
   });
 }
