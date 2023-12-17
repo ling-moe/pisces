@@ -2,6 +2,7 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../dist/out-tsc/backend",
+    "allowSyntheticDefaultImports": true
   },
   "exclude": ["jest.config.ts", "src/**/*.spec.ts", "src/**/*.test.ts","src/**/view/*.ts","src/**/service/*.ts"],
   "include": ["src/**/*.ts"]

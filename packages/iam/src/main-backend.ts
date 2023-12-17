@@ -6,6 +6,9 @@ import { BigIntModule, initStandard } from '@pisces/common';
 import { IamBackendModule } from './app/iam.backend.module';
 import * as express from 'express'
 import * as path from 'path';
+import webpack from 'webpack';
+import webpackDevMiddleware from 'webpack-dev-middleware';
+import webpackHotMiddleware from 'webpack-hot-middleware';
 
 @Module({
   imports: [
@@ -21,6 +24,26 @@ async function bootstrap() {
   app.use(bodyParser.json({ reviver: BigIntModule }))
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
+
+  const webpackConfig: webpack.Configuration = {
+    mode: "development",
+    entry: [
+      'webpack-hot-middleware/client',
+      `${path.join(__dirname, '../frontend/browser')}/main.js` // 你的主入口文件
+    ],
+    output: {
+      path: path.resolve(__dirname),
+      filename: 'main.js',
+    },
+    plugins: [
+      new webpack.HotModuleReplacementPlugin()
+    ]
+  };
+
+  const compiler = webpack(webpackConfig);
+  app.use(webpackDevMiddleware(compiler));
+
+  app.use(webpackHotMiddleware(compiler));
 
 
   // 静态文件目录，用于存放 Angular 应用的构建结果

@@ -1,4 +1,7 @@
 {
   "angular.enable-strict-mode-prompt": false,
-  "eslint.validate": ["json"]
+  "eslint.validate": ["json"],
+  "files.exclude": {
+    "dist/**": false
+  }
 }
