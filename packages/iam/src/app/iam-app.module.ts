@@ -31,3 +31,5 @@ export class RoutesRoutingModule {}
   bootstrap: [AppComponent],
 })
 export class IamAppModule {}
+// FIXME 先用着
+(module as any)?.hot.accept()
