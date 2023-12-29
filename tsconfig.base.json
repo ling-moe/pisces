@@ -21,8 +21,8 @@
       "@pisces/frontend": ["libs/frontend/src/index.ts"],
       "@pisces/iam/*": ["packages/iam/src/lib/*"],
       "@pisces/musubi": ["libs/musubi/src/index.ts"],
-      "@pisces/musubi/server": ["libs/musubi/src/lib/server/index.ts"],
       "@pisces/musubi/client": ["libs/musubi/src/lib/client/index.ts"],
+      "@pisces/musubi/server": ["libs/musubi/src/lib/server/index.ts"],
       "@pisces/prisma-tool": ["packages/prisma-tool/src/index.ts"],
       "@pisces/theme": ["libs/theme/src/index.ts"]
     }

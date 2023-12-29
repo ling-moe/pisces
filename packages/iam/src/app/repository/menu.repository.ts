@@ -43,7 +43,7 @@ export class MenuRepository implements Provider<MenuRemoteService> {
   @HasPermission('树状查询菜单')
   async tree$menu(isIncludeFunction: boolean) {
     const list1 = await this.prisma.$queryRawUnsafe<MenuNode[]>(`WITH RECURSIVE result AS (
-      SELECT *, 1 as level FROM sys_menu WHERE menu_id = 1
+      SELECT *, 1 as level FROM sys_menu WHERE pid = 0
       UNION
       SELECT m.*, p.level + 1 as level FROM sys_menu m JOIN result p ON m.pid = p.menu_id ${isIncludeFunction ? '' : 'AND m.menu_type != \'FUNCTION\''})
       SELECT * FROM result;`);
@@ -68,10 +68,10 @@ export class MenuRepository implements Provider<MenuRemoteService> {
 
   @HasPermission('当前用户的菜单')
   async querySelf$menu() {
-    const user = this.authClsStore.get('currentUser');
-
-    const roleMenus = await this.prisma.roleMenu.findMany({ where: { roleId: { in: user.roles } } });
-    const menus = await this.prisma.menu.findMany({ where: { menuId: { in: roleMenus.map(i => i.menuId) } } }) as MenuNode[];
+    // const user = this.authClsStore.get('currentUser');
+    // const roleMenus = await this.prisma.roleMenu.findMany({ where: { roleId: { in: user.roles } } });
+    // const menus = await this.prisma.menu.findMany({ where: { menuId: { in: roleMenus.map(i => i.menuId) } } }) as MenuNode[];
+    const menus = await this.prisma.menu.findMany() as MenuNode[];
     const group = groupBy(menus, 'pid');
     return menus.filter((father) => {
       father.children = group[father.menuId.toString()];

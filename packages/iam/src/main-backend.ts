@@ -43,7 +43,7 @@ function loadFrontendHMR(app: NestApplication) {
     mode: "development",
     entry: [
       'webpack-hot-middleware/client',
-      path.join(__dirname, '../frontend/browser/main.js') // 你的主入口文件
+      path.join(__dirname, '../frontend/browser/main.js')
     ],
     output: {
       path: path.resolve(__dirname),
@@ -52,9 +52,7 @@ function loadFrontendHMR(app: NestApplication) {
     plugins: [
       new HotModuleReplacementPlugin()
     ],
-    loader:{
-
-    }
+    stats: 'summary'
   };
 
   const compiler = webpack(webpackConfig);

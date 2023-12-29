@@ -37,7 +37,7 @@
         "tsConfig": "packages/iam/tsconfig.frontend.json",
         "assets": ["packages/iam/src/assets"],
         "allowedCommonJsDependencies": ["base64-js", "lodash", "moment"],
-        "styles": ["libs/frontend/src/styles.scss"],
+        "styles": ["libs/frontend/src/styles.scss","@blocksuite/presets/themes/affine.css"],
         "scripts": [],
         "server": "packages/iam/src/main.server.ts",
         "prerender": false,
@@ -134,20 +134,6 @@
       "executor": "nx:run-commands",
       "defaultConfiguration": "development",
       "options": {
-        "commands": [
-          {
-            "command": "nx run iam:build-frontend",
-            "forwardAllArgs": true,
-            "prefix": "[iam:angular]",
-            "color": "blue"
-          },
-          {
-            "command": "nx run iam:serve-backend",
-            "forwardAllArgs": true,
-            "prefix": "[iam:nestjs]",
-            "color": "green"
-          }
-        ],
         "parallel": true
       },
       "configurations": {
@@ -156,13 +142,13 @@
             {
               "command": "nx run iam:build-frontend:development",
               "forwardAllArgs": true,
-              "prefix": "[iam:angular]",
+              "prefix": "[iam:前端]",
               "color": "blue"
             },
             {
               "command": "nx run iam:serve-backend:development",
               "forwardAllArgs": true,
-              "prefix": "[iam:nestjs]",
+              "prefix": "[iam:后端]",
               "color": "green"
             }
           ]

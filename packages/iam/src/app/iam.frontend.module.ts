@@ -13,10 +13,20 @@ import { UserAssignComponent } from './view/role/user-assign/user-assign.compone
 import { UserCreateComponent } from './view/user/create/create.component';
 import { UserEditComponent } from './view/user/edit/edit.component';
 import { UserListComponent } from './view/user/list/list.component';
+import { DomainDesignerComponent } from './view/domain-designer/domain-designer.component';
 
 const COMPONENTS = [UserListComponent, UserCreateComponent, UserEditComponent, MenuListComponent];
 
 const iamFrontendRoutes: Route[] = [
+  {
+    path: 'domain',
+    children: [
+      {
+        path: 'designer',
+        component: DomainDesignerComponent
+      }
+    ]
+  },
   {
     path: '',
     children: [
@@ -34,6 +44,7 @@ const iamFrontendRoutes: Route[] = [
       },
     ],
   },
+
 ];
 @NgModule({
   imports: [

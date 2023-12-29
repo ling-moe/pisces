@@ -62,7 +62,6 @@ export class UserRepository implements Provider<UserRemoteService>{
   async login(user: User): Promise<Token> {
     const userData = await this.validateUser(user.username, user.password);
     const token = uuidv4();
-    console.log('result==>', userData);
     await this.cachehelper.set(token, userData, 3600000);
     return { access_token: token, token_type: 'bearer' };
   }
