@@ -6,11 +6,17 @@
     "src/**/*.test.ts"
   ],
   "files": [
+    "src/app/app.module.server.ts",
+    "src/app/iam-app.module.ts",
+    "src/main-frontend.ts",
     "src/main.server.ts",
     "server.ts"
   ],
   "include": [
-    "src/**/*.ts"
+    "src/**/*.frontend.module.ts",
+    "src/**/view/**/*.ts",
+    "src/**/domain/**/*.ts",
+    "src/**/infra/**/*.ts"
   ],
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,

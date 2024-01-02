@@ -135,7 +135,7 @@
     "passport-wechat": "^2.0.4",
     "pg": "^8.11.2",
     "photoviewer": "^3.9.0",
-    "reflect-metadata": "^0.1.13",
+    "reflect-metadata": "^0.1.14",
     "rxjs": "^7.8.0",
     "screenfull": "^6.0.2",
     "tslib": "^2.3.0",
