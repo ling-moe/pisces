@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { Prisma, RoleUser } from '@prisma/client';
 import { Provider } from '@pisces/musubi/server';
 import { hash, compare } from 'bcrypt';
-import { User, UserQuery, UserRemoteService } from '../domain/user.entity';
+import { User, UserQuery, UserDomainService } from '../domain/user.entity';
 import { PageRequest, DEFAULT_PAGE, paginator, Page } from '@pisces/common';
 import { camelCase, mapKeys } from 'lodash';
 import { ClsService } from 'nestjs-cls';
@@ -11,7 +11,7 @@ import { HasPermission } from '../infra/permission';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
-export class UserRepository implements Provider<UserRemoteService>{
+export class UserRepository implements Provider<UserDomainService>{
 
   constructor(
     private readonly prisma: PrismaService,
@@ -19,7 +19,7 @@ export class UserRepository implements Provider<UserRemoteService>{
     private readonly cachehelper: CacheHelper
   ) { }
 
-  async listUnassignedUser$user(roleId: bigint): Promise<(User & RoleUser)[]> {
+  async listUnassignedUser(roleId: bigint): Promise<(User & RoleUser)[]> {
     return (await this.prisma
       .$queryRaw<(User & RoleUser)[]>`SELECT su.username, su.display_name, su.user_id, sru.role_id, sru.role_user_id FROM sys_user su LEFT JOIN sys_role_user sru ON su.user_id = sru.user_id AND sru.role_id = ${roleId};`
     ).map((i) => mapKeys(i, (_, v) => camelCase(v)) as unknown as (User & RoleUser));
@@ -27,13 +27,13 @@ export class UserRepository implements Provider<UserRemoteService>{
   /**
    * 查询列表
    */
-  async page$user(pageRequest: PageRequest<User> = DEFAULT_PAGE, query?: UserQuery): Promise<Page<User>> {
+  async page(pageRequest: PageRequest<User> = DEFAULT_PAGE, query?: UserQuery): Promise<Page<User>> {
     return await paginator(pageRequest)(this.prisma.user, { where: query });
   }
   /**
    * 创建用户信息
    */
-  async create$user(user: User): Promise<void> {
+  async create(user: User): Promise<void> {
     // 处理密码
     const pwd = await hash(user.password, 10);
     user.password = pwd;
@@ -49,13 +49,13 @@ export class UserRepository implements Provider<UserRemoteService>{
    * 更新用户信息
    */
   @HasPermission('当前用户信息')
-  async update$user(user: User): Promise<void> {
+  async update(user: User): Promise<void> {
     // 必填校验
     await this.validUserId(user.userId);
     await this.prisma.user.update({ where: { userId: user.userId }, data: user });
   }
 
-  querySelf$user(): User {
+  querySelf(): User {
     return this.authClsStore.get('currentUser');
   }
 

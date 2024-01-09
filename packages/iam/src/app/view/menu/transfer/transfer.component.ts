@@ -1,9 +1,9 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { Consumer, Remotable, RemoteService } from '@pisces/musubi/client';
+import { Consumer, RemoteService, Schema } from '@pisces/musubi/client';
 import { forkJoin } from 'rxjs';
-import { Menu, MenuDomainService, MenuRemoteService } from '../../../domain/menu.entity';
+import { Menu, MenuDomainService } from '../../../domain/menu.entity';
 import { Perm } from '../../../infra/permission';
 
 @Component({
@@ -18,17 +18,14 @@ export class TransferComponent implements OnInit {
   @Output()
   submitted = new EventEmitter<boolean>();
 
-  menuRepository: Remotable<MenuDomainService>;
-
   displayedColumns: string[] = ['select','code', 'desc'];
   dataSource = new MatTableDataSource<Perm>();
   selection = new SelectionModel<Perm>(true, []);
   assignedMenus!: Menu[];
 
   constructor(
-    @Inject(RemoteService) musubiClient: Consumer<MenuRemoteService>,
+    @Inject(RemoteService) @Schema private menuRepository: Consumer<MenuDomainService>,
     ){
-      this.menuRepository = musubiClient.menu;
     }
   ngOnInit(): void {
     forkJoin([this.menuRepository.listPerm(), this.menuRepository.listAssignedPermByMenuId(this.menuId)])

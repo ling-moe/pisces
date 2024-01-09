@@ -1,8 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
-import { Remotable, Consumer, RemoteService } from '@pisces/musubi/client';
-import { Menu, MenuDomainService, MenuNode, MenuRemoteService } from '../../../domain/menu.entity';
+import { Consumer, RemoteService, Schema } from '@pisces/musubi/client';
+import { Menu, MenuDomainService, MenuNode, MenuDomainService } from '../../../domain/menu.entity';
 import { FormGroup } from '@angular/forms';
 import { MatDrawer } from '@angular/material/sidenav';
 import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
@@ -28,13 +28,11 @@ export class MenuListComponent implements OnInit {
   menuId!: bigint;
 
   displayedColumns: string[] = ['menuCode','menuName', 'menuType', 'icon', 'route', 'menuSort', 'enabledFlag', 'operations'];
-  menuRepository: Remotable<MenuDomainService>;
   constructor(
-    @Inject(RemoteService) musubiClient: Consumer<MenuRemoteService>,
+    @Inject(RemoteService) @Schema private menuRepository: Consumer<MenuDomainService>,
     private router: Router,
     private dialog: MatDialog,
   ){
-    this.menuRepository = musubiClient.menu;
   }
 
   ngOnInit(): void {

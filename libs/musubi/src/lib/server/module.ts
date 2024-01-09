@@ -1,4 +1,13 @@
-import { ArgumentMetadata, Module, ModuleMetadata, Provider as NestProvider, PipeTransform, RequestMethod, Type, assignMetadata } from '@nestjs/common';
+import {
+  ArgumentMetadata,
+  Module,
+  ModuleMetadata,
+  Provider as NestProvider,
+  PipeTransform,
+  RequestMethod,
+  Type,
+  assignMetadata,
+} from '@nestjs/common';
 import {
   CONTROLLER_WATERMARK,
   HOST_METADATA,
@@ -17,18 +26,16 @@ export declare const MUSUBI_REMOTABLE = '__musubi_remotable__';
 export type MusubiModuleMetadata = ModuleMetadata & {
   alias?: string;
   remotes?: Type<any>[];
+  exclude?: RegExp;
 };
 
-export type SchemaKey<T, S> = T extends string ? S extends string ? `${T}$${S}` : never : never;
-
-export type Provider<R> =
-  R extends Record<infer S, infer T> ?
-  {
-    [P in keyof T as SchemaKey<P, S>]: T[P] extends (...args: infer A) => infer R ? (...args: A) => Promise<R> | R : any;
-  } : never;
+export type Provider<T> = {
+  [P in keyof T]: T[P] extends (...args: infer A) => infer R ? (...args: A) => Promise<R> | R : any;
+};
 /**
  * 在原有module注解的情况下进行增强
  *
+ * exclude 默认值为Within结尾的方法，正则为/^(.*?)Within$/
  *
  * Decorator that marks a class as a [module](https://docs.nestjs.com/modules).
  *
@@ -44,44 +51,47 @@ export type Provider<R> =
  * @publicApi
  */
 export function MusubiModule(metadata: MusubiModuleMetadata): ClassDecorator {
-
   return (target: Function) => {
     // 加载controller
-    const controllers = createController(metadata.alias, metadata.remotes ?? []).concat(metadata.controllers ?? []);
+    const controllers = createController(
+      metadata.alias ?? '',
+      metadata.exclude ?? /^(.*?)Within$/,
+      metadata.remotes ?? []
+    ).concat(metadata.controllers ?? []);
     Reflect.defineMetadata('controllers', controllers, target);
-    metadata.providers = (metadata.providers??[]);
+    metadata.providers = metadata.providers ?? [];
     metadata.controllers = controllers;
     // 将service追加到service中
-    metadata.remotes?.forEach(remote => metadata.providers!.push(remote));
+    metadata.remotes?.forEach((remote) => metadata.providers!.push(remote));
     // 移除增强的属性
     delete metadata.alias;
     delete metadata.remotes;
+    delete metadata.exclude;
     // 调用原本的module
     Module(metadata)(target);
   };
 }
-function createController(module: string | undefined, remotableServices: NestProvider[]) {
+function createController(module: string, exclude: RegExp, remotableServices: NestProvider[]) {
   const result = [];
   for (const provider of remotableServices) {
     const proxyController = provider as any;
-    const path = module ?? '';
     Reflect.defineMetadata(CONTROLLER_WATERMARK, true, proxyController);
-    Reflect.defineMetadata(PATH_METADATA, path, proxyController);
+    Reflect.defineMetadata(PATH_METADATA, module, proxyController);
     Reflect.defineMetadata(HOST_METADATA, undefined, proxyController);
     Reflect.defineMetadata(SCOPE_OPTIONS_METADATA, undefined, proxyController);
     Reflect.defineMetadata(VERSION_METADATA, undefined, proxyController);
     // 加载mapping
-    defineMappingMatedata(proxyController);
+    defineMappingMatedata(proxyController, exclude);
     result.push(proxyController);
   }
 
   return result;
 }
 
-function defineMappingMatedata(proxyController: Type<any>) {
+function defineMappingMatedata(proxyController: Type<any>, exclude: RegExp) {
   const obj = Object.getOwnPropertyDescriptors(proxyController.prototype);
   for (const property in obj) {
-    if (property === 'constructor' || !property.includes('$')) {
+    if (property === 'constructor' || exclude.test(property)) {
       continue;
     }
     const { method, path, paramType } = methodToHttp(obj[property].value.name);
@@ -110,14 +120,8 @@ function defineMappingParamsMatedata(
       // TODO 接入request和response对象
     } else {
       args = assignMetadata(args, paramType, i, i, JsonPipe);
-      Reflect.defineMetadata(
-        ROUTE_ARGS_METADATA,
-        args,
-        classConstructor,
-        property
-      );
+      Reflect.defineMetadata(ROUTE_ARGS_METADATA, args, classConstructor, property);
     }
-
   }
 }
 
@@ -125,7 +129,9 @@ class JsonPipe implements PipeTransform {
   transform(value?: any, metadata?: ArgumentMetadata) {
     if (value) {
       if (typeof value === 'object' && !Array.isArray(value)) {
-        return isJsonString(value[metadata!.data!]) ? JSON.parse(value[metadata!.data!], BigIntModule) : value[metadata!.data!];
+        return isJsonString(value[metadata!.data!])
+          ? JSON.parse(value[metadata!.data!], BigIntModule)
+          : value[metadata!.data!];
       } else {
         return isJsonString(value) ? JSON.parse(value, BigIntModule) : value;
       }

@@ -4,13 +4,15 @@ import { HttpClient} from '@angular/common/http';
 import { methodToHttp } from '../method-sigature.util';
 import { Observable } from 'rxjs';
 
-export type Remotable<T> = {
+export type Consumer<T> = {
   [P in keyof T]: T[P] extends (...args: infer A) => infer R ? (...args: A) => Observable<R> : never;
 };
 
-export type Consumer<T> = {
-  [P in keyof T]: Remotable<T[P]>
-};
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function Schema(target: Object, propertyKey: string | symbol | undefined, parameterIndex: number) {
+  const classStr = Reflect.getMetadata('design:type', target);
+  Reflect.defineMetadata('musubi:client:schema', classStr, target,propertyKey??"111");
+}
 
 export const RemoteService = new InjectionToken<Consumer<any>>('MUSUBI_REMOTE_SERVICE');
 
