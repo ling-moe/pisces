@@ -1,5 +1,5 @@
 import { Logger, Module } from '@nestjs/common';
-import { NestApplication, NestFactory } from '@nestjs/core';
+import { NestApplication, NestFactory,RouterModule } from '@nestjs/core';
 import { CoreBackendModule } from '@pisces/backend';
 import bodyParser from 'body-parser';
 import { BigIntModule, initStandard } from '@pisces/common';
@@ -14,6 +14,12 @@ import webpackHotMiddleware from 'webpack-hot-middleware';
   imports: [
     CoreBackendModule,
     IamBackendModule,
+    RouterModule.register([
+      {
+        path: 'api',
+        module: IamBackendModule,
+      },
+    ]),
   ]
 })
 export class IamModule { }
@@ -22,8 +28,6 @@ async function bootstrap() {
   initStandard();
   const app = await NestFactory.create<NestApplication>(IamModule);
   app.use(bodyParser.json({ reviver: BigIntModule }));
-  const globalPrefix = 'api';
-  app.setGlobalPrefix(globalPrefix);
 
   // 载入前端hmr
   loadFrontendHMR(app);
