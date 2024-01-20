@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { UserDomainService, UserRemoteService,User } from '../../../domain/user.entity';
-import { Remotable, Consumer, RemoteService } from '@pisces/musubi/client';
+import { UserDomainService,User } from '../../../domain/user.entity';
+import { Consumer, RemoteService} from "@pisces/musubi/client";
 
 @Component({
   selector: 'pisces-edit',
@@ -14,12 +14,10 @@ export class UserEditComponent implements OnInit {
   @Output()
   closeEvent = new EventEmitter<boolean>();
   form!: FormGroup;
-  userRepository: Remotable<UserDomainService>;
   constructor(
     private fb: FormBuilder,
-    @Inject(RemoteService) musubiClient: Consumer<UserRemoteService>
+    @Inject(RemoteService)  private userRepository: Consumer<UserDomainService>
   ) {
-    this.userRepository = musubiClient.user;
   }
 
   ngOnInit() {
@@ -41,7 +39,7 @@ export class UserEditComponent implements OnInit {
 
   onSubmit() {
     if (this.form.valid) {
-      this.userRepository.update({ userId: this.data.userId, ...this.form.value }).subscribe(() => this.close());
+      this.userRepository.updateUser({ userId: this.data.userId, ...this.form.value }).subscribe(() => this.close());
     }
   }
 

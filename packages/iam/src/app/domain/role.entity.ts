@@ -27,15 +27,15 @@ export interface RoleDomainService {
   /**
    * 获取角色列表
    */
-  page(pageRequest: PageRequest<Role>, query?: RoleQuery): Page<Role>;
+  pageRole(pageRequest: PageRequest<Role>, query?: RoleQuery): Page<Role>;
   /**
    * 创建角色
    */
-  create(user: Role): void;
+  createRole(user: Role): void;
   /**
    * 更新角色
    */
-  update(user: Role): void;
+  updateRole(user: Role): void;
 
   /**
    * 根据角色ID查询已授权的菜单
@@ -61,5 +61,3 @@ export interface RoleDomainService {
      */
   saveRoleUser(list: RoleUser[]): void;
 }
-
-export type RoleRemoteService = Record<'role', RoleDomainService>;

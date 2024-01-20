@@ -1,7 +1,7 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { Consumer, RemoteService, Schema } from '@pisces/musubi/client';
+import { Consumer, RemoteService} from '@pisces/musubi/client';
 import { forkJoin } from 'rxjs';
 import { Menu, MenuDomainService } from '../../../domain/menu.entity';
 import { Perm } from '../../../infra/permission';
@@ -24,7 +24,7 @@ export class TransferComponent implements OnInit {
   assignedMenus!: Menu[];
 
   constructor(
-    @Inject(RemoteService) @Schema private menuRepository: Consumer<MenuDomainService>,
+    @Inject(RemoteService)  private menuRepository: Consumer<MenuDomainService>,
     ){
     }
   ngOnInit(): void {

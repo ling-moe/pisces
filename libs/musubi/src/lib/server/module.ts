@@ -6,8 +6,8 @@ import {
   PipeTransform,
   RequestMethod,
   Type,
-  assignMetadata,
-} from '@nestjs/common';
+  assignMetadata
+} from "@nestjs/common";
 import {
   CONTROLLER_WATERMARK,
   HOST_METADATA,
@@ -18,15 +18,14 @@ import {
   VERSION_METADATA,
 } from '@nestjs/common/constants';
 import { RouteParamtypes } from '@nestjs/common/enums/route-paramtypes.enum';
-import { extractMethodParams, methodToHttp } from '../method-sigature.util';
+import { extractMethodParams, methodToHttp } from "../method-sigature.util";
 import { BigIntModule } from '@pisces/common';
 
-export declare const MUSUBI_REMOTABLE = '__musubi_remotable__';
+const musubiMethods = new Set();
 
 export type MusubiModuleMetadata = ModuleMetadata & {
-  alias?: string;
   remotes?: Type<any>[];
-  exclude?: RegExp;
+  include?: RegExp;
 };
 
 export type Provider<T> = {
@@ -54,8 +53,7 @@ export function MusubiModule(metadata: MusubiModuleMetadata): ClassDecorator {
   return (target: Function) => {
     // 加载controller
     const controllers = createController(
-      metadata.alias ?? '',
-      metadata.exclude ?? /^(.*?)Within$/,
+      metadata.include ?? /^[^$].*/,
       metadata.remotes ?? []
     ).concat(metadata.controllers ?? []);
     Reflect.defineMetadata('controllers', controllers, target);
@@ -64,41 +62,46 @@ export function MusubiModule(metadata: MusubiModuleMetadata): ClassDecorator {
     // 将service追加到service中
     metadata.remotes?.forEach((remote) => metadata.providers!.push(remote));
     // 移除增强的属性
-    delete metadata.alias;
     delete metadata.remotes;
-    delete metadata.exclude;
+    delete metadata.include;
     // 调用原本的module
     Module(metadata)(target);
   };
 }
-function createController(module: string, exclude: RegExp, remotableServices: NestProvider[]) {
+function createController(include: RegExp, remoteServices: NestProvider[]) {
   const result = [];
-  for (const provider of remotableServices) {
+  for (const provider of remoteServices) {
     const proxyController = provider as any;
     Reflect.defineMetadata(CONTROLLER_WATERMARK, true, proxyController);
-    Reflect.defineMetadata(PATH_METADATA, module, proxyController);
+    Reflect.defineMetadata(PATH_METADATA, null, proxyController);
     Reflect.defineMetadata(HOST_METADATA, undefined, proxyController);
     Reflect.defineMetadata(SCOPE_OPTIONS_METADATA, undefined, proxyController);
     Reflect.defineMetadata(VERSION_METADATA, undefined, proxyController);
     // 加载mapping
-    defineMappingMatedata(proxyController, exclude);
+    defineMappingMetadata(proxyController, include);
     result.push(proxyController);
   }
 
   return result;
 }
 
-function defineMappingMatedata(proxyController: Type<any>, exclude: RegExp) {
+function defineMappingMetadata(proxyController: Type<any>, exclude: RegExp) {
   const obj = Object.getOwnPropertyDescriptors(proxyController.prototype);
   for (const property in obj) {
-    if (property === 'constructor' || exclude.test(property)) {
+    if (property === 'constructor' || !exclude.test(property)) {
       continue;
     }
-    const { method, path, paramType } = methodToHttp(obj[property].value.name);
-    Reflect.defineMetadata(PATH_METADATA, path, obj[property].value);
+    // 检查方法名是否已存在，存在则报错，不能出现同名的方法
+    const methodName = obj[property].value.name;
+    if(musubiMethods.has(methodName)){
+      throw new Error(`存在重复方法名称! class: ${proxyController.name}, method：${methodName}`)
+    }
+    musubiMethods.add(methodName);
+    const { method, path, paramType } = methodToHttp(methodName);
+    Reflect.defineMetadata(PATH_METADATA, `${path}`, obj[property].value);
     Reflect.defineMetadata(METHOD_METADATA, RequestMethod[method], obj[property].value);
     // 方法参数标记
-    defineMappingParamsMatedata(
+    defineMappingParamsMetadata(
       obj[property].value,
       (obj.constructor as any).value,
       RouteParamtypes[paramType],
@@ -107,7 +110,7 @@ function defineMappingMatedata(proxyController: Type<any>, exclude: RegExp) {
   }
 }
 
-function defineMappingParamsMatedata(
+function defineMappingParamsMetadata(
   method: any,
   classConstructor: Function,
   paramType: RouteParamtypes,

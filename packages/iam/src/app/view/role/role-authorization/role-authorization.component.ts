@@ -2,10 +2,10 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { ChangeDetectorRef, Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
-import { Consumer, Remotable, RemoteService } from '@pisces/musubi/client';
+import { Consumer, RemoteService} from "@pisces/musubi/client";
 import { forkJoin } from 'rxjs';
-import { MenuDomainService, MenuNode, MenuRemoteService } from '../../../domain/menu.entity';
-import { RoleDomainService, RoleMenu, RoleRemoteService } from '../../../domain/role.entity';
+import { MenuDomainService, MenuNode } from '../../../domain/menu.entity';
+import { RoleDomainService, RoleMenu } from '../../../domain/role.entity';
 
 @Component({
   selector: 'pisces-role-authorization',
@@ -20,10 +20,6 @@ export class RoleAuthorizationComponent implements OnInit{
   submitted = new EventEmitter<boolean>();
 
   menuIds!: RoleMenu[];
-
-  menuRepository: Remotable<MenuDomainService>;
-  roleRepository: Remotable<RoleDomainService>;
-
 
   transformer = (node: MenuNode, level: number) => {
     return {
@@ -47,17 +43,15 @@ export class RoleAuthorizationComponent implements OnInit{
   checklistSelection = new SelectionModel<MenuNode>(true /* multiple */);
 
   constructor(
-    @Inject(RemoteService)
-    musubiClient: Consumer<MenuRemoteService & RoleRemoteService>,
+    @Inject(RemoteService)  private menuRepository: Consumer<MenuDomainService>,
+    @Inject(RemoteService)  private roleRepository: Consumer<RoleDomainService>,
     private cdr: ChangeDetectorRef,
     ) {
-      this.menuRepository = musubiClient.menu;
-      this.roleRepository = musubiClient.role;
       this.treeControl.dataNodes = [];
   }
 
   ngOnInit(): void {
-    forkJoin([this.menuRepository.tree(true), this.roleRepository.listMenuByRoleId(this.roleId)])
+    forkJoin([this.menuRepository.treeMenu(true), this.roleRepository.listMenuByRoleId(this.roleId)])
     .subscribe(([menus, roleMenus]) => {
       this.dataSource.data = menus as MenuNode[];
       this.menuIds = roleMenus;

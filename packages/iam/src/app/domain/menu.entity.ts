@@ -21,19 +21,23 @@ export interface MenuDomainService {
   /**
    * 获取树形菜单
    */
-  tree(isIncludeFunction: boolean): Menu[]
+  treeMenu(isIncludeFunction: boolean): Menu[]
   /**
    * 创建菜单
    */
-  create(user: Menu): void;
+  createMenu(user: Menu): void;
   /**
    * 更新菜单
    */
-  update(user: Menu): void;
+  updateMenu(user: Menu): void;
   /**
    * 获取全部权限
    */
   listPerm(): Perm[];
+  /**
+   * 删除菜单
+   */
+  deleteMenu(menuId: bigint): void;
 
   /**
    * 获取菜单下已经分配的权限
@@ -41,11 +45,16 @@ export interface MenuDomainService {
    */
   listAssignedPermByMenuId(menuId: bigint): Menu[];
 
+  /**
+   * 保存菜单权限
+   * @param menuId
+   * @param addPerms
+   * @param removeMenus
+   */
   savePerms(menuId: bigint,addPerms: Perm[], removeMenus: Menu[]): void;
 
-  delete(menuId: bigint): void;
-
-  querySelf(): MenuNode[];
+  /**
+   * 查询当前用户菜单
+   */
+  querySelfMenu(): MenuNode[];
 }
-
-export type MenuRemoteService = Record<'menu', MenuDomainService>;

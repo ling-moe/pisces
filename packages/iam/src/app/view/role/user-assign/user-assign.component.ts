@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { MtxGridColumn } from '@ng-matero/extensions/grid';
-import { Consumer, Remotable, RemoteService } from '@pisces/musubi/client';
-import { RoleDomainService, RoleRemoteService, RoleUser } from '../../../domain/role.entity';
-import { User, UserDomainService, UserRemoteService } from '../../../domain/user.entity';
+import { Consumer, RemoteService} from "@pisces/musubi/client";
+import { RoleDomainService, RoleUser } from '../../../domain/role.entity';
+import { User, UserDomainService } from '../../../domain/user.entity';
 
 @Component({
   selector: 'pisces-user-assign',
@@ -15,17 +15,14 @@ export class UserAssignComponent implements OnInit{
   @Output()
   submitted = new EventEmitter<boolean>();
 
-  roleRepository: Remotable<RoleDomainService>;
-  userRepository: Remotable<UserDomainService>;
   list: (User & RoleUser)[] = [];
   sourceList: (User & RoleUser)[] = [];
   doneList: (User & RoleUser)[] = [];
   rowSelected: (User & RoleUser)[] = [];
   constructor(
-    @Inject(RemoteService) musubiClient: Consumer<RoleRemoteService & UserRemoteService>,
+    @Inject(RemoteService)  private roleRepository: Consumer<RoleDomainService>,
+    @Inject(RemoteService)  private userRepository: Consumer<UserDomainService>,
     ){
-      this.roleRepository = musubiClient.role;
-      this.userRepository = musubiClient.user;
     }
   ngOnInit(): void {
     this.userRepository.listUnassignedUser(this.roleId).subscribe(res => {

@@ -27,13 +27,13 @@ export class UserRepository implements Provider<UserDomainService>{
   /**
    * 查询列表
    */
-  async page(pageRequest: PageRequest<User> = DEFAULT_PAGE, query?: UserQuery): Promise<Page<User>> {
+  async pageUser(pageRequest: PageRequest<User> = DEFAULT_PAGE, query?: UserQuery): Promise<Page<User>> {
     return await paginator(pageRequest)(this.prisma.user, { where: query });
   }
   /**
    * 创建用户信息
    */
-  async create(user: User): Promise<void> {
+  async createUser(user: User): Promise<void> {
     // 处理密码
     const pwd = await hash(user.password, 10);
     user.password = pwd;
@@ -49,28 +49,28 @@ export class UserRepository implements Provider<UserDomainService>{
    * 更新用户信息
    */
   @HasPermission('当前用户信息')
-  async update(user: User): Promise<void> {
+  async updateUser(user: User): Promise<void> {
     // 必填校验
     await this.validUserId(user.userId);
     await this.prisma.user.update({ where: { userId: user.userId }, data: user });
   }
 
-  querySelf(): User {
+  querySelfUser(): User {
     return this.authClsStore.get('currentUser');
   }
 
   async login(user: User): Promise<Token> {
-    const userData = await this.validateUser(user.username, user.password);
+    const userData = await this.$validateUser(user.username, user.password);
     const token = uuidv4();
     await this.cachehelper.set(token, userData, 3600000);
     return { access_token: token, token_type: 'bearer' };
   }
 
-  async validateUser(username: string, password: string): Promise<User> {
+  async $validateUser(username: string, password: string): Promise<User> {
     // 在此处实现用户身份验证逻辑（例如从数据库中验证用户凭据） 如果验证成功，返回用户对象；否则返回 null
     const user = await this.findByUsername(username);
     // 校验用户信息
-    if (!user || !await this.comparePasswords(password, user.password)) {
+    if (!user || !await this.$comparePasswords(password, user.password)) {
       throw new BizException('Incorrect username or password');
     }
     const roleUsers = await this.prisma.roleUser.findMany({ where: { userId: user.userId } });
@@ -78,14 +78,14 @@ export class UserRepository implements Provider<UserDomainService>{
     return user;
   }
 
-  async comparePasswords(password: string, hashedPassword: string): Promise<boolean> {
+  async $comparePasswords(password: string, hashedPassword: string): Promise<boolean> {
     return compare(password, hashedPassword);
   }
 
   /**
    * 重置用户密码
    */
-  async resetPassword(userId: string, user: User): Promise<void> {
+  async $resetPassword(userId: string, user: User): Promise<void> {
     this.validUserId(user.userId);
   }
 
@@ -116,13 +116,13 @@ export class UserRepository implements Provider<UserDomainService>{
     });
   }
 
-  async user(userWhereUniqueInput: Prisma.UserWhereUniqueInput) {
+  async $user(userWhereUniqueInput: Prisma.UserWhereUniqueInput) {
     return this.prisma.user.findUnique({
       where: userWhereUniqueInput,
     });
   }
 
-  async users(options: {
+  async $users(options: {
     skip?: number;
     take?: number;
     cursor?: Prisma.UserWhereUniqueInput;
@@ -140,8 +140,7 @@ export class UserRepository implements Provider<UserDomainService>{
     });
   }
 
-
-  async updateUser(options: { where: Prisma.UserWhereUniqueInput; data: Prisma.UserUpdateInput; }) {
+  async $updateUser(options: { where: Prisma.UserWhereUniqueInput; data: Prisma.UserUpdateInput; }) {
     const { where, data } = options;
     return this.prisma.user.update({
       data,
@@ -149,7 +148,7 @@ export class UserRepository implements Provider<UserDomainService>{
     });
   }
 
-  async deleteUser(where: Prisma.UserWhereUniqueInput) {
+  async $deleteUser(where: Prisma.UserWhereUniqueInput) {
     return this.prisma.user.delete({
       where,
     });

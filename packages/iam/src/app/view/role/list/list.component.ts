@@ -4,10 +4,10 @@ import { PageEvent } from '@angular/material/paginator';
 import { MatDrawer } from '@angular/material/sidenav';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { EmptyObject, Page, PageRequest } from '@pisces/common';
-import { Consumer, Remotable, RemoteService } from '@pisces/musubi/client';
+import { Consumer, RemoteService} from "@pisces/musubi/client";
 import { pickBy } from 'lodash';
 import { tap } from 'rxjs';
-import { Role, RoleDomainService, RoleQuery, RoleRemoteService } from '../../../domain/role.entity';
+import { Role, RoleDomainService, RoleQuery } from '../../../domain/role.entity';
 import { drawerFieldGroup, inputDrawerField, inputSearchField, searchFieldGroup, selectSearchField, textareaDrawerField, toggleDrawerField } from '../../../infra/util/formily-builder';
 import { MatDialog } from '@angular/material/dialog';
 import { UserAssignComponent } from '../user-assign/user-assign.component';
@@ -34,7 +34,6 @@ export class RoleListComponent implements OnInit {
     next: null
   };
   roleId?: bigint;
-  roleRepository: Remotable<RoleDomainService>;
 
   displayedColumns = ['roleCode', 'roleName', 'enabledFlag', 'remark', 'operations'];
 
@@ -53,10 +52,9 @@ export class RoleListComponent implements OnInit {
   ]);
 
   constructor(
-    @Inject(RemoteService) musubiClient: Consumer<RoleRemoteService>,
+    @Inject(RemoteService)  private roleRepository: Consumer<RoleDomainService>,
     private dialog: MatDialog,
   ) {
-    this.roleRepository = musubiClient.role;
   }
 
   ngOnInit() {
@@ -72,18 +70,18 @@ export class RoleListComponent implements OnInit {
   }
 
   create(drawer: MatDrawer) {
-    this.roleRepository.create(this.model as Role)
+    this.roleRepository.createRole(this.model as Role)
       .pipe(tap(() => drawer.toggle()))
       .subscribe(() => this.query());
   }
   update(drawer: MatDrawer) {
-    this.roleRepository.update(this.model as Role)
+    this.roleRepository.updateRole(this.model as Role)
       .pipe(tap(() => drawer.toggle()))
       .subscribe(() => this.query());
   }
 
   authorization(drawer: MatDrawer) {
-    this.roleRepository.update(this.model as Role)
+    this.roleRepository.updateRole(this.model as Role)
       .pipe(tap(() => drawer.toggle()))
       .subscribe(() => this.query());
   }
@@ -96,7 +94,7 @@ export class RoleListComponent implements OnInit {
   query(pageEvent?: PageEvent) {
     this.action = undefined;
     const pageRequest = PageRequest.of<Role>(pageEvent?.pageIndex || this.pageInfo.page, pageEvent?.pageSize || this.pageInfo.size);
-    this.roleRepository.page(pageRequest, pickBy(this.searchModel, Boolean) as RoleQuery).subscribe(users => {
+    this.roleRepository.pageRole(pageRequest, pickBy(this.searchModel, Boolean) as RoleQuery).subscribe(users => {
       this.pageInfo = { ...users };
     });
   }

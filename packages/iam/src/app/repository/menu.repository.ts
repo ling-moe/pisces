@@ -15,7 +15,7 @@ export class MenuRepository implements Provider<MenuDomainService> {
     private readonly authClsStore: ClsService<{ 'currentUser': User; }>,
   ) { }
 
-  async delete(menuId: bigint): Promise<void> {
+  async deleteMenu(menuId: bigint): Promise<void> {
     await this.prisma.menu.delete({ where: { menuId: menuId } });
   };
 
@@ -41,7 +41,7 @@ export class MenuRepository implements Provider<MenuDomainService> {
   }
 
   @HasPermission('树状查询菜单')
-  async tree(isIncludeFunction: boolean) {
+  async treeMenu(isIncludeFunction: boolean) {
     const list1:MenuNode[] = await this.prisma.$queryRawUnsafe<MenuNode[]>(`WITH RECURSIVE result AS (
       SELECT *, 1 as level FROM sys_menu WHERE pid = 0
       UNION
@@ -57,17 +57,17 @@ export class MenuRepository implements Provider<MenuDomainService> {
   }
 
   @HasPermission('创建菜单')
-  async create(menu: Menu) {
+  async createMenu(menu: Menu) {
     await this.prisma.menu.create({ data: menu });
   }
 
   @HasPermission('更新菜单')
-  async update(menu: Menu) {
+  async updateMenu(menu: Menu) {
     await this.prisma.menu.update({ where: { menuId: menu.menuId }, data: menu });
   }
 
   @HasPermission('当前用户的菜单')
-  async querySelf() {
+  async querySelfMenu() {
     // const user = this.authClsStore.get('currentUser');
     // const roleMenus = await this.prisma.roleMenu.findMany({ where: { roleId: { in: user.roles } } });
     // const menus = await this.prisma.menu.findMany({ where: { menuId: { in: roleMenus.map(i => i.menuId) } } }) as MenuNode[];

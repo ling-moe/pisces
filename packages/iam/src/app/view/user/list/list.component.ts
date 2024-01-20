@@ -1,13 +1,14 @@
-import { Consumer, Remotable, RemoteService } from '@pisces/musubi/client';
+import { Consumer, RemoteService } from "@pisces/musubi/client";
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDrawer } from '@angular/material/sidenav';
-import { UserDomainService, UserQuery, UserRemoteService, User } from '../../../domain/user.entity';
+import { UserDomainService, UserQuery, User } from '../../../domain/user.entity';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { FormGroup } from '@angular/forms';
 import { EmptyObject, Page, PageRequest } from "@pisces/common";
 import { PageEvent } from '@angular/material/paginator';
 import { pickBy } from 'lodash';
 import { searchFieldGroup, inputSearchField, selectSearchField } from '../../../infra/util/formily-builder';
+
 
 @Component({
   selector: 'pisces-user-list',
@@ -45,11 +46,9 @@ export class UserListComponent implements OnInit {
       defaultValue: true
     }),
   ]);
-  userRepository: Remotable<UserDomainService>;
   constructor(
-    @Inject(RemoteService) musubiClient: Consumer<UserRemoteService>,
+     @Inject(RemoteService) private userRepository: Consumer<UserDomainService>,
   ) {
-    this.userRepository = musubiClient.user;
    }
 
   ngOnInit() {
@@ -68,7 +67,7 @@ export class UserListComponent implements OnInit {
 
   query(pageEvent?: PageEvent) {
     const pageRequest = PageRequest.of<User>(pageEvent?.pageIndex || this.pageInfo.page, pageEvent?.pageSize || this.pageInfo.size);
-    this.userRepository.page(pageRequest, pickBy(this.searchModel, Boolean) as UserQuery).subscribe(users => {
+    this.userRepository.pageUser(pageRequest, pickBy(this.searchModel, Boolean) as UserQuery).subscribe(users => {
       this.pageInfo = { ...users };
     });
   }

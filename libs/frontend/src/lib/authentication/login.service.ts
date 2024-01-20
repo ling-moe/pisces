@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Token, User } from './interface';
-import { map } from 'rxjs/operators';
 import { Menu } from '../bootstrap/menu.service';
 
 @Injectable({
@@ -26,10 +25,10 @@ export class LoginService {
   }
 
   me() {
-    return this.http.get<User>('/user/querySelf');
+    return this.http.get<User>('/querySelfUser');
   }
 
   menu() {
-    return this.http.get<Menu[]>('/menu/querySelf');
+    return this.http.get<Menu[]>('/querySelfMenu');
   }
 }

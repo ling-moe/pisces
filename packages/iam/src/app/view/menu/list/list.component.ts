@@ -1,8 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
-import { Consumer, RemoteService, Schema } from '@pisces/musubi/client';
-import { Menu, MenuDomainService, MenuNode, MenuDomainService } from '../../../domain/menu.entity';
+import { Consumer, RemoteService} from '@pisces/musubi/client';
+import { Menu, MenuDomainService, MenuNode } from '../../../domain/menu.entity';
 import { FormGroup } from '@angular/forms';
 import { MatDrawer } from '@angular/material/sidenav';
 import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
@@ -29,7 +29,7 @@ export class MenuListComponent implements OnInit {
 
   displayedColumns: string[] = ['menuCode','menuName', 'menuType', 'icon', 'route', 'menuSort', 'enabledFlag', 'operations'];
   constructor(
-    @Inject(RemoteService) @Schema private menuRepository: Consumer<MenuDomainService>,
+    @Inject(RemoteService)  private menuRepository: Consumer<MenuDomainService>,
     private router: Router,
     private dialog: MatDialog,
   ){
@@ -72,24 +72,24 @@ export class MenuListComponent implements OnInit {
   }
 
   delete(menuId: bigint) {
-    this.menuRepository.delete(menuId).subscribe(() => this.query());
+    this.menuRepository.deleteMenu(menuId).subscribe(() => this.query());
     ;
   }
 
   create(drawer: MatDrawer) {
-    this.menuRepository.create(this.model)
+    this.menuRepository.createMenu(this.model)
       .pipe(tap(() => drawer.toggle()))
       .subscribe(() => this.query());
   }
   update(drawer: MatDrawer) {
-    this.menuRepository.update(this.model)
+    this.menuRepository.updateMenu(this.model)
       .pipe(tap(() => drawer.toggle()))
       .subscribe(() => this.query());
   }
 
   query() {
     this.action = undefined;
-    this.menuRepository.tree(false).subscribe(tree => {
+    this.menuRepository.treeMenu(false).subscribe(tree => {
       this.dataSource.data = tree as MenuNode[];
     });
   }

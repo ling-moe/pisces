@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { UserDomainService, UserRemoteService } from '../../../domain/user.entity';
-import { Remotable, Consumer, RemoteService } from '@pisces/musubi/client';
+import { UserDomainService } from '../../../domain/user.entity';
+import { Consumer, RemoteService} from "@pisces/musubi/client";
 
 @Component({
   selector: 'pisces-create',
@@ -12,12 +12,10 @@ export class UserCreateComponent implements OnInit {
   form!: FormGroup;
   @Output()
   closeEvent = new EventEmitter<boolean>();
-  userRepository: Remotable<UserDomainService>;
   constructor(
     private fb: FormBuilder,
-    @Inject(RemoteService) musubiClient: Consumer<UserRemoteService>
+    @Inject(RemoteService)  private userRepository: Consumer<UserDomainService>
   ) {
-    this.userRepository = musubiClient.user;
   }
 
   ngOnInit() {
@@ -38,7 +36,7 @@ export class UserCreateComponent implements OnInit {
 
   onSubmit() {
     if (this.form.valid) {
-      this.userRepository.create(this.form.value).subscribe(() => this.close());
+      this.userRepository.createUser(this.form.value).subscribe(() => this.close());
     }
   }
 

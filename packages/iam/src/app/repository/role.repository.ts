@@ -40,13 +40,13 @@ export class RoleRepository implements Provider<RoleDomainService> {
    * @param query 查询条件
    * @returns 角色list
    */
-  async page(pageRequest: PageRequest<Role>, query?: RoleQuery): Promise<Page<Role>> {
+  async pageRole(pageRequest: PageRequest<Role>, query?: RoleQuery): Promise<Page<Role>> {
     return await paginator(pageRequest)(this.prisma.role, {where: query});
   }
-  async create(role: Role) {
+  async createRole(role: Role) {
     await this.prisma.role.create({ data: role });
   }
-  async update(role: Role) {
+  async updateRole(role: Role) {
     await this.prisma.role.update({ where: { roleId: role.roleId }, data: role });
   }
 }

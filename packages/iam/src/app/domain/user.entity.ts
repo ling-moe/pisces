@@ -26,15 +26,15 @@ export interface UserDomainService {
   /**
    * 获取用户列表
    */
-  page(pageRequest: PageRequest<User>, query?: UserQuery): Page<User>
+  pageUser(pageRequest: PageRequest<User>, query?: UserQuery): Page<User>
   /**
    * 创建用户
    */
-  create(user: User): void;
+  createUser(user: User): void;
   /**
    * 更新用户信息
    */
-  update(user: User): void;
+  updateUser(user: User): void;
 
   /**
    * 查询未分配的用户
@@ -42,8 +42,5 @@ export interface UserDomainService {
    */
   listUnassignedUser(roleId: bigint): (User & RoleUser)[];
 
-  querySelf(): User;
+  querySelfUser(): User;
 }
-
-
-export type UserRemoteService = Record<'user', UserDomainService>;
