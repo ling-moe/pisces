@@ -6,8 +6,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider     = "postgresql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 // 用户信息表
@@ -78,35 +79,19 @@ model Role {
 }
 
 model Menu {
-  menuId   BigInt @id @default(autoincrement()) @map("menu_id")
-  menuCode String @map("menu_code") @db.VarChar(120)
-  menuName String @map("menu_name") @db.VarChar(60)
-  menuType String @map("menu_type") @db.VarChar(10)
-  pid      BigInt @default(0)
-  icon           String?  @db.VarChar(30)
-  route          String?  @db.VarChar(120)
-  menuSort       Int      @default(0)
-  enabledFlag    Boolean  @default(true) @map("enabled_flag")
+  menuId      BigInt   @id @default(autoincrement()) @map("menu_id")
+  menuCode    String   @map("menu_code") @db.VarChar(120)
+  menuName    String   @map("menu_name") @db.VarChar(60)
+  menuType    String   @map("menu_type") @db.VarChar(10)
+  pid         BigInt   @default(0)
+  icon        String?  @db.VarChar(30)
+  route       String?  @db.VarChar(120)
+  menuSort    Int      @default(0)
+  enabledFlag Boolean  @default(true) @map("enabled_flag")
   // 备注
-  remark         String?  @db.VarChar(120)
+  remark      String?  @db.VarChar(120)
   // 版本号
-  versionNum     BigInt   @default(1) @map("version_num")
-  // 创建者
-  createBy       BigInt   @map("create_by")
-  // 创建时间
-  createAt       DateTime @default(now()) @map("create_at")
-  // 更新者
-  updateBy       BigInt   @map("update_by")
-  // 更新时间
-  updateAt       DateTime @updatedAt @map("update_at")
-
-  @@map("sys_menu")
-}
-
-model RoleMenu {
-  roleMenuId  BigInt   @id @default(autoincrement()) @map("role_menu_id")
-  roleId      BigInt   @map("role_id")
-  menuId      BigInt  @map("menu_id")
+  versionNum  BigInt   @default(1) @map("version_num")
   // 创建者
   createBy    BigInt   @map("create_by")
   // 创建时间
@@ -115,24 +100,97 @@ model RoleMenu {
   updateBy    BigInt   @map("update_by")
   // 更新时间
   updateAt    DateTime @updatedAt @map("update_at")
+
+  @@map("sys_menu")
+}
+
+model RoleMenu {
+  roleMenuId BigInt   @id @default(autoincrement()) @map("role_menu_id")
+  roleId     BigInt   @map("role_id")
+  menuId     BigInt   @map("menu_id")
+  // 创建者
+  createBy   BigInt   @map("create_by")
+  // 创建时间
+  createAt   DateTime @default(now()) @map("create_at")
+  // 更新者
+  updateBy   BigInt   @map("update_by")
+  // 更新时间
+  updateAt   DateTime @updatedAt @map("update_at")
 
   @@unique([roleId, menuId])
   @@map("sys_role_menu")
 }
 
 model RoleUser {
-  roleUserId  BigInt   @id @default(autoincrement()) @map("role_user_id")
-  roleId      BigInt   @map("role_id")
-  userId      BigInt  @map("user_id")
+  roleUserId BigInt   @id @default(autoincrement()) @map("role_user_id")
+  roleId     BigInt   @map("role_id")
+  userId     BigInt   @map("user_id")
   // 创建者
-  createBy    BigInt   @map("create_by")
+  createBy   BigInt   @map("create_by")
   // 创建时间
-  createAt    DateTime @default(now()) @map("create_at")
+  createAt   DateTime @default(now()) @map("create_at")
   // 更新者
-  updateBy    BigInt   @map("update_by")
+  updateBy   BigInt   @map("update_by")
   // 更新时间
-  updateAt    DateTime @updatedAt @map("update_at")
+  updateAt   DateTime @updatedAt @map("update_at")
 
   @@unique([roleId, userId])
   @@map("sys_role_user")
+}
+
+model Product {
+  id             BigInt           @id @default(autoincrement()) @map("id")
+  code           String           @map("code") @db.VarChar(60)
+  name           String           @map("name") @db.VarChar(120)
+  title          String           @map("title") @db.VarChar(240)
+  desc           String           @db.Text
+  versionNum     BigInt           @default(1) @map("version_num")
+  createBy       BigInt           @map("create_by")
+  createAt       DateTime         @default(now()) @map("create_at")
+  updateBy       BigInt           @map("update_by")
+  updateAt       DateTime         @updatedAt @map("update_at")
+  ProductDomain  ProductDomain[]
+  ProductFeature ProductFeature[]
+
+  @@map("ddd_product")
+}
+
+model ProductDomain {
+  id             BigInt           @id @default(autoincrement()) @map("id")
+  productId      BigInt           @map("product_id")
+  Product        Product          @relation(fields: [productId], references: [id])
+  entity         String           @default("")
+  aggregateRoot  String           @default("")
+  desc           String           @map("desc") @db.Text
+  versionNum     BigInt           @default(1) @map("version_num")
+  createBy       BigInt           @map("create_by")
+  createAt       DateTime         @default(now()) @map("create_at")
+  updateBy       BigInt           @map("update_by")
+  updateAt       DateTime         @updatedAt @map("update_at")
+  ProductFeature ProductFeature[]
+
+  @@index([productId])
+  @@map("ddd_product_domain")
+}
+
+model ProductFeature {
+  id              BigInt         @id @default(autoincrement()) @map("id")
+  productId       BigInt         @map("product_id")
+  productDomainId BigInt?        @map("product_domain_id")
+  Product         Product        @relation(fields: [productId], references: [id])
+  ProductDomain   ProductDomain? @relation(fields: [productDomainId], references: [id])
+  title           String         @map("title") @db.VarChar(240)
+  desc            String         @db.Text
+  event           String         @db.Text
+  command         String         @db.Text
+  role            String         @db.Text
+  versionNum      BigInt         @default(1) @map("version_num")
+  createBy        BigInt         @map("create_by")
+  createAt        DateTime       @default(now()) @map("create_at")
+  updateBy        BigInt         @map("update_by")
+  updateAt        DateTime       @updatedAt @map("update_at")
+
+  @@index([productId])
+  @@index([productDomainId])
+  @@map("ddd_product_feature")
 }
