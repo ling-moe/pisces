@@ -14,180 +14,232 @@ datasource db {
 // 用户信息表
 model User {
   // 用户ID
-  userId             BigInt    @id @default(autoincrement()) @map("user_id")
+  id                 BigInt     @id @default(autoincrement()) @map("id")
   // 用户名
-  username           String    @unique @db.VarChar(30)
+  username           String     @unique @db.VarChar(30)
   // 用户昵称
-  displayName        String    @map("display_name") @db.VarChar(30)
+  displayName        String     @map("display_name") @db.VarChar(30)
   // 语言,默认是中文
-  lang               String    @db.VarChar(30)
+  lang               String     @db.VarChar(30)
   // 地区,默认是中国
-  locale             String    @db.VarChar(30)
+  locale             String     @db.VarChar(30)
   // 邮箱
-  email              String    @unique @db.VarChar(50)
+  email              String     @unique @db.VarChar(50)
   // 手机号码
-  phone              String    @unique @db.VarChar(11)
+  phone              String     @unique @db.VarChar(11)
   // 用户性别（0男 1女 2未知）
-  sex                String    @db.VarChar(5)
+  sex                String     @db.VarChar(5)
   // 用户头像
-  avatar             String?   @db.VarChar(100)
+  avatar             String?    @db.VarChar(100)
   // 密码
-  password           String    @db.VarChar(100)
+  password           String     @db.VarChar(100)
   // 生效开始日期
-  effectiveStartDate DateTime  @default(now()) @map("effective_start_date")
+  effectiveStartDate DateTime   @default(now()) @map("effective_start_date")
   // 生效截至日期
-  effectiveEndDate   DateTime? @map("effective_end_date")
+  effectiveEndDate   DateTime?  @map("effective_end_date")
   // 已激活标识
-  activedFlag        Boolean   @default(true) @map("actived_flag")
+  activedFlag        Boolean    @default(true) @map("actived_flag")
   // 锁定截止时间
-  lockedTime         DateTime? @map("locked_time")
+  lockedTime         DateTime?  @map("locked_time")
   //  已启用标识·
-  enabledFlag        Boolean   @default(true) @map("enabled_flag")
+  enabledFlag        Boolean    @default(true) @map("enabled_flag")
   // 版本号
-  versionNum         BigInt    @default(1) @map("version_num")
+  versionNum         BigInt     @default(1) @map("version_num")
   // 创建者
-  createBy           BigInt    @map("create_by")
+  createBy           BigInt     @map("create_by")
   // 创建时间
-  createAt           DateTime  @default(now()) @map("create_at")
+  createAt           DateTime   @default(now()) @map("create_at")
   // 更新者
-  updateBy           BigInt    @map("update_by")
+  updateBy           BigInt     @map("update_by")
   // 更新时间
-  updateAt           DateTime  @updatedAt @map("update_at")
+  updateAt           DateTime   @updatedAt @map("update_at")
+  roleUsers          RoleUser[]
 
-  @@map("sys_user")
+  @@map("iam_user")
 }
 
 model Role {
-  roleId      BigInt   @id @default(autoincrement()) @map("role_id")
-  roleCode    String   @map("role_code") @db.VarChar(60)
-  roleName    String   @map("role_name") @db.VarChar(60)
-  enabledFlag Boolean  @default(true) @map("enabled_flag")
+  id          BigInt     @id @default(autoincrement()) @map("id")
+  roleCode    String     @map("role_code") @db.VarChar(60)
+  roleName    String     @map("role_name") @db.VarChar(60)
+  enabledFlag Boolean    @default(true) @map("enabled_flag")
   // 备注
-  remark      String?  @db.VarChar(120)
+  remark      String?    @db.VarChar(120)
   // 版本号
-  versionNum  BigInt   @default(1) @map("version_num")
+  versionNum  BigInt     @default(1) @map("version_num")
   // 创建者
-  createBy    BigInt   @map("create_by")
+  createBy    BigInt     @map("create_by")
   // 创建时间
-  createAt    DateTime @default(now()) @map("create_at")
+  createAt    DateTime   @default(now()) @map("create_at")
   // 更新者
-  updateBy    BigInt   @map("update_by")
+  updateBy    BigInt     @map("update_by")
   // 更新时间
-  updateAt    DateTime @updatedAt @map("update_at")
+  updateAt    DateTime   @updatedAt @map("update_at")
+  roleMenus   RoleMenu[]
+  roleUsers   RoleUser[]
 
-  @@map("sys_role")
+  @@map("iam_role")
 }
 
 model Menu {
-  menuId      BigInt   @id @default(autoincrement()) @map("menu_id")
-  menuCode    String   @map("menu_code") @db.VarChar(120)
-  menuName    String   @map("menu_name") @db.VarChar(60)
-  menuType    String   @map("menu_type") @db.VarChar(10)
-  pid         BigInt   @default(0)
-  icon        String?  @db.VarChar(30)
-  route       String?  @db.VarChar(120)
-  menuSort    Int      @default(0)
-  enabledFlag Boolean  @default(true) @map("enabled_flag")
+  id          BigInt     @id @default(autoincrement()) @map("id")
+  menuCode    String     @map("menu_code") @db.VarChar(120)
+  menuName    String     @map("menu_name") @db.VarChar(60)
+  menuType    String     @map("menu_type") @db.VarChar(10)
+  pid         BigInt     @default(0)
+  icon        String?    @db.VarChar(30)
+  route       String?    @db.VarChar(120)
+  menuSort    Int        @default(0)
+  enabledFlag Boolean    @default(true) @map("enabled_flag")
   // 备注
-  remark      String?  @db.VarChar(120)
+  remark      String?    @db.VarChar(120)
   // 版本号
-  versionNum  BigInt   @default(1) @map("version_num")
+  versionNum  BigInt     @default(1) @map("version_num")
   // 创建者
-  createBy    BigInt   @map("create_by")
+  createBy    BigInt     @map("create_by")
   // 创建时间
-  createAt    DateTime @default(now()) @map("create_at")
+  createAt    DateTime   @default(now()) @map("create_at")
   // 更新者
-  updateBy    BigInt   @map("update_by")
+  updateBy    BigInt     @map("update_by")
   // 更新时间
-  updateAt    DateTime @updatedAt @map("update_at")
+  updateAt    DateTime   @updatedAt @map("update_at")
+  RoleMenu    RoleMenu[]
 
-  @@map("sys_menu")
+  @@map("iam_menu")
 }
 
 model RoleMenu {
-  roleMenuId BigInt   @id @default(autoincrement()) @map("role_menu_id")
-  roleId     BigInt   @map("role_id")
-  menuId     BigInt   @map("menu_id")
+  id       BigInt   @id @default(autoincrement()) @map("id")
+  roleId   BigInt   @map("role_id")
+  role     Role     @relation(fields: [roleId], references: [id])
+  menuId   BigInt   @map("menu_id")
+  menu     Menu     @relation(fields: [menuId], references: [id])
   // 创建者
-  createBy   BigInt   @map("create_by")
+  createBy BigInt   @map("create_by")
   // 创建时间
-  createAt   DateTime @default(now()) @map("create_at")
+  createAt DateTime @default(now()) @map("create_at")
   // 更新者
-  updateBy   BigInt   @map("update_by")
+  updateBy BigInt   @map("update_by")
   // 更新时间
-  updateAt   DateTime @updatedAt @map("update_at")
+  updateAt DateTime @updatedAt @map("update_at")
 
   @@unique([roleId, menuId])
-  @@map("sys_role_menu")
+  @@index([menuId])
+  @@map("iam_role_menu")
 }
 
 model RoleUser {
-  roleUserId BigInt   @id @default(autoincrement()) @map("role_user_id")
-  roleId     BigInt   @map("role_id")
-  userId     BigInt   @map("user_id")
+  id       BigInt   @id @default(autoincrement()) @map("id")
+  roleId   BigInt   @map("role_id")
+  role     Role     @relation(fields: [roleId], references: [id])
+  userId   BigInt   @map("user_id")
+  user     User     @relation(fields: [userId], references: [id])
   // 创建者
-  createBy   BigInt   @map("create_by")
+  createBy BigInt   @map("create_by")
   // 创建时间
-  createAt   DateTime @default(now()) @map("create_at")
+  createAt DateTime @default(now()) @map("create_at")
   // 更新者
-  updateBy   BigInt   @map("update_by")
+  updateBy BigInt   @map("update_by")
   // 更新时间
-  updateAt   DateTime @updatedAt @map("update_at")
+  updateAt DateTime @updatedAt @map("update_at")
 
   @@unique([roleId, userId])
-  @@map("sys_role_user")
+  @@index([userId])
+  @@map("iam_role_user")
 }
 
+// 产品表
 model Product {
-  id             BigInt           @id @default(autoincrement()) @map("id")
-  code           String           @map("code") @db.VarChar(60)
-  name           String           @map("name") @db.VarChar(120)
-  title          String           @map("title") @db.VarChar(240)
-  desc           String           @db.Text
-  versionNum     BigInt           @default(1) @map("version_num")
-  createBy       BigInt           @map("create_by")
-  createAt       DateTime         @default(now()) @map("create_at")
-  updateBy       BigInt           @map("update_by")
-  updateAt       DateTime         @updatedAt @map("update_at")
-  ProductDomain  ProductDomain[]
-  ProductFeature ProductFeature[]
+  // 产品ID
+  id              BigInt           @id @default(autoincrement()) @map("id")
+  // 产品代码
+  code            String           @map("code") @db.VarChar(60)
+  // 产品名称
+  name            String           @map("name") @db.VarChar(120)
+  // 产品标题
+  title           String           @map("title") @db.VarChar(240)
+  // 产品描述
+  desc            String           @db.Text
+  // 版本号
+  versionNum      BigInt           @default(1) @map("version_num")
+  // 创建者
+  createBy        BigInt           @map("create_by")
+  // 创建时间
+  createAt        DateTime         @default(now()) @map("create_at")
+  // 更新者
+  updateBy        BigInt           @map("update_by")
+  // 更新时间
+  updateAt        DateTime         @updatedAt @map("update_at")
+  // 归属的域
+  productDomains  ProductDomain[]
+  // 包含的特性
+  productFeatures ProductFeature[]
 
   @@map("ddd_product")
 }
 
+// 产品域表
 model ProductDomain {
-  id             BigInt           @id @default(autoincrement()) @map("id")
-  productId      BigInt           @map("product_id")
-  Product        Product          @relation(fields: [productId], references: [id])
-  entity         String           @default("")
-  aggregateRoot  String           @default("")
-  desc           String           @map("desc") @db.Text
-  versionNum     BigInt           @default(1) @map("version_num")
-  createBy       BigInt           @map("create_by")
-  createAt       DateTime         @default(now()) @map("create_at")
-  updateBy       BigInt           @map("update_by")
-  updateAt       DateTime         @updatedAt @map("update_at")
-  ProductFeature ProductFeature[]
+  // 域ID
+  id              BigInt           @id @default(autoincrement()) @map("id")
+  // 所属的产品ID
+  productId       BigInt           @map("product_id")
+  // 关联的产品
+  Product         Product          @relation(fields: [productId], references: [id])
+  // 实体
+  entity          String           @default("")
+  // 聚合根
+  aggregateRoot   String           @default("")
+  // 描述
+  desc            String           @map("desc") @db.Text
+  // 版本号
+  versionNum      BigInt           @default(1) @map("version_num")
+  // 创建者
+  createBy        BigInt           @map("create_by")
+  // 创建时间
+  createAt        DateTime         @default(now()) @map("create_at")
+  // 更新者
+  updateBy        BigInt           @map("update_by")
+  // 更新时间
+  updateAt        DateTime         @updatedAt @map("update_at")
+  // 域下的产品特性
+  productFeatures ProductFeature[]
 
   @@index([productId])
   @@map("ddd_product_domain")
 }
 
+// 产品特性表
 model ProductFeature {
+  // 特性ID
   id              BigInt         @id @default(autoincrement()) @map("id")
+  // 所属的产品ID
   productId       BigInt         @map("product_id")
+  // 所属的域ID
   productDomainId BigInt?        @map("product_domain_id")
+  // 关联的产品
   Product         Product        @relation(fields: [productId], references: [id])
+  // 可能的关联域
   ProductDomain   ProductDomain? @relation(fields: [productDomainId], references: [id])
+  // 标题
   title           String         @map("title") @db.VarChar(240)
+  // 描述
   desc            String         @db.Text
+  // 事件
   event           String         @db.Text
+  // 命令
   command         String         @db.Text
+  // 角色
   role            String         @db.Text
+  // 版本号
   versionNum      BigInt         @default(1) @map("version_num")
+  // 创建者
   createBy        BigInt         @map("create_by")
+  // 创建时间
   createAt        DateTime       @default(now()) @map("create_at")
+  // 更新者
   updateBy        BigInt         @map("update_by")
+  // 更新时间
   updateAt        DateTime       @updatedAt @map("update_at")
 
   @@index([productId])
