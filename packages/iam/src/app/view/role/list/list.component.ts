@@ -65,7 +65,7 @@ export class RoleListComponent implements OnInit {
     this.action = action;
     this.options.updateInitialValue?.(role);
     this.options.resetModel?.();
-    this.roleId = role?.roleId;
+    this.roleId = role?.id;
     drawer.toggle();
   }
 

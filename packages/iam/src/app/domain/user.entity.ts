@@ -2,7 +2,7 @@ import { AuditDomain, OCC, Page, PageRequest } from '@pisces/common';
 import { RoleUser } from './role.entity';
 
 export type User = {
-  userId: bigint
+  id: bigint
   username: string
   displayName: string
   lang: string

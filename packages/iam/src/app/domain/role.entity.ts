@@ -1,7 +1,7 @@
 import { PageRequest, Page, AuditDomain, OCC } from '@pisces/common';
 
 export type Role = {
-  roleId: bigint;
+  id: bigint;
   roleCode: string;
   roleName: string;
   enabledFlag: boolean;
@@ -10,13 +10,13 @@ export type Role = {
 } & AuditDomain & OCC;
 
 export type RoleMenu = {
-  roleMenuId: bigint;
+  id: bigint;
   roleId: bigint;
   menuId: bigint;
 } & AuditDomain;
 
 export type RoleUser = {
-  roleUserId: bigint;
+  id: bigint;
   roleId: bigint;
   userId: bigint;
 } & AuditDomain;

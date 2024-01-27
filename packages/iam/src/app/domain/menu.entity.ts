@@ -3,7 +3,7 @@ import { Perm } from '../infra/permission';
 
 // {value: 'DIR',label: '目录'},{value: 'ROUTE',label: '路由'},{value: 'FUNCTION',label: '功能'},{value: 'UI',label: '视图'}
 export type Menu = {
-  menuId: bigint
+  id: bigint
   menuCode: string
   menuName: string
   menuType: string

@@ -51,8 +51,8 @@ export class UserRepository implements Provider<UserDomainService>{
   @HasPermission('当前用户信息')
   async updateUser(user: User): Promise<void> {
     // 必填校验
-    await this.validUserId(user.userId);
-    await this.prisma.user.update({ where: { userId: user.userId }, data: user });
+    await this.validUserId(user.id);
+    await this.prisma.user.update({ where: { id: user.id }, data: user });
   }
 
   querySelfUser(): User {
@@ -73,7 +73,7 @@ export class UserRepository implements Provider<UserDomainService>{
     if (!user || !await this.$comparePasswords(password, user.password)) {
       throw new BizException('Incorrect username or password');
     }
-    const roleUsers = await this.prisma.roleUser.findMany({ where: { userId: user.userId } });
+    const roleUsers = await this.prisma.roleUser.findMany({ where: { id: user.id } });
     user.roles = roleUsers.map(roleUser => roleUser.roleId);
     return user;
   }
@@ -86,7 +86,7 @@ export class UserRepository implements Provider<UserDomainService>{
    * 重置用户密码
    */
   async $resetPassword(userId: string, user: User): Promise<void> {
-    this.validUserId(user.userId);
+    this.validUserId(user.id);
   }
 
   async validUserId(userId: bigint): Promise<void> {
@@ -109,7 +109,7 @@ export class UserRepository implements Provider<UserDomainService>{
   async findByUserId(userId: bigint): Promise<User | null> {
     return this.prisma.user.findFirst({
       where: {
-        userId: {
+        id: {
           equals: userId,
         },
       },

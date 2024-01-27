@@ -16,7 +16,7 @@ export class MenuRepository implements Provider<MenuDomainService> {
   ) { }
 
   async deleteMenu(menuId: bigint): Promise<void> {
-    await this.prisma.menu.delete({ where: { menuId: menuId } });
+    await this.prisma.menu.delete({ where: { id: menuId } });
   };
 
   @HasPermission('保存菜单中的权限')
@@ -26,7 +26,7 @@ export class MenuRepository implements Provider<MenuDomainService> {
     });
     await this.prisma.$transaction([
       this.prisma.menu.createMany({ data: menus }),
-      this.prisma.menu.deleteMany({ where: { menuId: { in: removeMenus.map(menu => menu.menuId) } } })
+      this.prisma.menu.deleteMany({ where: { id: { in: removeMenus.map(menu => menu.id) } } })
     ]);
   };
 
@@ -51,7 +51,7 @@ export class MenuRepository implements Provider<MenuDomainService> {
     const list = list1.map((i) => mapKeys(i, (_, v) => camelCase(v))) as unknown as MenuNode[];
     const group = groupBy(list, 'pid');
     return list.filter((father) => {
-      father.children = group[father.menuId.toString()];
+      father.children = group[father.id.toString()];
       return father.pid === 0n;
     });
   }
@@ -63,7 +63,7 @@ export class MenuRepository implements Provider<MenuDomainService> {
 
   @HasPermission('更新菜单')
   async updateMenu(menu: Menu) {
-    await this.prisma.menu.update({ where: { menuId: menu.menuId }, data: menu });
+    await this.prisma.menu.update({ where: { id: menu.id }, data: menu });
   }
 
   @HasPermission('当前用户的菜单')
@@ -74,7 +74,7 @@ export class MenuRepository implements Provider<MenuDomainService> {
     const menus = await this.prisma.menu.findMany() as MenuNode[];
     const group = groupBy(menus, 'pid');
     return menus.filter((father) => {
-      father.children = group[father.menuId.toString()];
+      father.children = group[father.id.toString()];
       return father.pid === 0n;
     });
   }

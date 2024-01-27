@@ -28,7 +28,6 @@ async function bootstrap() {
   initStandard();
   const app = await NestFactory.create<NestApplication>(IamModule);
   app.use(bodyParser.json({ reviver: BigIntModule }));
-
   // 载入前端hmr
   loadFrontendHMR(app);
   // 静态文件目录，用于存放 Angular 应用的构建结果

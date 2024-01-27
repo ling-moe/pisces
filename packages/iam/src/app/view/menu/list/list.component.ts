@@ -63,11 +63,11 @@ export class MenuListComponent implements OnInit {
     return result;
   }
 
-  changeAction(drawer: MatDrawer, action: FormAction | 'addPerm', menu?: Menu | {pid: bigint, menuId?: bigint}) {
+  changeAction(drawer: MatDrawer, action: FormAction | 'addPerm', menu?: Menu | {pid: bigint, id?: bigint}) {
     this.action = action;
     this.options.updateInitialValue?.({...menu, expandable: undefined, level: undefined, children: undefined});
     this.options.resetModel?.();
-    this.menuId = menu?.menuId ?? 0n;
+    this.menuId = menu?.id ?? 0n;
     drawer.toggle();
   }
 

@@ -39,7 +39,7 @@ export class UserEditComponent implements OnInit {
 
   onSubmit() {
     if (this.form.valid) {
-      this.userRepository.updateUser({ userId: this.data.userId, ...this.form.value }).subscribe(() => this.close());
+      this.userRepository.updateUser({ userId: this.data.id, ...this.form.value }).subscribe(() => this.close());
     }
   }
 

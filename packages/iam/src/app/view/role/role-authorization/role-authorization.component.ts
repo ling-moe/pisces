@@ -55,12 +55,12 @@ export class RoleAuthorizationComponent implements OnInit{
     .subscribe(([menus, roleMenus]) => {
       this.dataSource.data = menus as MenuNode[];
       this.menuIds = roleMenus;
-      this.checklistSelection.setSelection(...this.treeControl.dataNodes.filter(item => this.menuIds.map(i => i.menuId).includes(item.menuId)));
+      this.checklistSelection.setSelection(...this.treeControl.dataNodes.filter(item => this.menuIds.map(i => i.menuId).includes(item.id)));
     });
   }
 
   save(){
-    const newMenuIds = this.checklistSelection.selected.map(i => i.menuId);
+    const newMenuIds = this.checklistSelection.selected.map(i => i.id);
     const removeList = this.menuIds.filter(menuId => !newMenuIds.includes(menuId.menuId));
     const addList = newMenuIds.filter(menuId => !this.menuIds.map(i => i.menuId).includes(menuId));
 

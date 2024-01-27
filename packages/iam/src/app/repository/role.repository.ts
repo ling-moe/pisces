@@ -10,14 +10,14 @@ export class RoleRepository implements Provider<RoleDomainService> {
     private prisma: PrismaService
     ) {}
   async listUserByRoleId(roleId: bigint): Promise<RoleUser[]>{
-    return await this.prisma.roleUser.findMany({where: {roleId}});
+    return await this.prisma.roleUser.findMany({where: {id: roleId}});
   }
 
   async saveRoleUser(list: RoleUser[]): Promise<void>{
-    const removeList = list.filter(roleMenu => roleMenu.roleUserId).map(roleMenu => roleMenu.roleUserId);
-    const addList = list.filter(roleMenu => !roleMenu.roleUserId)
+    const removeList = list.filter(roleMenu => roleMenu.id).map(roleMenu => roleMenu.id);
+    const addList = list.filter(roleMenu => !roleMenu.id)
     await this.prisma.$transaction([
-      this.prisma.roleUser.deleteMany({where: {roleUserId: {in: removeList}}}),
+      this.prisma.roleUser.deleteMany({where: {id: {in: removeList}}}),
       this.prisma.roleUser.createMany({data: addList})
     ]);
   }
@@ -27,10 +27,10 @@ export class RoleRepository implements Provider<RoleDomainService> {
   }
 
   async saveRoleMenu(list: RoleMenu[]): Promise<void>{
-    const removeList = list.filter(roleMenu => roleMenu.roleMenuId).map(roleMenu => roleMenu.roleMenuId);
-    const addList = list.filter(roleMenu => !roleMenu.roleMenuId)
+    const removeList = list.filter(roleMenu => roleMenu.id).map(roleMenu => roleMenu.id);
+    const addList = list.filter(roleMenu => !roleMenu.id)
     await this.prisma.$transaction([
-      this.prisma.roleMenu.deleteMany({where: {roleMenuId: {in: removeList}}}),
+      this.prisma.roleMenu.deleteMany({where: {id: {in: removeList}}}),
       this.prisma.roleMenu.createMany({data: addList})
     ]);
   };
@@ -47,6 +47,6 @@ export class RoleRepository implements Provider<RoleDomainService> {
     await this.prisma.role.create({ data: role });
   }
   async updateRole(role: Role) {
-    await this.prisma.role.update({ where: { roleId: role.roleId }, data: role });
+    await this.prisma.role.update({ where: { id: role.id }, data: role });
   }
 }
