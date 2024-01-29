@@ -25,7 +25,7 @@ export class MenuListComponent implements OnInit {
   form = new FormGroup({});
   data: Role[] = [];
   action?: FormAction | 'addPerm' = 'create';
-  menuId!: bigint;
+  id!: bigint;
 
   displayedColumns: string[] = ['menuCode','menuName', 'menuType', 'icon', 'route', 'menuSort', 'enabledFlag', 'operations'];
   constructor(
@@ -67,12 +67,12 @@ export class MenuListComponent implements OnInit {
     this.action = action;
     this.options.updateInitialValue?.({...menu, expandable: undefined, level: undefined, children: undefined});
     this.options.resetModel?.();
-    this.menuId = menu?.id ?? 0n;
+    this.id = menu?.id ?? 0n;
     drawer.toggle();
   }
 
-  delete(menuId: bigint) {
-    this.menuRepository.deleteMenu(menuId).subscribe(() => this.query());
+  delete(id: bigint) {
+    this.menuRepository.deleteMenu(id).subscribe(() => this.query());
     ;
   }
 
@@ -113,7 +113,7 @@ export class MenuListComponent implements OnInit {
 
   menuEditFields: FormlyFieldConfig[] =
     drawerFieldGroup([
-      inputDrawerField('menuId', '菜单ID', {required: true, hide: true}),
+      inputDrawerField('id', '菜单ID', {required: true, hide: true}),
       inputDrawerField('pid', '上级菜单', {required: false, disabled: true}),
       inputDrawerField('menuCode', '菜单编码', {required: true}),
       inputDrawerField('menuName', '菜单名称', {required: true}),

@@ -17,7 +17,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
   async onModuleInit() {
     // 注册拦截器
     this.$use(async (params, next) => {
-      const userId = this.authClsStore.get('currentUser')?.userId ?? 1;
+      const userId = this.authClsStore.get('currentUser')?.id ?? 1;
       if (params.action === 'create') {
         params.args.data['createBy'] = userId;
         params.args.data['updateBy'] = userId;

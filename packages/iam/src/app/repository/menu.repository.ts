@@ -43,9 +43,9 @@ export class MenuRepository implements Provider<MenuDomainService> {
   @HasPermission('树状查询菜单')
   async treeMenu(isIncludeFunction: boolean) {
     const list1:MenuNode[] = await this.prisma.$queryRawUnsafe<MenuNode[]>(`WITH RECURSIVE result AS (
-      SELECT *, 1 as level FROM sys_menu WHERE pid = 0
+      SELECT *, 1 as level FROM iam_menu WHERE pid = 0
       UNION
-      SELECT m.*, p.level + 1 as level FROM sys_menu m JOIN result p ON m.pid = p.menu_id ${isIncludeFunction ? '' : 'AND m.menu_type != \'FUNCTION\''})
+      SELECT m.*, p.level + 1 as level FROM iam_menu m JOIN result p ON m.pid = p.id ${isIncludeFunction ? '' : 'AND m.menu_type != \'FUNCTION\''})
       SELECT * FROM result;`);
 
     const list = list1.map((i) => mapKeys(i, (_, v) => camelCase(v))) as unknown as MenuNode[];

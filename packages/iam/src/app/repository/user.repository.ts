@@ -21,7 +21,7 @@ export class UserRepository implements Provider<UserDomainService>{
 
   async listUnassignedUser(roleId: bigint): Promise<(User & RoleUser)[]> {
     return (await this.prisma
-      .$queryRaw<(User & RoleUser)[]>`SELECT su.username, su.display_name, su.user_id, sru.role_id, sru.role_user_id FROM sys_user su LEFT JOIN sys_role_user sru ON su.user_id = sru.user_id AND sru.role_id = ${roleId};`
+      .$queryRaw<(User & RoleUser)[]>`SELECT iu.username, iu.display_name, iu.id, sru.role_id, sru.id FROM iam_user iu LEFT JOIN iam_role_user sru ON iu.id = sru.user_id AND sru.role_id = ${roleId};`
     ).map((i) => mapKeys(i, (_, v) => camelCase(v)) as unknown as (User & RoleUser));
   }
   /**

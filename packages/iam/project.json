@@ -5,39 +5,153 @@
   "prefix": "pisces",
   "projectType": "application",
   "targets": {
-    "lint": {
-      "executor": "@nx/linter:eslint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["packages/iam/**/*.ts", "packages/iam/**/*.html"]
-      }
-    },
-    "test": {
-      "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
-      "options": {
-        "jestConfig": "packages/iam/jest.config.ts",
-        "passWithNoTests": true
-      },
+    "serve": {
+      "executor": "@nx/angular:dev-server",
       "configurations": {
-        "ci": {
-          "ci": true,
-          "codeCoverage": true
+        "production": {
+          "buildTarget": "iam:build-frontend:production"
+        },
+        "development": {
+          "buildTarget": "iam:build-frontend:development"
         }
+      },
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "packages/iam:build-frontend",
+        "host": "0.0.0.0",
+        "port": 4300,
+        "hmr": true,
+        "esbuildMiddleware": [
+          "packages/iam/test.ts"
+        ]
       }
     },
     "build-frontend": {
       "executor": "@angular-devkit/build-angular:application",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/packages/iam/frontend",
         "index": "libs/frontend/src/index.html",
         "browser": "packages/iam/src/main-frontend.ts",
-        "polyfills": ["zone.js"],
+        "polyfills": [
+          "zone.js"
+        ],
         "tsConfig": "packages/iam/tsconfig.frontend.json",
-        "assets": ["packages/iam/src/assets"],
-        "allowedCommonJsDependencies": ["base64-js", "lodash", "moment"],
-        "styles": ["libs/frontend/src/styles.scss","@blocksuite/presets/themes/affine.css"],
+        "assets": [
+          "packages/iam/src/assets"
+        ],
+        "allowedCommonJsDependencies": [
+          "base64-js",
+          "lodash",
+          "moment"
+        ],
+        "styles": [
+          "libs/frontend/src/styles.scss",
+          "@blocksuite/presets/themes/affine.css"
+        ],
+        "scripts": []
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "5mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "optimization": false,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true,
+          "watch": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "build-backend": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": "dist/packages/iam/backend",
+        "target": "node",
+        "compiler": "tsc",
+        "main": "packages/iam/src/main-backend.ts",
+        "tsConfig": "packages/iam/tsconfig.backend.json",
+        "assets": [
+          "packages/iam/src/resource"
+        ],
+        "isolatedConfig": true,
+        "webpackConfig": "libs/backend/webpack.config.js"
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "defaultConfiguration": "development",
+      "options": {
+        "commands": [
+          "nx run iam:build-frontend",
+          "nx run iam:build-backend"
+        ],
+        "parallel": true
+      },
+      "configurations": {
+        "development": {
+          "commands": [
+            "nx run iam:build-frontend:development",
+            "nx run iam:build-backend:development"
+          ]
+        },
+        "production": {
+          "commands": [
+            "nx run iam:build-frontend:production",
+            "nx run iam:build-backend:production"
+          ]
+        }
+      }
+    },
+    "build:ssr": {
+      "executor": "@angular-devkit/build-angular:application",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "dist/packages/iam/frontend",
+        "index": "libs/frontend/src/index.html",
+        "browser": "packages/iam/src/main-frontend.ts",
+        "polyfills": [
+          "zone.js"
+        ],
+        "tsConfig": "packages/iam/tsconfig.frontend.json",
+        "assets": [
+          "packages/iam/src/assets"
+        ],
+        "allowedCommonJsDependencies": [
+          "base64-js",
+          "lodash",
+          "moment"
+        ],
+        "styles": [
+          "libs/frontend/src/styles.scss",
+          "@blocksuite/presets/themes/affine.css"
+        ],
         "scripts": [],
         "server": "packages/iam/src/main.server.ts",
         "prerender": false,
@@ -71,126 +185,6 @@
       },
       "defaultConfiguration": "production"
     },
-    "build-backend": {
-      "executor": "@nx/webpack:webpack",
-      "outputs": ["{options.outputPath}"],
-      "defaultConfiguration": "production",
-      "options": {
-        "outputPath": "dist/packages/iam/backend",
-        "target": "node",
-        "compiler": "tsc",
-        "main": "packages/iam/src/main-backend.ts",
-        "tsConfig": "packages/iam/tsconfig.backend.json",
-        "assets": ["packages/iam/src/resource"],
-        "isolatedConfig": true,
-        "webpackConfig": "libs/backend/webpack.config.js"
-      },
-      "configurations": {
-        "development": {},
-        "production": {}
-      }
-    },
-    "serve-backend": {
-      "executor": "@nx/js:node",
-      "defaultConfiguration": "development",
-      "options": {
-        "buildTarget": "iam:build-backend"
-      },
-      "configurations": {
-        "development": {
-          "buildTarget": "iam:build-backend:development"
-        },
-        "production": {
-          "buildTarget": "iam:build-backend:production"
-        }
-      }
-    },
-    "build": {
-      "executor": "nx:run-commands",
-      "defaultConfiguration": "development",
-      "options": {
-        "commands": [
-          "nx run iam:build-frontend",
-          "nx run iam:build-backend"
-        ],
-        "parallel": true
-      },
-      "configurations": {
-        "development": {
-          "commands": [
-            "nx run iam:build-frontend:development",
-            "nx run iam:build-backend:development"
-          ]
-        },
-        "production": {
-          "commands": [
-            "nx run iam:build-frontend:production",
-            "nx run iam:build-backend:production"
-          ]
-        }
-      }
-    },
-    "serve": {
-      "executor": "nx:run-commands",
-      "defaultConfiguration": "development",
-      "options": {
-        "parallel": true
-      },
-      "configurations": {
-        "development": {
-          "commands": [
-            {
-              "command": "nx run iam:build-frontend:development",
-              "forwardAllArgs": true,
-              "prefix": "[iam:前端]",
-              "color": "blue"
-            },
-            {
-              "command": "nx run iam:serve-backend:development",
-              "forwardAllArgs": true,
-              "prefix": "[iam:后端]",
-              "color": "green"
-            }
-          ]
-        },
-        "production": {
-          "commands": [
-            {
-              "command": "nx run iam:build-frontend:production",
-              "forwardAllArgs": true,
-              "prefix": "[iam:angular]",
-              "color": "blue"
-            },
-            {
-              "command": "nx run iam:serve-backend:production",
-              "forwardAllArgs": true,
-              "prefix": "[iam:nestjs]",
-              "color": "green"
-            }
-          ]
-        }
-      }
-    },
-    "test-serve": {
-      "executor": "@pisces/executor:union-application",
-      "configurations": {
-        "production": {
-          "buildTarget": "iam:build-frontend:production"
-        },
-        "development": {
-          "buildTarget": "iam:build-frontend:development"
-        }
-      },
-      "defaultConfiguration": "development",
-      "options": {
-        "buildTarget": "packages/iam:build-frontend",
-        "host": "0.0.0.0",
-        "port": 4300,
-        "hmr": true,
-        "disableHostCheck": true,
-        "proxyConfig": "libs/frontend/proxy.config.js"
-      }
-    },
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
       "options": {
@@ -201,6 +195,90 @@
       "executor": "@nx/web:file-server",
       "options": {
         "buildTarget": "frontend:build"
+      }
+    }
+  },
+  "lint": {
+    "executor": "@nx/linter:eslint",
+    "outputs": [
+      "{options.outputFile}"
+    ],
+    "options": {
+      "lintFilePatterns": [
+        "packages/iam/**/*.ts",
+        "packages/iam/**/*.html"
+      ]
+    }
+  },
+  "test": {
+    "executor": "@nx/jest:jest",
+    "outputs": [
+      "{workspaceRoot}/coverage/{projectRoot}"
+    ],
+    "options": {
+      "jestConfig": "packages/iam/jest.config.ts",
+      "passWithNoTests": true
+    },
+    "configurations": {
+      "ci": {
+        "ci": true,
+        "codeCoverage": true
+      }
+    }
+  },
+  "serve-backend": {
+    "executor": "@nx/js:node",
+    "defaultConfiguration": "development",
+    "options": {
+      "buildTarget": "iam:build-backend"
+    },
+    "configurations": {
+      "development": {
+        "buildTarget": "iam:build-backend:development"
+      },
+      "production": {
+        "buildTarget": "iam:build-backend:production"
+      }
+    }
+  },
+  "test-serve": {
+    "executor": "nx:run-commands",
+    "defaultConfiguration": "development",
+    "options": {
+      "parallel": true
+    },
+    "configurations": {
+      "development": {
+        "commands": [
+          {
+            "command": "nx run iam:build-frontend:development",
+            "forwardAllArgs": true,
+            "prefix": "[iam:前端]",
+            "color": "blue"
+          },
+          {
+            "command": "nx run iam:serve-backend:development",
+            "forwardAllArgs": true,
+            "prefix": "[iam:后端]",
+            "color": "green"
+          }
+        ]
+      },
+      "production": {
+        "commands": [
+          {
+            "command": "nx run iam:build-frontend:production",
+            "forwardAllArgs": true,
+            "prefix": "[iam:angular]",
+            "color": "blue"
+          },
+          {
+            "command": "nx run iam:serve-backend:production",
+            "forwardAllArgs": true,
+            "prefix": "[iam:nestjs]",
+            "color": "green"
+          }
+        ]
       }
     }
   },
