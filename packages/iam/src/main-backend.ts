@@ -9,5 +9,5 @@ async function bootstrap(app: INestApplication) {
   );
 }
 
-await bootstrap(await appInit());
+appInit().then(app => bootstrap(app)) ;
 

@@ -196,89 +196,89 @@
       "options": {
         "buildTarget": "frontend:build"
       }
-    }
-  },
-  "lint": {
-    "executor": "@nx/linter:eslint",
-    "outputs": [
-      "{options.outputFile}"
-    ],
-    "options": {
-      "lintFilePatterns": [
-        "packages/iam/**/*.ts",
-        "packages/iam/**/*.html"
-      ]
-    }
-  },
-  "test": {
-    "executor": "@nx/jest:jest",
-    "outputs": [
-      "{workspaceRoot}/coverage/{projectRoot}"
-    ],
-    "options": {
-      "jestConfig": "packages/iam/jest.config.ts",
-      "passWithNoTests": true
     },
-    "configurations": {
-      "ci": {
-        "ci": true,
-        "codeCoverage": true
-      }
-    }
-  },
-  "serve-backend": {
-    "executor": "@nx/js:node",
-    "defaultConfiguration": "development",
-    "options": {
-      "buildTarget": "iam:build-backend"
-    },
-    "configurations": {
-      "development": {
-        "buildTarget": "iam:build-backend:development"
-      },
-      "production": {
-        "buildTarget": "iam:build-backend:production"
-      }
-    }
-  },
-  "test-serve": {
-    "executor": "nx:run-commands",
-    "defaultConfiguration": "development",
-    "options": {
-      "parallel": true
-    },
-    "configurations": {
-      "development": {
-        "commands": [
-          {
-            "command": "nx run iam:build-frontend:development",
-            "forwardAllArgs": true,
-            "prefix": "[iam:前端]",
-            "color": "blue"
-          },
-          {
-            "command": "nx run iam:serve-backend:development",
-            "forwardAllArgs": true,
-            "prefix": "[iam:后端]",
-            "color": "green"
-          }
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "packages/iam/**/*.ts",
+          "packages/iam/**/*.html"
         ]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
+      "options": {
+        "jestConfig": "packages/iam/jest.config.ts",
+        "passWithNoTests": true
       },
-      "production": {
-        "commands": [
-          {
-            "command": "nx run iam:build-frontend:production",
-            "forwardAllArgs": true,
-            "prefix": "[iam:angular]",
-            "color": "blue"
-          },
-          {
-            "command": "nx run iam:serve-backend:production",
-            "forwardAllArgs": true,
-            "prefix": "[iam:nestjs]",
-            "color": "green"
-          }
-        ]
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    },
+    "serve-backend": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "iam:build-backend"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "iam:build-backend:development"
+        },
+        "production": {
+          "buildTarget": "iam:build-backend:production"
+        }
+      }
+    },
+    "test-serve": {
+      "executor": "nx:run-commands",
+      "defaultConfiguration": "development",
+      "options": {
+        "parallel": true
+      },
+      "configurations": {
+        "development": {
+          "commands": [
+            {
+              "command": "nx run iam:build-frontend:development",
+              "forwardAllArgs": true,
+              "prefix": "[iam:前端]",
+              "color": "blue"
+            },
+            {
+              "command": "nx run iam:serve-backend:development",
+              "forwardAllArgs": true,
+              "prefix": "[iam:后端]",
+              "color": "green"
+            }
+          ]
+        },
+        "production": {
+          "commands": [
+            {
+              "command": "nx run iam:build-frontend:production",
+              "forwardAllArgs": true,
+              "prefix": "[iam:angular]",
+              "color": "blue"
+            },
+            {
+              "command": "nx run iam:serve-backend:production",
+              "forwardAllArgs": true,
+              "prefix": "[iam:nestjs]",
+              "color": "green"
+            }
+          ]
+        }
       }
     }
   },
