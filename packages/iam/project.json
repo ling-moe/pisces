@@ -12,12 +12,11 @@
           "buildTarget": "iam:build-frontend:production"
         },
         "development": {
-          "buildTarget": "iam:build-backend:development"
+          "buildTarget": "iam:build-frontend:development"
         }
       },
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "packages/iam:build-frontend",
         "host": "0.0.0.0",
         "port": 4300,
         "hmr": true,
@@ -34,7 +33,7 @@
       "options": {
         "outputPath": "dist/packages/iam/frontend",
         "index": "libs/frontend/src/index.html",
-        "browser": "packages/iam/src/main.frontend.ts",
+        "browser": "packages/iam/src/app/main.frontend.ts",
         "polyfills": [
           "zone.js"
         ],
@@ -89,7 +88,7 @@
         "outputPath": "dist/packages/iam/backend",
         "target": "node",
         "compiler": "tsc",
-        "main": "packages/iam/src/main.backend.ts",
+        "main": "packages/iam/src/app/main.backend.ts",
         "tsConfig": "packages/iam/tsconfig.backend.json",
         "isolatedConfig": true,
         "webpackConfig": "libs/backend/webpack.config.js"
