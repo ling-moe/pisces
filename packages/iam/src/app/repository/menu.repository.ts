@@ -3,8 +3,8 @@ import { Injectable } from '@nestjs/common';
 import { Provider } from '@pisces/musubi/server';
 import { Menu, MenuNode, MenuDomainService } from '../domain/menu.entity';
 import { camelCase, groupBy, mapKeys } from 'lodash';
-import { HasPermission, Perm } from '../infra/permission';
-import { prems } from "../infra/permission";
+import { HasPermission, Perm } from '../infra/util/permission';
+import { prems } from "../infra/util/permission";
 import { ClsService } from 'nestjs-cls';
 import { User } from '../domain/user.entity';
 

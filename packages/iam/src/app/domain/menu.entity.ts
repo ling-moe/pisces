@@ -1,5 +1,5 @@
 import { AuditDomain, OCC, TreeNode } from '@pisces/common';
-import { Perm } from '../infra/permission';
+import { Perm } from '../infra/util/permission';
 
 // {value: 'DIR',label: '目录'},{value: 'ROUTE',label: '路由'},{value: 'FUNCTION',label: '功能'},{value: 'UI',label: '视图'}
 export type Menu = {

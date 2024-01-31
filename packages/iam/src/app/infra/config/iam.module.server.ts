@@ -3,11 +3,11 @@ import { ServerModule } from '@angular/platform-server';
 import { provideClientHydration } from '@angular/platform-browser';
 
 import { AppComponent, LOCAL_STORAGE, NAVIGATOR } from '@pisces/frontend';
-import { IamAppModule } from './iam-app.module';
+import { AppModuleFrontend } from './app.module.frontend';
 
 @NgModule({
   imports: [
-    IamAppModule,
+    AppModuleFrontend,
     ServerModule,
   ],
   bootstrap: [AppComponent],
@@ -17,4 +17,4 @@ import { IamAppModule } from './iam-app.module';
     { provide: NAVIGATOR, useValue: { language: 'zh-CN' } },
   ],
 })
-export class AppServerModule { }
+export default class AppServerModule { }

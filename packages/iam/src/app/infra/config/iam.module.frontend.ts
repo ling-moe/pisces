@@ -4,16 +4,16 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTreeModule } from '@angular/material/tree';
 import { Route, RouterModule } from '@angular/router';
-import { SharedModule } from '@pisces/frontend';
-import { MenuListComponent } from './view/menu/list/list.component';
-import { TransferComponent } from './view/menu/transfer/transfer.component';
-import { RoleListComponent } from './view/role/list/list.component';
-import { RoleAuthorizationComponent } from './view/role/role-authorization/role-authorization.component';
-import { UserAssignComponent } from './view/role/user-assign/user-assign.component';
-import { UserCreateComponent } from './view/user/create/create.component';
-import { UserEditComponent } from './view/user/edit/edit.component';
-import { UserListComponent } from './view/user/list/list.component';
-import { DomainDesignerComponent } from './view/domain-designer/domain-designer.component';
+import { SharedModule } from '../../../../../../libs/frontend/src';
+import { MenuListComponent } from '../../view/menu/list/list.component';
+import { TransferComponent } from '../../view/menu/transfer/transfer.component';
+import { RoleListComponent } from '../../view/role/list/list.component';
+import { RoleAuthorizationComponent } from '../../view/role/role-authorization/role-authorization.component';
+import { UserAssignComponent } from '../../view/role/user-assign/user-assign.component';
+import { UserCreateComponent } from '../../view/user/create/create.component';
+import { UserEditComponent } from '../../view/user/edit/edit.component';
+import { UserListComponent } from '../../view/user/list/list.component';
+import { DomainDesignerComponent } from '../../view/domain-designer/domain-designer.component';
 
 const COMPONENTS = [UserListComponent, UserCreateComponent, UserEditComponent, MenuListComponent];
 
@@ -63,4 +63,4 @@ const iamFrontendRoutes: Route[] = [
     UserAssignComponent,
   ],
 })
-export class IamFrontendModule {}
+export class IamModuleFrontend {}

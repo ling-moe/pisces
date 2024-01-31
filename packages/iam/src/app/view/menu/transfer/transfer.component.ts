@@ -4,7 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Consumer, RemoteService} from '@pisces/musubi/client';
 import { forkJoin } from 'rxjs';
 import { Menu, MenuDomainService } from '../../../domain/menu.entity';
-import { Perm } from '../../../infra/permission';
+import { Perm } from '../../../infra/util/permission';
 
 @Component({
   selector: 'pisces-transfer',

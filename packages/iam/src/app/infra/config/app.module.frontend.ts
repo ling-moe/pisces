@@ -8,7 +8,7 @@ const routes = buildRoutes([
     component: AdminLayoutComponent,
     canActivate: [authGuard],
     canActivateChild: [authGuard],
-    loadChildren: () => import('./iam.frontend.module').then((m) => m.IamFrontendModule),
+    loadChildren: () => import('./iam.module.frontend').then((m) => m.IamModuleFrontend),
   },
 ]);
 
@@ -30,4 +30,4 @@ export class RoutesRoutingModule {}
   ],
   bootstrap: [AppComponent],
 })
-export class IamAppModule {}
+export class AppModuleFrontend {}

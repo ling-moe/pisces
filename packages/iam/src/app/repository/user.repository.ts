@@ -7,7 +7,7 @@ import { User, UserQuery, UserDomainService } from '../domain/user.entity';
 import { PageRequest, DEFAULT_PAGE, paginator, Page } from '@pisces/common';
 import { camelCase, mapKeys } from 'lodash';
 import { ClsService } from 'nestjs-cls';
-import { HasPermission } from '../infra/permission';
+import { HasPermission } from '../infra/util/permission';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()

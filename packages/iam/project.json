@@ -12,7 +12,7 @@
           "buildTarget": "iam:build-frontend:production"
         },
         "development": {
-          "buildTarget": "iam:build-frontend:development"
+          "buildTarget": "iam:build-backend:development"
         }
       },
       "defaultConfiguration": "development",
@@ -34,7 +34,7 @@
       "options": {
         "outputPath": "dist/packages/iam/frontend",
         "index": "libs/frontend/src/index.html",
-        "browser": "packages/iam/src/main-frontend.ts",
+        "browser": "packages/iam/src/main.frontend.ts",
         "polyfills": [
           "zone.js"
         ],
@@ -89,11 +89,8 @@
         "outputPath": "dist/packages/iam/backend",
         "target": "node",
         "compiler": "tsc",
-        "main": "packages/iam/src/main-backend.ts",
+        "main": "packages/iam/src/main.backend.ts",
         "tsConfig": "packages/iam/tsconfig.backend.json",
-        "assets": [
-          "packages/iam/src/resource"
-        ],
         "isolatedConfig": true,
         "webpackConfig": "libs/backend/webpack.config.js"
       },
@@ -127,7 +124,7 @@
         }
       }
     },
-    "build:ssr": {
+    "build-ssr": {
       "executor": "@angular-devkit/build-angular:application",
       "outputs": [
         "{options.outputPath}"
@@ -135,7 +132,7 @@
       "options": {
         "outputPath": "dist/packages/iam/frontend",
         "index": "libs/frontend/src/index.html",
-        "browser": "packages/iam/src/main-frontend.ts",
+        "browser": "packages/iam/src/app/main.frontend.ts",
         "polyfills": [
           "zone.js"
         ],
@@ -153,10 +150,10 @@
           "@blocksuite/presets/themes/affine.css"
         ],
         "scripts": [],
-        "server": "packages/iam/src/main.server.ts",
+        "server": "packages/iam/src/app/infra/config/iam.module.server.ts",
         "prerender": false,
         "ssr": {
-          "entry": "packages/iam/server.ts"
+          "entry": "packages/iam/src/app/main.server.ts"
         }
       },
       "configurations": {
@@ -237,47 +234,6 @@
         },
         "production": {
           "buildTarget": "iam:build-backend:production"
-        }
-      }
-    },
-    "test-serve": {
-      "executor": "nx:run-commands",
-      "defaultConfiguration": "development",
-      "options": {
-        "parallel": true
-      },
-      "configurations": {
-        "development": {
-          "commands": [
-            {
-              "command": "nx run iam:build-frontend:development",
-              "forwardAllArgs": true,
-              "prefix": "[iam:前端]",
-              "color": "blue"
-            },
-            {
-              "command": "nx run iam:serve-backend:development",
-              "forwardAllArgs": true,
-              "prefix": "[iam:后端]",
-              "color": "green"
-            }
-          ]
-        },
-        "production": {
-          "commands": [
-            {
-              "command": "nx run iam:build-frontend:production",
-              "forwardAllArgs": true,
-              "prefix": "[iam:angular]",
-              "color": "blue"
-            },
-            {
-              "command": "nx run iam:serve-backend:production",
-              "forwardAllArgs": true,
-              "prefix": "[iam:nestjs]",
-              "color": "green"
-            }
-          ]
         }
       }
     }

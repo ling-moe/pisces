@@ -24,7 +24,7 @@ export class DeserializeInterceptor implements HttpInterceptor {
 
   private parseJsonResponse(event: HttpEvent<unknown>) {
     if (event instanceof HttpResponse && typeof event.body === 'string' && event.body !== '') {
-      return event.clone<unknown>({body: JSON.parse(event.body, BigIntModule)});
+      return event.clone<unknown>({body: JSON.parse(event.body)});
     } else {
       return event;
     }

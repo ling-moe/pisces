@@ -2,17 +2,17 @@ import { Module } from "@nestjs/common";
 import { NestFactory, RouterModule } from "@nestjs/core";
 import { CoreBackendModule } from "@pisces/backend";
 import { json } from "body-parser";
-import { BigIntModule, initStandard } from "@pisces/common";
-import { IamBackendModule } from "./app/iam.backend.module";
+import { BigIntModule, initStandard } from '@pisces/common';
+import { IamModuleBackend } from "./iam.module.backend";
 
 @Module({
   imports: [
     CoreBackendModule,
-    IamBackendModule,
+    IamModuleBackend,
     RouterModule.register([
       {
         path: 'api',
-        module: IamBackendModule,
+        module: IamModuleBackend,
       },
     ]),
   ]

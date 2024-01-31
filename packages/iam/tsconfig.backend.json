@@ -11,13 +11,13 @@
     "src/**/*.test.ts"
   ],
   "files": [
-    "src/main-backend.ts"
+    "src/app/main.backend.ts"
   ],
   "include": [
     "src/**/*.controller.ts",
     "src/**/*.repository.ts",
     "src/**/*.backend.module.ts",
     "src/**/domain/**/*.ts",
-    "src/**/infra/**/*.ts"
+    "src/**/infra/**/*.backend.ts"
   ]
 }

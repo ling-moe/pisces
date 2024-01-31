@@ -1,4 +1,4 @@
-import { appInit } from "./src/main.app-init";
+import { appInit } from "./src/app/infra/config/app.module.backend";
 
 const app = appInit();
 

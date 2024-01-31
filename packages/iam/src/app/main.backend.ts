@@ -1,5 +1,5 @@
 import { INestApplication, Logger } from "@nestjs/common";
-import { appInit } from "./main.app-init";
+import { appInit } from "./infra/config/app.module.backend";
 
 async function bootstrap(app: INestApplication) {
   const port = process.env.PORT || 3100;
