@@ -80,6 +80,6 @@ export function RolesGuard<R extends string>(...roles: Array<R>) {
 
 export function rbacLogic(userRoles: string[], definedRoles: string[]) {
   return (
-    userRoles.includes('Super') || definedRoles.some(definedRole => userRoles.includes(definedRole))
+    userRoles.includes('SUPER') || definedRoles.some(definedRole => userRoles.includes(definedRole))
   );
 }

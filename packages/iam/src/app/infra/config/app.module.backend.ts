@@ -17,11 +17,11 @@ import { IamModuleBackend } from "./iam.module.backend";
     ]),
   ]
 })
-export class IamModule { }
+export class AppModuleBackend { }
 
 export async function appInit() {
   initStandard();
-  const app = await NestFactory.create(IamModule);
+  const app = await NestFactory.create(AppModuleBackend);
   app.use(json({ reviver: BigIntModule }));
   await app.init();
   return app;

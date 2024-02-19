@@ -7,7 +7,7 @@
   ],
   "files": [
     "src/app/main.frontend.ts",
-    "src/app/infra/config/iam.module.server.ts",
+    "src/app/infra/config/app.module.server.ts",
     "src/app/main.server.ts"
   ],
   "include": [

@@ -17,4 +17,4 @@ import { AppModuleFrontend } from './app.module.frontend';
     { provide: NAVIGATOR, useValue: { language: 'zh-CN' } },
   ],
 })
-export default class AppServerModule { }
+export default class AppModuleServer { }

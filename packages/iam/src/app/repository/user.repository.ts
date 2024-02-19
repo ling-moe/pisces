@@ -1,5 +1,5 @@
 import { PrismaService, CacheHelper, BizException, Token } from '@pisces/backend';
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { Prisma, RoleUser } from '@prisma/client';
 import { Provider } from '@pisces/musubi/server';
 import { hash, compare } from 'bcrypt';
@@ -56,7 +56,11 @@ export class UserRepository implements Provider<UserDomainService>{
   }
 
   querySelfUser(): User {
-    return this.authClsStore.get('currentUser');
+    const user = this.authClsStore.get('currentUser');
+    if (!user){
+      throw new UnauthorizedException("用户未登录");
+    }
+    return user;
   }
 
   async login(user: User): Promise<Token> {
