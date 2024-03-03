@@ -26,10 +26,10 @@ import { ClsModule } from 'nestjs-cls';
       provide: APP_FILTER,
       useClass: GlobalExceptionFilter,
     },
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: RolesGuard(),
-    // },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard(),
+    },
   ],
 })
 export class CoreBackendModule {}

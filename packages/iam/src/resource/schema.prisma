@@ -156,8 +156,6 @@ model Product {
   code            String           @map("code") @db.VarChar(60)
   // 产品名称
   name            String           @map("name") @db.VarChar(120)
-  // 产品标题
-  title           String           @map("title") @db.VarChar(240)
   // 产品描述
   desc            String           @db.Text
   // 版本号

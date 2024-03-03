@@ -1,4 +1,12 @@
-import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus, Logger } from '@nestjs/common';
+import {
+  ArgumentsHost,
+  Catch,
+  ExceptionFilter, ForbiddenException,
+  HttpException,
+  HttpStatus,
+  Logger, NotFoundException,
+  UnauthorizedException
+} from "@nestjs/common";
 import { Response } from 'express';
 import { ErrorMessage } from './exception.types';
 
@@ -8,7 +16,13 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
 
-    Logger.error(exception.stack);
+    if (exception instanceof UnauthorizedException
+      || exception instanceof NotFoundException
+      || exception instanceof ForbiddenException) {
+      Logger.error(exception.message);
+    }else {
+      Logger.error(exception.stack);
+    }
     if (exception instanceof HttpException) {
       response.status(exception.getStatus()).json(exception.message);
     } else {

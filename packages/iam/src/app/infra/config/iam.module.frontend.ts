@@ -1,51 +1,61 @@
-import { DragDropModule } from '@angular/cdk/drag-drop';
-import { NgModule } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTreeModule } from '@angular/material/tree';
-import { Route, RouterModule } from '@angular/router';
-import { SharedModule } from '../../../../../../libs/frontend/src';
-import { MenuListComponent } from '../../view/menu/list/list.component';
-import { TransferComponent } from '../../view/menu/transfer/transfer.component';
-import { RoleListComponent } from '../../view/role/list/list.component';
-import { RoleAuthorizationComponent } from '../../view/role/role-authorization/role-authorization.component';
-import { UserAssignComponent } from '../../view/role/user-assign/user-assign.component';
-import { UserCreateComponent } from '../../view/user/create/create.component';
-import { UserEditComponent } from '../../view/user/edit/edit.component';
-import { UserListComponent } from '../../view/user/list/list.component';
-import { DomainDesignerComponent } from '../../view/domain-designer/domain-designer.component';
+import { DragDropModule } from "@angular/cdk/drag-drop";
+import { NgModule } from "@angular/core";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
+import { MatTreeModule } from "@angular/material/tree";
+import { Route, RouterModule } from "@angular/router";
+import { SharedModule } from "@pisces/frontend";
+import { MenuListComponent } from "../../view/menu/list/list.component";
+import { TransferComponent } from "../../view/menu/transfer/transfer.component";
+import { RoleListComponent } from "../../view/role/list/list.component";
+import { RoleAuthorizationComponent } from "../../view/role/role-authorization/role-authorization.component";
+import { UserAssignComponent } from "../../view/role/user-assign/user-assign.component";
+import { UserCreateComponent } from "../../view/user/create/create.component";
+import { UserEditComponent } from "../../view/user/edit/edit.component";
+import { UserListComponent } from "../../view/user/list/list.component";
+import { DesignerComponent } from "../../view/domain-designer/designer/designer.component";
+import { ProductComponent } from "../../view/domain-designer/product/product.component";
 
-const COMPONENTS = [UserListComponent, UserCreateComponent, UserEditComponent, MenuListComponent];
+const COMPONENTS = [
+  UserListComponent,
+  UserCreateComponent,
+  UserEditComponent,
+  MenuListComponent];
 
 const iamFrontendRoutes: Route[] = [
   {
-    path: 'domain',
+    path: "domain",
     children: [
       {
-        path: 'designer',
-        component: DomainDesignerComponent
+        path: "product",
+        component: ProductComponent
+      },
+      {
+        path: "designer/:id",
+        component: DesignerComponent
       }
     ]
   },
   {
-    path: '',
+    path: "",
     children: [
       {
-        path: 'user',
-        component: UserListComponent,
+        path: "user",
+        component: UserListComponent
       },
       {
-        path: 'role',
-        component: RoleListComponent,
+        path: "role",
+        component: RoleListComponent
       },
       {
-        path: 'menu',
-        component: MenuListComponent,
-      },
-    ],
-  },
+        path: "menu",
+        component: MenuListComponent
+      }
+    ]
+  }
 
 ];
+
 @NgModule({
   imports: [
     SharedModule,
@@ -53,7 +63,7 @@ const iamFrontendRoutes: Route[] = [
     RouterModule.forChild(iamFrontendRoutes),
     MatTreeModule,
     MatIconModule,
-    MatButtonModule,
+    MatButtonModule
   ],
   declarations: [
     ...COMPONENTS,
@@ -61,6 +71,9 @@ const iamFrontendRoutes: Route[] = [
     TransferComponent,
     RoleAuthorizationComponent,
     UserAssignComponent,
-  ],
+    ProductComponent,
+    DesignerComponent
+  ]
 })
-export class IamModuleFrontend {}
+export class IamModuleFrontend {
+}
