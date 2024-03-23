@@ -1,77 +1,38 @@
-import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  NgZone,
+  ViewChild
+} from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { createEmptyPage, DocEditor } from "@blocksuite/presets";
+import { EditorProviderService } from "./editor-provider.service";
 
 @Component({
   selector: 'pisces-designer',
   templateUrl: './designer.component.html',
-  styleUrl: './designer.component.scss'
+  styleUrl: './designer.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DesignerComponent implements OnInit {
+export class DesignerComponent implements AfterViewInit {
 
   @ViewChild('container', {static: true})
   container!: ElementRef;
   constructor(
     private route: ActivatedRoute,
+    private ngzone: NgZone,
+    private editorProvider: EditorProviderService,
   ) {
   }
   productId!: bigint;
 
-  ngOnInit(): void {
-    this.productId =this.route.snapshot.params['id'];
-    const editor = new DocEditor();
-    const doc = createEmptyPage().init();
-    editor.page = doc;
-    const {docModeSpecs, edgelessModeSpecs} = getSpecs()
-    editor.specs = docModeSpecs;
-    this.container.nativeElement.appendChild(editor);
-
-    // The first block will be added as root
-    const rootId = doc.addBlock('affine:page');
-
-// Insert second block as a child of the root with empty props
-    const props = {};
-    const noteId = doc.addBlock('affine:note', props, rootId);
+  ngAfterViewInit() {
+    const editor = this.editorProvider.getEditor();
+    if (this.container.nativeElement && editor) {
+      this.container.nativeElement.appendChild(editor);
+    }
   }
 
 }
 
-
-import { DocEditorBlockSpecs, EdgelessEditorBlockSpecs, DocPageService, EdgelessPageService } from '@blocksuite/blocks';
-
-class CustomDocPageService extends DocPageService {
-  override loadFonts() {}
-}
-
-class CustomEdgelessPageService extends EdgelessPageService {
-  override loadFonts() {}
-}
-
-export const getSpecs = () => {
-  const docModeSpecs = DocEditorBlockSpecs.map((preset) => {
-    if (preset.schema.model.flavour === 'affine:page') {
-      return {
-        ...preset,
-        service: CustomDocPageService,
-      };
-    }
-
-    return preset;
-  });
-
-  const edgelessModeSpecs = EdgelessEditorBlockSpecs.map((preset) => {
-    if (preset.schema.model.flavour === 'affine:page') {
-      return {
-        ...preset,
-        service: CustomEdgelessPageService,
-      };
-    }
-
-    return preset;
-  });
-
-  return {
-    docModeSpecs,
-    edgelessModeSpecs,
-  };
-};

@@ -1,7 +1,8 @@
-/* You can add global styles to this file, and also import other style files */
 @use './theme/style.scss';
 @use 'styles/themes';
 @use 'styles/custom';
 @use 'styles/grid';
 @use 'styles/helpers';
 @use 'styles/plugins';
+
+@import 'material-icons/iconfont/material-icons.css';
