@@ -1,7 +1,7 @@
 import { BlockModel, Text } from "@blocksuite/store";
 import { defineEmbedModel, createEmbedBlock, AffineTextAttributes, ReferenceNodeConfig, InlineManager, getAffineInlineSpecsWithReference, EmbedBlockElement } from '@blocksuite/blocks';
 import { literal } from 'lit/static-html.js';
-import { html,nothing } from 'lit';
+import { html, nothing, css } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { BlockService } from '@blocksuite/block-std';
 import { affineInlineMarkdownMatches } from '@blocksuite/blocks/dist/_common/inline/presets/markdown';
@@ -17,6 +17,16 @@ export class FeatureModel extends defineEmbedModel<{
 
 @customElement('pisces-feature')
 export class EmbedGithubBlock extends EmbedBlockElement<FeatureModel,FeatureService> {
+
+  static override styles =css`
+  .feature-title {
+    border-left: 5px solid #42b983;
+    padding-left: 10px;
+    margin-bottom: 20px;
+    background-color: #f3f5f7;
+    font-weight: bold;
+  }
+  `;
 
   get inlineManager() {
     const inlineManager = this.service?.inlineManager;
@@ -42,7 +52,7 @@ export class EmbedGithubBlock extends EmbedBlockElement<FeatureModel,FeatureServ
     return this.renderEmbed(() => {
       return html`
         <div>
-          <h2>业务流</h2>
+          <h3 class="feature-title">业务流</h3>
           <rich-text
           .yText=${this.model.bizFlow?.yText}
           .inlineEventSource=${this.topContenteditableElement ?? nothing}
@@ -56,7 +66,7 @@ export class EmbedGithubBlock extends EmbedBlockElement<FeatureModel,FeatureServ
           .enableClipboard=${false}
           .enableUndoRedo=${false}
         ></rich-text>
-          <h3>事件</h3>
+          <h3 class="feature-title">事件</h3>
           <rich-text
           .yText=${this.model.event?.yText}
           .inlineEventSource=${this.topContenteditableElement ?? nothing}
@@ -70,7 +80,7 @@ export class EmbedGithubBlock extends EmbedBlockElement<FeatureModel,FeatureServ
           .enableClipboard=${false}
           .enableUndoRedo=${false}
         ></rich-text>
-          <h3>命令</h3>
+          <h3 class="feature-title">命令</h3>
           <rich-text
           .yText=${this.model.command?.yText}
           .inlineEventSource=${this.topContenteditableElement ?? nothing}
@@ -84,7 +94,7 @@ export class EmbedGithubBlock extends EmbedBlockElement<FeatureModel,FeatureServ
           .enableClipboard=${false}
           .enableUndoRedo=${false}
         ></rich-text>
-          <h3>角色</h3>
+          <h3 class="feature-title">角色</h3>
           <rich-text
           .yText=${this.model.bizRole.yText}
           .inlineEventSource=${this.topContenteditableElement ?? nothing}
