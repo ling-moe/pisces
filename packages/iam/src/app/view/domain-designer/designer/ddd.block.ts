@@ -134,7 +134,7 @@ export class FeatureService<
   }
 }
 
-export const EmbedGithubBlockSpec = createEmbedBlock({
+export const EmbedFeatureBlockSpec = createEmbedBlock({
   schema: {
     name: 'feature',
     version: 1,

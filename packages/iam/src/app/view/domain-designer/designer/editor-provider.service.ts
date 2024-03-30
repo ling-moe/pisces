@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { AffineSchemas, PageEditorBlockSpecs } from '@blocksuite/blocks';
 import { AffineEditorContainer } from '@blocksuite/presets';
-import { EmbedGithubBlockSpec } from "./ddd.block";
+import { EmbedFeatureBlockSpec } from "./ddd.block";
 import { Doc,Schema,Text,DocCollection } from '@blocksuite/store';
+import { CustomBlockSpecs } from './specs';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +16,7 @@ export class EditorProviderService {
   docUpdated$ = this.docUpdatedSubject.asObservable();
 
   constructor() {
-    const schema = new Schema().register(AffineSchemas).register([EmbedGithubBlockSpec.schema]);
+    const schema = new Schema().register(AffineSchemas).register([EmbedFeatureBlockSpec.schema]);
     this.workspace = new DocCollection({ schema });
     const doc = this.workspace.createDoc({ id: 'page1' });
 
@@ -35,7 +36,7 @@ export class EditorProviderService {
 
 
     this.editor = new AffineEditorContainer();
-    this.editor.pageSpecs = [...PageEditorBlockSpecs, EmbedGithubBlockSpec];
+    this.editor.pageSpecs = CustomBlockSpecs;
 
     this.editor.doc = doc;
     this.editor.slots.docLinkClicked.on(({ docId }) => {
