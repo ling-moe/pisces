@@ -20,6 +20,7 @@ import { BlockModel } from "@blocksuite/store";
 export class DesignerComponent implements AfterViewInit {
   save() {
     const doc = this.editorProvider.getWorkspace().getDoc('page1');
+    console.log(doc?.spaceDoc)
     const blocks = doc!.getBlockByFlavour('affine:embed-feature') as BlockModel<FeatureModel>[];
     console.log(blocks.map(block => block.bizFlow.yText.toString()))
 

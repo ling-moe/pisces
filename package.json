@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "iam:start": "nx run iam:serve",
     "test": "npx nx run iam:build --watch=true --configuration=development",
     "db:studio": "prisma studio --schema=packages/iam/src/resource/schema.prisma",
     "musubi:tsc": "packages/musubi/tsconfig.schematics.json",
@@ -144,6 +145,7 @@
     "screenfull": "^6.0.2",
     "tslib": "^2.3.0",
     "vite-express": "^0.11.1",
+    "y-indexeddb": "^9.0.12",
     "zone.js": "0.14.3"
   },
   "prettier": {

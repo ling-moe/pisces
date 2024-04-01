@@ -52,20 +52,8 @@ export class EmbedGithubBlock extends EmbedBlockElement<FeatureModel,FeatureServ
     return this.renderEmbed(() => {
       return html`
         <div>
-          <h3 class="feature-title">业务流</h3>
-          <rich-text
-          .yText=${this.model.bizFlow?.yText}
-          .inlineEventSource=${this.topContenteditableElement ?? nothing}
-          .undoManager=${this.doc.history}
-          .attributesSchema=${this.attributesSchema}
-          .attributeRenderer=${this.attributeRenderer}
-          .markdownShortcutHandler=${this.markdownShortcutHandler}
-          .embedChecker=${this.embedChecker}
-          .readonly=${this.doc.readonly}
-          .inlineRangeProvider=${this._inlineRangeProvider}
-          .enableClipboard=${false}
-          .enableUndoRedo=${false}
-        ></rich-text>
+        <pisces-feature-biz-flow></pisces-feature-biz-flow>
+        </rich-text>
           <h3 class="feature-title">事件</h3>
           <rich-text
           .yText=${this.model.event?.yText}

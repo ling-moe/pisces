@@ -1,5 +1,5 @@
 import type { BlockSpec } from '@blocksuite/block-std';
-import { PageRootBlockWidgetName, RootBlockSchema, PageRootService, EdgelessRootBlockWidgetName, EdgelessRootService, ListBlockSchema, ListService, NoteBlockSchema, NoteService, DatabaseBlockSchema, DatabaseService, DataViewBlockSchema, DividerBlockSchema, CodeBlockSchema, ImageBlockSchema, ImageService, ParagraphBlockSchema, ParagraphService, BookmarkBlockSchema, BookmarkService, AttachmentBlockSchema, AttachmentService, EmbedFigmaBlockSpec, EmbedYoutubeBlockSpec, EmbedGithubBlockSpec, EmbedHtmlBlockSpec, EmbedLinkedDocBlockSpec, EmbedLoomBlockSpec, SurfaceBlockSchema, SurfaceRefBlockSchema, SurfaceRefBlockService, SurfaceService, FrameBlockSchema } from '@blocksuite/blocks';
+import { PageRootBlockWidgetName, RootBlockSchema, PageRootService, EdgelessRootBlockWidgetName, EdgelessRootService, ListBlockSchema, ListService, NoteBlockSchema, NoteService, DatabaseBlockSchema, DatabaseService, DataViewBlockSchema, DividerBlockSchema, CodeBlockSchema, ImageBlockSchema, ImageService, ParagraphBlockSchema, ParagraphService, BookmarkBlockSchema, BookmarkService, AttachmentBlockSchema, AttachmentService, EmbedFigmaBlockSpec, EmbedYoutubeBlockSpec, EmbedGithubBlockSpec, EmbedHtmlBlockSpec, EmbedLinkedDocBlockSpec, EmbedLoomBlockSpec, SurfaceBlockSchema, SurfaceRefBlockSchema, SurfaceRefBlockService, SurfaceService, FrameBlockSchema, ParagraphType } from '@blocksuite/blocks';
 import { FontConfig } from '@blocksuite/blocks/dist/root-block/font-loader/font-loader';
 import { AFFINE_DOC_REMOTE_SELECTION_WIDGET } from '@blocksuite/blocks/dist/root-block/widgets/doc-remote-selection/doc-remote-selection';
 import { AFFINE_DRAG_HANDLE_WIDGET } from '@blocksuite/blocks/dist/root-block/widgets/drag-handle/drag-handle';
@@ -13,6 +13,7 @@ import { AFFINE_PAGE_DRAGGING_AREA_WIDGET } from '@blocksuite/blocks/dist/root-b
 import { CanvasTextFontFamily, CanvasTextFontWeight, CanvasTextFontStyle } from '@blocksuite/blocks/dist/surface-block/consts';
 import { literal, unsafeStatic } from 'lit/static-html.js';
 import { EmbedFeatureBlockSpec } from './ddd.block';
+import { BizFlowBlockSpec } from './biz-flow';
 
 
 class CustomPageRootService extends PageRootService {
@@ -176,6 +177,7 @@ const CommonFirstPartyBlockSpecs: BlockSpec[] = [
 
 export const CustomBlockSpecs: BlockSpec[] = [
   EmbedFeatureBlockSpec,
+  BizFlowBlockSpec,
   DocPageSpec,
   ...CommonFirstPartyBlockSpecs,
   {
