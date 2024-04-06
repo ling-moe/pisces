@@ -100,7 +100,9 @@
     "@angular/ssr": "17.1.1",
     "@blocksuite/block-std": "^0.13.0",
     "@blocksuite/blocks": "^0.13.0",
+    "@blocksuite/global": "^0.13.0",
     "@blocksuite/inline": "^0.13.0",
+    "@blocksuite/lit": "^0.13.0",
     "@blocksuite/presets": "^0.13.0",
     "@blocksuite/store": "^0.13.0",
     "@nestjs/cache-manager": "^2.1.0",
@@ -120,12 +122,14 @@
     "@prisma/client": "^5.7.1",
     "@swc/helpers": "~0.5.2",
     "axios": "1.6.0",
+    "base64-js": "^1.5.1",
     "bcrypt": "^5.1.0",
     "cache-manager": "^5.2.3",
     "cache-manager-redis-store": "^3.0.1",
     "cache-manager-redis-yet": "^4.1.2",
     "express": "^4.18.2",
     "json-bigint": "^1.0.0",
+    "lit": "^3.1.2",
     "lodash": "^4.17.21",
     "material-icons": "^1.13.12",
     "moment": "^2.29.4",
@@ -140,16 +144,19 @@
     "passport-wechat": "^2.0.4",
     "pg": "^8.11.2",
     "photoviewer": "^3.9.0",
+    "redis": "^4.6.13",
     "reflect-metadata": "^0.1.14",
     "rxjs": "^7.8.0",
     "screenfull": "^6.0.2",
     "tslib": "^2.3.0",
     "vite-express": "^0.11.1",
     "y-indexeddb": "^9.0.12",
+    "zod": "^3.22.4",
     "zone.js": "0.14.3"
   },
   "prettier": {
     "printWidth": 120,
     "bracketLine": true
-  }
+  },
+  "packageManager": "pnpm@8.15.6+sha256.01c01eeb990e379b31ef19c03e9d06a14afa5250b82e81303f88721c99ff2e6f"
 }

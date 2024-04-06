@@ -1,4 +1,3 @@
-/// <reference types="vite/client" />
 import { NoteBlockModel, NoteService } from '@blocksuite/blocks';
 import { KeymapController } from '@blocksuite/blocks/dist/note-block/keymap-controller';
 import { BlockElement } from '@blocksuite/lit';
