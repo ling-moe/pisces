@@ -1,11 +1,15 @@
-import { Global, INestApplication, Injectable, Module, OnModuleInit } from '@nestjs/common';
-import { PrismaClient, User } from '@prisma/client';
+import { Global, INestApplication, Injectable, Logger, Module, OnModuleInit } from '@nestjs/common';
+import { Prisma, PrismaClient, User } from '@prisma/client';
 import { CacheModule } from '../cache/cache.module';
 import { ClsService } from "nestjs-cls";
 
-interface Record {
-  [x: string]: number | bigint;
+interface AuditModel {
+  createBy: bigint;
+  updateBy: bigint;
 }
+
+
+type ModelName = Prisma.TypeMap['meta']['modelProps'];
 
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit {
@@ -14,29 +18,56 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
   ) {
     super();
   }
+  init() {
+    return this.$extends(this.createAutoFillAuditFieldsExt());
+  }
   async onModuleInit() {
-    // 注册拦截器
-    this.$use(async (params, next) => {
-      const userId = this.authClsStore.get('currentUser')?.id ?? 1;
-      if (params.action === 'create') {
-        params.args.data['createBy'] = userId;
-        params.args.data['updateBy'] = userId;
-      } else if (params.action === 'createMany') {
-        params.args.data.forEach((item: Record) => item['createBy'] = userId);
-        params.args.data.forEach((item: Record) => item['updateBy'] = userId);
-      } else if (params.action === 'update') {
-        params.args.data['updateBy'] = userId;
-      } else if (params.action === 'updateMany') {
-        params.args.data.forEach((item: Record) => item['updateBy'] = userId);
-      }
-      return await next(params);
-    });
     await this.$connect();
   }
 
   async enableShutdownHooks(app: INestApplication) {
     this.$on('beforeExit' as never, async () => {
       await app.close();
+    });
+  }
+
+  createAutoFillAuditFieldsExt() {
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    const that = this;
+    return Prisma.defineExtension({
+      name: 'AutoFillAuditFields',
+      model: {
+        $allModels: {
+          async create<T extends { name: ModelName; }, A extends { data: AuditModel; }>
+            (this: T, args: A): Promise<Prisma.Result<T, A, 'create'>> {
+            const userId = that.authClsStore.get('currentUser')?.id ?? BigInt(1);
+            args.data.createBy = userId;
+            args.data.updateBy = userId;
+            return (that[this.name] as any).create(args);
+          },
+          async createMany<T extends { name: ModelName; }, A extends { data: AuditModel[]; }>
+            (this: T, args: A): Promise<Prisma.Result<T, A, 'createMany'>> {
+            const userId = that.authClsStore.get('currentUser')?.id ?? BigInt(1);
+            args.data.forEach(item => item.createBy = userId);
+            args.data.forEach(item => item.updateBy = userId);
+            return (that[this.name] as any).createMany(args);
+          },
+          async update<T extends { name: ModelName; }, A extends { data: AuditModel; }>
+            (this: T, args: A): Promise<Prisma.Result<T, A, 'update'>> {
+            const userId = that.authClsStore.get('currentUser')?.id ?? BigInt(1);
+            args.data.createBy = userId;
+            args.data.updateBy = userId;
+            return (that[this.name] as any).update(args);
+          },
+          async updateMany<T extends { name: ModelName; }, A extends { data: AuditModel[]; }>
+            (this: T, args: A): Promise<Prisma.Result<T, A, 'updateMany'>> {
+            const userId = that.authClsStore.get('currentUser')?.id ?? BigInt(1);
+            args.data.forEach(item => item.createBy = userId);
+            args.data.forEach(item => item.updateBy = userId);
+            return (that[this.name] as any).updateMany(args);
+          },
+        }
+      }
     });
   }
 }
@@ -46,7 +77,11 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
   imports: [
     CacheModule
   ],
-  providers: [PrismaService],
+  providers: [{
+    provide: PrismaService,
+    useFactory: (authClsStore: ClsService<{ 'currentUser': User; }>) => new PrismaService(authClsStore).init(),
+    inject: [ClsService]
+  }],
   exports: [PrismaService],
 })
 export class PrismaModule { }
