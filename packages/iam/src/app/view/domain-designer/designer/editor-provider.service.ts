@@ -35,8 +35,6 @@ export class EditorProviderService {
       const pageBlockId = doc.addBlock('affine:page', {});
       doc.addBlock('affine:surface', {}, pageBlockId);
       const noteId = doc.addBlock('affine:note', {}, pageBlockId);
-
-      const bizFlowId = doc.addBlock('affine:note-block-biz-flow', {text: new Text('affine:note-block-biz-flow')}, noteId);
       const featureId = doc.addBlock('affine:embed-feature', this.props, noteId);
       this.featureBlock = doc.getBlockById(featureId);
     });

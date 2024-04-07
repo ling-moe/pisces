@@ -52,7 +52,7 @@ export class BizFlowBlock extends BlockElement<BizFlowModel,BizFlowService> {
   override renderBlock() {
     return html`
         <div>
-          <h3 class="biz-flow-title">业务流</h3>
+        <h3 class="biz-flow-title">业务流</h3>
           <rich-text
           .yText=${this.model.text?.yText}
           .inlineEventSource=${this.topContenteditableElement ?? nothing}
