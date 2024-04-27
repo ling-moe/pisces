@@ -10,6 +10,11 @@ import { ActivatedRoute } from "@angular/router";
 import { EditorProviderService } from "./editor-provider.service";
 import { FeatureModel } from "./ddd.block";
 import { BlockModel } from "@blocksuite/store";
+import { baseTextAttributes, InlineEditor } from '@blocksuite/inline';
+import { Doc, UndoManager } from 'yjs';
+import { z } from "zod";
+import { RichText } from "@blocksuite/blocks";
+import { nothing } from "lit";
 
 @Component({
   selector: 'pisces-designer',
@@ -42,10 +47,32 @@ export class DesignerComponent implements AfterViewInit {
   productId!: bigint;
 
   ngAfterViewInit() {
-    const editor = this.editorProvider.getEditor();
-    if (this.container.nativeElement && editor) {
-      this.container.nativeElement.appendChild(editor);
-    }
+    const customSchema = baseTextAttributes.extend({
+      reference: z
+        .object({
+          type: z.enum([
+            'LinkedPage',
+          ]),
+          pageId: z.string(),
+        })
+        .optional()
+        .nullable()
+        .catch(undefined),
+      background: z.string().optional().nullable().catch(undefined),
+      color: z.string().optional().nullable().catch(undefined),
+    });
+    const doc = new Doc();
+    const yText = doc.getText('text');
+    const inlineEditor = new InlineEditor(yText);
+    inlineEditor.setAttributeSchema(customSchema);
+
+
+    const myEditor = this.container.nativeElement;
+    inlineEditor.mount(myEditor);
+    // const editor = this.editorProvider.getEditor();
+    // if (this.container.nativeElement && editor) {
+    //   this.container.nativeElement.appendChild(editor);
+    // }
   }
 
 }
