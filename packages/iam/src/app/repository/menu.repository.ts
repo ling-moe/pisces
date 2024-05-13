@@ -17,7 +17,7 @@ export class MenuRepository implements Provider<MenuDomainService> {
 
   async deleteMenu(menuId: bigint): Promise<void> {
     await this.prisma.menu.delete({ where: { id: menuId } });
-  };
+  }
 
   @HasPermission('保存菜单中的权限')
   async savePerms(menuId: bigint, addPerms: Perm[], removeMenus: Menu[]): Promise<void> {
@@ -28,12 +28,12 @@ export class MenuRepository implements Provider<MenuDomainService> {
       this.prisma.menu.createMany({ data: menus }),
       this.prisma.menu.deleteMany({ where: { id: { in: removeMenus.map(menu => menu.id) } } })
     ]);
-  };
+  }
 
   @HasPermission('获取菜单中已分配的权限')
   listAssignedPermByMenuId(menuId: bigint): Menu[] | Promise<Menu[]> {
     return this.prisma.menu.findMany({ where: { pid: menuId } });
-  };
+  }
 
   @HasPermission('获取权限列表')
   listPerm(): Perm[] {

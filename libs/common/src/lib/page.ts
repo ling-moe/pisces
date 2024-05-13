@@ -34,6 +34,10 @@ export interface OCC {
   versionNum: bigint
 }
 
+export interface RemoveMark {
+  isRemove?: boolean
+}
+
 
 export interface Page<T> {
   data: T[];
