@@ -4,17 +4,11 @@ import { customElement } from 'lit/decorators.js';
 import { FeatureService } from './Feature-service';
 import { FeatureBlockModel } from './feature-model';
 import { BlockElement } from '@blocksuite/lit';
-import { BlockModel } from '@blocksuite/store';
 import { bindContainerHotkey } from '@blocksuite/blocks/dist/_common/components/rich-text/keymap/container';
 
 @customElement('affine-feature')
 export class FeatureBlockComponent extends BlockElement<FeatureBlockModel, FeatureService> {
 
-  private storyBlockModel!: BlockModel;
-  private actionBlockModel!: BlockModel;
-  private commandBlockModel!: BlockModel;
-  private eventBlockModel!: BlockModel;
-  private caseBlockModel!: BlockModel;
   static override styles = css`
     affine-database {
       display: block;
@@ -35,15 +29,23 @@ export class FeatureBlockComponent extends BlockElement<FeatureBlockModel, Featu
 
   override connectedCallback() {
     super.connectedCallback();
-    bindContainerHotkey(this );
+    bindContainerHotkey(this);
 
     // 初始化结构
     const currentId = this.path[this.path.length - 1];
-    this.storyBlockModel = this.doc.getBlockById(this.doc.addBlock('affine:feature-content', { title: '故事', text: this.model.story }, currentId))!;
-    this.actionBlockModel = this.doc.getBlockById(this.doc.addBlock('affine:feature-content', { title: '行为',text: this.model.action }, currentId))!;
-    this.commandBlockModel = this.doc.getBlockById(this.doc.addBlock('affine:feature-content', { title: '命令',text: this.model.command }, currentId))!;
-    this.eventBlockModel = this.doc.getBlockById(this.doc.addBlock('affine:feature-content', { title: '事件',text: this.model.event }, currentId))!;
-    this.caseBlockModel = this.doc.getBlockById(this.doc.addBlock('affine:feature-content', { title: '用例',text: this.model.case }, currentId))!;
+    if(this.model.children.length !== 0){
+      return;
+    }
+    this.doc.addBlock('affine:feature-content',
+      { title: '故事', text: this.model.story }, currentId);
+    this.doc.addBlock('affine:feature-content',
+      { title: '行为', text: this.model.action }, currentId);
+    this.doc.addBlock('affine:feature-content',
+      { title: '命令', text: this.model.command }, currentId);
+    this.doc.addBlock('affine:feature-content',
+      { title: '事件', text: this.model.event }, currentId);
+    this.doc.addBlock('affine:feature-content',
+      { title: '用例', text: this.model.case }, currentId);
   }
 
   override renderBlock() {

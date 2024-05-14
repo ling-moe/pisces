@@ -5,16 +5,16 @@ import {
   Component,
   ElementRef,
   Inject,
+  OnDestroy,
   OnInit,
-  ViewChild
+  viewChild
 } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { Doc } from "@blocksuite/store";
 import { Consumer, RemoteService } from "@pisces/musubi/client";
-import { fromUint8Array, toUint8Array } from 'js-base64';
-import { applyUpdate, encodeStateAsUpdate, transact } from "yjs";
 import { ProductDomainService } from "../../../domain/product.entity";
-import { EditorProviderService } from "./editor-provider.service";
+import { EditorService } from "../../../service/editor.service";
+import { AbstractEditor } from "@blocksuite/blocks";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: 'pisces-designer',
@@ -22,10 +22,10 @@ import { EditorProviderService } from "./editor-provider.service";
   styleUrl: './designer.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DesignerComponent implements OnInit, AfterViewInit {
+export class DesignerComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  @ViewChild('editor', { static: true })
-  editor!: ElementRef;
+  editorEle = viewChild.required<ElementRef>('editor');
+  editor!: AbstractEditor;
 
   productId!: bigint;
 
@@ -34,8 +34,21 @@ export class DesignerComponent implements OnInit, AfterViewInit {
     @Inject(RemoteService)
     private productRepository: Consumer<ProductDomainService>,
     private cdr: ChangeDetectorRef,
-    private editorProviderService: EditorProviderService
+    private editorService: EditorService,
+    private toast: ToastrService
   ) {
+  }
+  save() {
+    const str = this.editorService.doc2String(this.editor.doc);
+    this.productRepository.saveProductDocData(this.productId, str)
+      .subscribe(() =>{
+        this.toast.success("保存成功");
+      });
+  }
+  addNewFeature() {
+    const doc = this.editor.doc;
+    const note = doc.getBlockByFlavour("affine:note")[0];
+    doc.addBlock('affine:feature', {}, note.id);
   }
 
   ngOnInit(): void {
@@ -43,24 +56,14 @@ export class DesignerComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.editorProviderService.getEditor(this.productId).subscribe(editor => {
-      if (this.editor.nativeElement && editor) {
-        this.editor.nativeElement.appendChild(editor);
-      }
+    this.productRepository.detailProduct(this.productId).subscribe(res => {
+      this.editor = this.editorService.createEditor(res?.base64Data);
+      this.editorEle().nativeElement.appendChild(this.editor);
     });
   }
 
-  save() {
-    this.productRepository.saveProductDocData(this.productId, fromUint8Array(encodeStateAsUpdate(this.editorProviderService.getDoc().spaceDoc))).subscribe(console.log);
-
-    //Y.encodeStateAsUpdate（全量），Y.encodeStateVector(状态向量差异)，存储在数据库要用byte
-    // console.log(this.doc..toJSON());
+  ngOnDestroy(): void {
+    this.editorService.removeDoc(this.editor?.doc);
   }
-  addNewFeature() {
-    const doc = this.editorProviderService.getDoc();
-    const note = doc.getBlockByFlavour("affine:note")[0];
-    doc.addBlock('affine:feature', {}, note.id);
-  }
-
 }
 

@@ -24,6 +24,9 @@ export class FeatureContentBlockComponent extends BlockElement<FeatureContentBlo
     bindContainerHotkey(this);
 
     const currentId = this.path[this.path.length - 1];
+    if(this.model.children.length !== 0){
+      return;
+    }
     this.doc.getBlockById(this.doc.addBlock('affine:paragraph', { text: this.model.text }, currentId))!;
 
   }

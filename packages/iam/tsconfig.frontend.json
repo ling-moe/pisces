@@ -14,7 +14,8 @@
     "src/**/*.frontend.ts",
     "src/**/view/**/*.ts",
     "src/**/domain/**/*.ts",
-    "src/**/infra/**/*.frontend.ts"
+    "src/**/infra/**/*.frontend.ts",
+    "src/app/service/*.service.ts"
   ],
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
