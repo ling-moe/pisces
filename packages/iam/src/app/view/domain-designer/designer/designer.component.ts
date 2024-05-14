@@ -11,8 +11,8 @@ import {
 import { ActivatedRoute } from "@angular/router";
 import { Doc } from "@blocksuite/store";
 import { Consumer, RemoteService } from "@pisces/musubi/client";
-import { fromUint8Array } from 'js-base64';
-import { encodeStateAsUpdate } from "yjs";
+import { fromUint8Array, toUint8Array } from 'js-base64';
+import { applyUpdate, encodeStateAsUpdate, transact } from "yjs";
 import { ProductDomainService } from "../../../domain/product.entity";
 import { EditorProviderService } from "./editor-provider.service";
 
@@ -43,19 +43,15 @@ export class DesignerComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    const editor = this.editorProviderService.getEditor();
-    if (this.editor.nativeElement && editor) {
-      this.editor.nativeElement.appendChild(editor);
-    }
-    // this.productRepository.detailProduct(this.productId).subscribe(res => {
-    //   if(res?.data){
-    //     applyUpdate(doc.spaceDoc, res.data)
-    //   }
-    // })
+    this.editorProviderService.getEditor(this.productId).subscribe(editor => {
+      if (this.editor.nativeElement && editor) {
+        this.editor.nativeElement.appendChild(editor);
+      }
+    });
   }
 
   save() {
-    this.productRepository.saveProductDocData(this.productId, fromUint8Array(encodeStateAsUpdate(this.editorProviderService.getDoc().spaceDoc))).subscribe(console.log)
+    this.productRepository.saveProductDocData(this.productId, fromUint8Array(encodeStateAsUpdate(this.editorProviderService.getDoc().spaceDoc))).subscribe(console.log);
 
     //Y.encodeStateAsUpdate（全量），Y.encodeStateVector(状态向量差异)，存储在数据库要用byte
     // console.log(this.doc..toJSON());
@@ -63,7 +59,7 @@ export class DesignerComponent implements OnInit, AfterViewInit {
   addNewFeature() {
     const doc = this.editorProviderService.getDoc();
     const note = doc.getBlockByFlavour("affine:note")[0];
-    doc.addBlock('affine:feature', {},note.id);
+    doc.addBlock('affine:feature', {}, note.id);
   }
 
 }
