@@ -1,8 +1,8 @@
-import { FeatureService } from './Feature-service';
-import type { BlockSpec } from '@blocksuite/block-std';
+import { BlockSpec } from "@blocksuite/block-std";
 import { literal } from 'lit/static-html.js';
-import { FeatureBlockModel, FeatureBlockSchema } from './feature-model';
-import { FeatureBlockComponent } from './feature-block';
+import { FeatureBlockComponent } from "./feature-block";
+import { FeatureBlockSchema, FeatureBlockModel } from "./feature-model";
+import { FeatureService } from "./Feature-service";
 
 export const FeatureBlockSpec: BlockSpec = {
   schema: FeatureBlockSchema,
@@ -11,6 +11,8 @@ export const FeatureBlockSpec: BlockSpec = {
   },
   service: FeatureService,
 };
+
+export { FeatureBlockComponent, FeatureService, FeatureBlockModel };
 
 declare global {
   namespace BlockSuite {
@@ -25,5 +27,3 @@ declare global {
     'affine-feature': FeatureBlockComponent;
   }
 }
-export { FeatureBlockComponent, FeatureService, FeatureBlockModel };
-

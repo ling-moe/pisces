@@ -151,13 +151,15 @@ model RoleUser {
 // 产品表
 model Product {
   // 产品ID
-  id              BigInt           @id @default(autoincrement()) @map("id")
+  id              BigInt           @id @default(autoincrement())
   // 产品代码
-  code            String           @map("code") @db.VarChar(60)
+  code            String           @db.VarChar(60)
   // 产品名称
-  name            String           @map("name") @db.VarChar(120)
+  name            String           @db.VarChar(120)
   // 产品描述
   desc            String           @db.Text
+  // 产品文档二进制数据
+  data            Bytes?            @db.ByteA
   // 版本号
   versionNum      BigInt           @default(1) @map("version_num")
   // 创建者

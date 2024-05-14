@@ -1,6 +1,7 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   Inject,
@@ -8,14 +9,12 @@ import {
   ViewChild
 } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { createEmptyDoc, PageEditor } from '@blocksuite/presets';
 import { Doc } from "@blocksuite/store";
 import { Consumer, RemoteService } from "@pisces/musubi/client";
-import { FeatureBlockComponent } from '../blocksuite-block/feature';
-import { FeatureContentBlockComponent } from '../blocksuite-block/feature-content';
-import { ProductFeatureDomainService } from './../../../domain/product-feature.entity';
-import { CustomSchemas } from './schemas';
-import { CustomBlockSpecs } from './specs';
+import { fromUint8Array } from 'js-base64';
+import { encodeStateAsUpdate } from "yjs";
+import { ProductDomainService } from "../../../domain/product.entity";
+import { EditorProviderService } from "./editor-provider.service";
 
 @Component({
   selector: 'pisces-designer',
@@ -27,44 +26,44 @@ export class DesignerComponent implements OnInit, AfterViewInit {
 
   @ViewChild('editor', { static: true })
   editor!: ElementRef;
-  doc!: Doc;
-  noteId!: string;
 
   productId!: bigint;
 
   constructor(
     private route: ActivatedRoute,
     @Inject(RemoteService)
-    private menuRepository: Consumer<ProductFeatureDomainService>,
+    private productRepository: Consumer<ProductDomainService>,
+    private cdr: ChangeDetectorRef,
+    private editorProviderService: EditorProviderService
   ) {
   }
 
   ngOnInit(): void {
-    this.route.snapshot.params['productId'];
+    this.productId = BigInt(this.route.snapshot.params['id']);
   }
 
   ngAfterViewInit(): void {
-    const doc = createEmptyDoc().init();
-    doc.schema.register(CustomSchemas);
-    const editor = new PageEditor();
-    editor.doc = doc;
-    editor.specs = CustomBlockSpecs;
-    this.doc = doc;
-    this.editor.nativeElement.appendChild(editor);
-    FeatureBlockComponent;
-    FeatureContentBlockComponent;
-    const pageBlockId = doc.addBlock('affine:page', {});
-    doc.addBlock('affine:surface', {}, pageBlockId);
-    this.noteId = doc.addBlock('affine:note', {}, pageBlockId);
-    doc.addBlock('affine:feature', {}, this.noteId);
+    const editor = this.editorProviderService.getEditor();
+    if (this.editor.nativeElement && editor) {
+      this.editor.nativeElement.appendChild(editor);
+    }
+    // this.productRepository.detailProduct(this.productId).subscribe(res => {
+    //   if(res?.data){
+    //     applyUpdate(doc.spaceDoc, res.data)
+    //   }
+    // })
   }
 
   save() {
+    this.productRepository.saveProductDocData(this.productId, fromUint8Array(encodeStateAsUpdate(this.editorProviderService.getDoc().spaceDoc))).subscribe(console.log)
+
     //Y.encodeStateAsUpdate（全量），Y.encodeStateVector(状态向量差异)，存储在数据库要用byte
-    console.log(this.doc.yBlocks.toJSON());
+    // console.log(this.doc..toJSON());
   }
   addNewFeature() {
-    this.doc.addBlock('affine:feature', {}, this.noteId);
+    const doc = this.editorProviderService.getDoc();
+    const note = doc.getBlockByFlavour("affine:note")[0];
+    doc.addBlock('affine:feature', {},note.id);
   }
 
 }

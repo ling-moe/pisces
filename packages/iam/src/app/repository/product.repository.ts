@@ -1,5 +1,6 @@
+import { toUint8Array } from 'js-base64';
 import { PrismaService } from "@pisces/backend";
-import { Injectable } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { Provider } from "@pisces/musubi/server";
 import { Product, ProductQuery, ProductDomainService } from "../domain/product.entity";
 import { Page, PageRequest, paginator } from "@pisces/common";
@@ -9,6 +10,16 @@ export class ProductRepository implements Provider<ProductDomainService> {
   constructor(
     private prisma: PrismaService
   ) {
+  }
+  async detailProduct(id: bigint): Promise<Product | null> {
+    return await this.prisma.product.findUnique({where: {
+      id: id
+    }})
+  }
+  async saveProductDocData(id: bigint, data: string): Promise<void> {
+    await this.prisma.product.update({data: {data: Buffer.from(toUint8Array(data))}, where: {
+      id: id
+    }})
   }
 
   async deleteProduct(id: bigint) {

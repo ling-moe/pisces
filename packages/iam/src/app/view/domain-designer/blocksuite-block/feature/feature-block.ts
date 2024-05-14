@@ -1,12 +1,11 @@
 import { EdgelessRootBlockComponent, NoteBlockComponent } from '@blocksuite/blocks';
-import { bindContainerHotkey } from '@blocksuite/blocks/dist/_common/components/rich-text/keymap/index.js';
-import { BlockElement } from '@blocksuite/lit';
-import { BlockModel } from '@blocksuite/store';
-import { css } from 'lit';
+import { css, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { html } from 'lit/static-html.js';
 import { FeatureService } from './Feature-service';
 import { FeatureBlockModel } from './feature-model';
+import { BlockElement } from '@blocksuite/lit';
+import { BlockModel } from '@blocksuite/store';
+import { bindContainerHotkey } from '@blocksuite/blocks/dist/_common/components/rich-text/keymap/container';
 
 @customElement('affine-feature')
 export class FeatureBlockComponent extends BlockElement<FeatureBlockModel, FeatureService> {
@@ -36,7 +35,7 @@ export class FeatureBlockComponent extends BlockElement<FeatureBlockModel, Featu
 
   override connectedCallback() {
     super.connectedCallback();
-    bindContainerHotkey(this);
+    bindContainerHotkey(this );
 
     // 初始化结构
     const currentId = this.path[this.path.length - 1];
