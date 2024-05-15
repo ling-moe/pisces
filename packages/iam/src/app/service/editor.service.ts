@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AffineEditorContainer } from '@blocksuite/presets';
-import { Doc, DocCollection, nanoid, Schema } from '@blocksuite/store';
+import { Doc, DocCollection, Schema } from '@blocksuite/store';
 import { fromUint8Array, toUint8Array } from 'js-base64';
 import { BehaviorSubject } from 'rxjs';
 import { applyUpdate, encodeStateAsUpdate } from 'yjs';
@@ -32,10 +32,6 @@ export class EditorService {
       editor.doc = doc ? doc : this.createDoc();
     }
     return editor;
-  }
-  private updateDocs() {
-    const docs = [...this.collection.docs.values()];
-    this.docUpdatedSubject.next(docs);
   }
 
   createDoc(docData?: Uint8Array) {

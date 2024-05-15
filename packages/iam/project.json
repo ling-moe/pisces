@@ -123,64 +123,6 @@
         }
       }
     },
-    "build-ssr": {
-      "executor": "@angular-devkit/build-angular:application",
-      "outputs": [
-        "{options.outputPath}"
-      ],
-      "options": {
-        "outputPath": "dist/packages/iam/frontend",
-        "index": "libs/frontend/src/index.html",
-        "browser": "packages/iam/src/app/main.frontend.ts",
-        "polyfills": [
-          "zone.js"
-        ],
-        "tsConfig": "packages/iam/tsconfig.frontend.json",
-        "assets": [
-          "packages/iam/src/assets"
-        ],
-        "allowedCommonJsDependencies": [
-          "base64-js",
-          "lodash",
-          "moment"
-        ],
-        "styles": [
-          "libs/frontend/src/styles.scss",
-          "@blocksuite/presets/themes/affine.css"
-        ],
-        "scripts": [],
-        "server": "packages/iam/src/app/infra/config/iam.module.server.ts",
-        "prerender": false,
-        "ssr": {
-          "entry": "packages/iam/src/app/main.server.ts"
-        }
-      },
-      "configurations": {
-        "production": {
-          "budgets": [
-            {
-              "type": "initial",
-              "maximumWarning": "500kb",
-              "maximumError": "5mb"
-            },
-            {
-              "type": "anyComponentStyle",
-              "maximumWarning": "2kb",
-              "maximumError": "4kb"
-            }
-          ],
-          "outputHashing": "all"
-        },
-        "development": {
-          "optimization": false,
-          "extractLicenses": false,
-          "sourceMap": true,
-          "namedChunks": true,
-          "watch": true
-        }
-      },
-      "defaultConfiguration": "production"
-    },
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
       "options": {
