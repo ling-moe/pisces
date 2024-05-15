@@ -17,7 +17,6 @@
     "paths": {
       "@pisces/backend": ["libs/backend/src/index.ts"],
       "@pisces/common": ["libs/common/src/index.ts"],
-      "@pisces/executor": ["tools/executor/src/index.ts"],
       "@pisces/frontend": ["libs/frontend/src/index.ts"],
       "@pisces/iam/*": ["packages/iam/src/lib/*"],
       "@pisces/musubi": ["libs/musubi/src/index.ts"],

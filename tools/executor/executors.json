@@ -1,9 +1,0 @@
-{
-  "executors": {
-    "union-application": {
-      "implementation": "./src/executors/union-application/executor",
-      "schema": "./src/executors/union-application/schema.json",
-      "description": "union-application executor"
-    }
-  }
-}
