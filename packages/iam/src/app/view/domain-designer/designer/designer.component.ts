@@ -33,7 +33,6 @@ export class DesignerComponent implements OnInit, AfterViewInit, OnDestroy {
     private route: ActivatedRoute,
     @Inject(RemoteService)
     private productRepository: Consumer<ProductDomainService>,
-    private cdr: ChangeDetectorRef,
     private editorService: EditorService,
     private toast: ToastrService
   ) {

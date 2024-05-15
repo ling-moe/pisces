@@ -7,8 +7,6 @@
   ],
   "files": [
     "src/app/main.frontend.ts",
-    "src/app/infra/config/app.module.server.ts",
-    "src/app/main.server.ts"
   ],
   "include": [
     "src/**/*.frontend.ts",
@@ -16,11 +14,5 @@
     "src/**/domain/**/*.ts",
     "src/**/infra/**/*.frontend.ts",
     "src/app/service/*.service.ts"
-  ],
-  "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "types": [
-      "node"
-    ]
-  }
+  ]
 }

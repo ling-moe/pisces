@@ -12,6 +12,7 @@
     "noFallthroughCasesInSwitch": true,
     "useDefineForClassFields": false,
     "emitDecoratorMetadata": true,
+    "allowSyntheticDefaultImports": true,
     "strictNullChecks": true,
     "noImplicitAny": true,
     "strictBindCallApply": true,
