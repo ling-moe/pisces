@@ -15,7 +15,6 @@ import { UserEditComponent } from "../../view/user/edit/edit.component";
 import { UserListComponent } from "../../view/user/list/list.component";
 import { DesignerComponent } from "../../view/domain-designer/designer/designer.component";
 import { ProductComponent } from "../../view/domain-designer/product/product.component";
-import { FeatureCardComponent } from "../../view/domain-designer/feature-card/feature-card.component";
 
 const COMPONENTS = [
   UserListComponent,
@@ -74,7 +73,6 @@ const iamFrontendRoutes: Route[] = [
     UserAssignComponent,
     ProductComponent,
     DesignerComponent,
-    FeatureCardComponent,
   ]
 })
 export class IamModuleFrontend {

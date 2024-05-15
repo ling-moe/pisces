@@ -1,9 +1,9 @@
-import { EdgelessRootBlockComponent, NoteBlockComponent } from '@blocksuite/blocks';
 import { css, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { FeatureService } from './Feature-service';
 import { FeatureBlockModel } from './feature-model';
-import { BlockElement } from '@blocksuite/lit';
+import { BlockElement } from '@blocksuite/block-std';
+import { EdgelessRootBlockComponent, NoteBlockComponent } from '@blocksuite/blocks';
 import { bindContainerHotkey } from '@blocksuite/blocks/dist/_common/components/rich-text/keymap/container';
 
 @customElement('affine-feature')
