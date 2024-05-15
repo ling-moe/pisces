@@ -39,7 +39,11 @@
         ],
         "tsConfig": "packages/iam/tsconfig.frontend.json",
         "assets": [
-          "packages/iam/src/assets"
+          {
+            "glob": "**/*",
+            "input": "packages/iam/src/resource/assets",
+            "output": "/assets"
+          }
         ],
         "allowedCommonJsDependencies": [
           "base64-js",
