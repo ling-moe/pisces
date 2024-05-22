@@ -15,6 +15,7 @@ import { UserEditComponent } from "../../view/user/edit/edit.component";
 import { UserListComponent } from "../../view/user/list/list.component";
 import { DesignerComponent } from "../../view/domain-designer/designer/designer.component";
 import { ProductComponent } from "../../view/domain-designer/product/product.component";
+import { MatButtonToggleModule } from "@angular/material/button-toggle";
 
 const COMPONENTS = [
   UserListComponent,
@@ -63,7 +64,8 @@ const iamFrontendRoutes: Route[] = [
     RouterModule.forChild(iamFrontendRoutes),
     MatTreeModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    MatButtonToggleModule
   ],
   declarations: [
     ...COMPONENTS,

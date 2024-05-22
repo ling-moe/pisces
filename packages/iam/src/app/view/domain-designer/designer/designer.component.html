@@ -1,3 +1,11 @@
-<button mat-button color="primary" (click)="addNewFeature()">添加新工作流</button>
-<button mat-button color="primary" (click)="save()">保存文档</button>
+<button mat-raised-button (click)="addNewFeature()"class="m-x-8">添加新工作流</button>
+<button mat-raised-button color="primary" (click)="save()" class="m-x-8">保存文档</button>
+<div>
+    <mat-button-toggle-group [(value)]="mode">
+      <mat-button-toggle value="edit">编辑</mat-button-toggle>
+      <mat-button-toggle value="markField">标记字段</mat-button-toggle>
+      <mat-button-toggle value="markDomain">标记领域</mat-button-toggle>
+      <mat-button-toggle value="markMethod">标记方法</mat-button-toggle>
+    </mat-button-toggle-group>
+</div>
 <div #editor></div>

@@ -5,8 +5,11 @@ import {
   Component,
   ElementRef,
   Inject,
+  Injector,
   OnDestroy,
   OnInit,
+  Signal,
+  signal,
   viewChild
 } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
@@ -15,6 +18,8 @@ import { ProductDomainService } from "../../../domain/product.entity";
 import { EditorService } from "../../../service/editor.service";
 import { AbstractEditor } from "@blocksuite/blocks";
 import { ToastrService } from "ngx-toastr";
+
+export const editorMode = signal<'edit' | 'markField' | 'markDomain' | 'markMethod'>('edit');
 
 @Component({
   selector: 'pisces-designer',
@@ -28,25 +33,28 @@ export class DesignerComponent implements OnInit, AfterViewInit, OnDestroy {
   editor!: AbstractEditor;
 
   productId!: bigint;
+  mode: Signal<'edit' | 'markField' | 'markDomain' | 'markMethod'> = editorMode;
+  fields = signal<string[]>([]);
 
   constructor(
     private route: ActivatedRoute,
     @Inject(RemoteService)
     private productRepository: Consumer<ProductDomainService>,
     private editorService: EditorService,
-    private toast: ToastrService
+    private toast: ToastrService,
+    private di: Injector,
   ) {
   }
   save() {
     const str = this.editorService.doc2String(this.editor.doc);
     this.productRepository.saveProductDocData(this.productId, str)
-      .subscribe(() =>{
+      .subscribe(() => {
         this.toast.success("保存成功");
       });
   }
   addNewFeature() {
     const doc = this.editor.doc;
-    const note = doc.getBlockByFlavour("affine:note")[0];
+    const note = doc.getBlocksByFlavour("affine:note")[0];
     doc.addBlock('affine:feature', {}, note.id);
   }
 
