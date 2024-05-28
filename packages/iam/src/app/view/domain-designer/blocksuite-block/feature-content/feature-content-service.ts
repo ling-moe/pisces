@@ -5,6 +5,6 @@ export class FeatureContentService extends BlockService<FeatureContentBlockModel
 
   override mounted(): void {
     super.mounted();
-
+    this.handleEvent('drop', (e) => console.log(e))
   }
 }

@@ -1,5 +1,32 @@
 import { INestApplication, Logger } from "@nestjs/common";
-import { appInit } from "./infra/config/app.module.backend";
+import { Module } from "@nestjs/common";
+import { NestFactory, RouterModule } from "@nestjs/core";
+import { CoreBackendModule } from "@pisces/backend";
+import { json } from "body-parser";
+import { BigIntModule, initStandard } from '@pisces/common';
+import { IamModuleBackend } from "./infra/config/iam.module.backend";
+
+@Module({
+  imports: [
+    CoreBackendModule,
+    IamModuleBackend,
+    RouterModule.register([
+      {
+        path: 'api',
+        module: IamModuleBackend,
+      },
+    ]),
+  ]
+})
+export class AppModuleBackend { }
+
+export async function appInit() {
+  initStandard();
+  const app = await NestFactory.create(AppModuleBackend);
+  app.use(json({ reviver: BigIntModule }));
+  await app.init();
+  return app;
+}
 
 async function bootstrap(app: INestApplication) {
   const port = process.env.PORT || 3100;
@@ -10,4 +37,3 @@ async function bootstrap(app: INestApplication) {
 }
 
 appInit().then(app => bootstrap(app)) ;
-

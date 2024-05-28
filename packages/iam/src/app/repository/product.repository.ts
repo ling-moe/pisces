@@ -8,7 +8,7 @@ import { Page, PageRequest, paginator } from "@pisces/common";
 @Injectable()
 export class ProductRepository implements Provider<ProductDomainService> {
   constructor(
-    private prisma: PrismaService
+    private prisma: PrismaService,
   ) {
   }
   async detailProduct(id: bigint) {

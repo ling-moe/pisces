@@ -3,6 +3,7 @@ import { BlockModel, Text, defineBlockSchema } from '@blocksuite/store';
 type Props = {
   title: string,
   text: Text,
+  contentFlavour: BlockSuite.Flavour
 };
 
 export class FeatureContentBlockModel extends BlockModel<Props> {
@@ -16,6 +17,7 @@ export const FeatureContentBlockSchema = defineBlockSchema({
   props: (): Props => ({
     title: '',
     text: new Text(''),
+    contentFlavour: 'affine:paragraph'
   }),
   metadata: {
     role: 'hub',

@@ -159,7 +159,7 @@ model Product {
   // 产品描述
   desc            String           @db.Text
   // 产品文档二进制数据
-  data            Bytes?            @db.ByteA
+  data            Bytes?           @db.ByteA
   // 版本号
   versionNum      BigInt           @default(1) @map("version_num")
   // 创建者
@@ -186,6 +186,8 @@ model ProductDomain {
   productId       BigInt           @map("product_id")
   // 关联的产品
   Product         Product          @relation(fields: [productId], references: [id])
+  // 领域名称
+  name            String
   // 实体
   entity          String           @default("")
   // 聚合根

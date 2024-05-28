@@ -25,7 +25,7 @@ export class FeatureContentBlockComponent extends BlockElement<FeatureContentBlo
     if(this.model.children.length !== 0){
       return;
     }
-    this.doc.addBlock('affine:paragraph', { text: this.model.text }, currentId);
+    this.doc.addBlock(this.model.contentFlavour, { text: this.model.text }, currentId);
 
   }
 
