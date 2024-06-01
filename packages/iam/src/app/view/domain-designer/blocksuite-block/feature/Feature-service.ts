@@ -3,6 +3,8 @@ import { FeatureBlockModel } from './feature-model';
 import { isEqual } from 'lodash';
 import { Observable, filter, map, startWith, pairwise } from 'rxjs';
 import { editorMode } from '../../designer/designer.component';
+import { EditorService } from 'packages/iam/src/app/service/editor.service';
+import { INJECTOR } from 'packages/iam/src/app/main.frontend';
 
 export class FeatureService extends BlockService<FeatureBlockModel> {
 
@@ -12,6 +14,7 @@ export class FeatureService extends BlockService<FeatureBlockModel> {
 
   override mounted(): void {
     super.mounted();
+    const editorService = INJECTOR.get(EditorService);
     // 初始化选择监听
     const { selection, command } = this.std;
     const ob = new Observable<BaseSelection[]>(observer => {

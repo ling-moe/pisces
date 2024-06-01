@@ -1,7 +1,7 @@
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { initStandard } from '@pisces/common';
 
-import { NgModule } from '@angular/core';
+import { Injector, NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AdminLayoutComponent, AppComponent, CoreFrontendModule, LOCAL_STORAGE, NAVIGATOR, authGuard, buildRoutes, environment } from '@pisces/frontend';
 
@@ -35,7 +35,12 @@ export class RoutesRoutingModule {}
 })
 export class AppModuleFrontend {}
 
+export let INJECTOR: Injector;
+
 initStandard();
 platformBrowserDynamic()
   .bootstrapModule(AppModuleFrontend)
+  .then(app => {
+    INJECTOR = app.injector;
+  })
   .catch((err) => console.error(err));

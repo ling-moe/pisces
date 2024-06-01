@@ -157,7 +157,7 @@ model Product {
   // 产品名称
   name            String           @db.VarChar(120)
   // 产品描述
-  desc            String           @db.Text
+  desc            String?           @db.Text
   // 产品文档二进制数据
   data            Bytes?           @db.ByteA
   // 版本号

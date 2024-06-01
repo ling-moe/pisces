@@ -26,7 +26,9 @@ export class FeatureBlockComponent extends BlockElement<FeatureBlockModel, Featu
     super.connectedCallback();
 
     // 订阅field
-    this.service.fieldsOb.pipe(takeUntil(this.destory)).subscribe(fields => this.fields = fields);
+    this.service.fieldsOb
+    .pipe(takeUntil(this.destory))
+    .subscribe(fields => this.fields = fields);
 
     const currentId = this.path[this.path.length - 1];
     // 初始化结构

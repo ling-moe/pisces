@@ -1,11 +1,95 @@
-<button mat-raised-button (click)="addNewFeature()"class="m-x-8">添加新工作流</button>
-<button mat-raised-button color="primary" (click)="save()" class="m-x-8">保存文档</button>
-<div>
-    <mat-button-toggle-group [(value)]="mode">
-      <mat-button-toggle value="edit">编辑</mat-button-toggle>
+<mat-drawer-container autosize="false" hasBackdrop="true">
+  <mat-drawer position="end" mode="side" disableClose="true" style="width: 400px;" #drawer>
+    <button type="button" mat-icon-button class="m-y-4" (click)="drawer.toggle()">
+      <mat-icon>close</mat-icon>
+    </button>
+    <div class="m-8">
+      <mat-form-field class="w-full">
+        <mat-label>创建领域</mat-label>
+        <input matInput type="text" [(ngModel)]="domainName">
+        <button matSuffix mat-icon-button aria-label="Add" (click)="creatDomain()">
+          <mat-icon>add</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+    <mat-accordion multi>
+      @for (domain of domains; track domain.name) {
+        <mat-expansion-panel class="m-8" expanded>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{domain.name}}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <p>字段</p>
+          <mat-list [id]="domain.name + 'Field'"
+                    cdkDropList
+                    [cdkDropListData]="domain.fields"
+                    [cdkDropListConnectedTo]="domainFieldContainers"
+                    (cdkDropListDropped)="drop($event)"
+                    >
+          @for (field of domain.fields; track field) {
+              <mat-list-item cdkDrag [cdkDragData]="field">{{field}}</mat-list-item>
+          }
+          </mat-list>
+          <p>方法</p>
+          <mat-list [id]="domain.name + 'Method'"
+          cdkDropList
+          [cdkDropListData]="domain.methods"
+          [cdkDropListConnectedTo]="domainMethodContainers"
+          (cdkDropListDropped)="drop($event)">
+          @for (method of domain.methods; track method) {
+              <mat-list-item cdkDrag [cdkDragData]="method">{{method}}</mat-list-item>
+          }
+          </mat-list>
+        </mat-expansion-panel>
+      }
+      <mat-expansion-panel class="m-8" expanded>
+        <mat-expansion-panel-header>
+          <mat-panel-title>未使用的字段</mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-list
+                  id="unUsedFieldsContainer"
+                    cdkDropList
+                    [cdkDropListData]="unUsedFields"
+                    [cdkDropListConnectedTo]="domainFieldContainers"
+                    (cdkDropListDropped)="drop($event)"
+        >
+          @for (field of unUsedFields; track field) {
+              <mat-list-item cdkDrag [cdkDragData]="field">{{field}}</mat-list-item>
+          }
+        </mat-list>
+      </mat-expansion-panel>
+      <mat-expansion-panel class="m-8" expanded>
+        <mat-expansion-panel-header>
+          <mat-panel-title>未使用的方法</mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-list
+        id="unUsedMethodsContainer"
+        cdkDropList
+        [cdkDropListData]="unUsedMethods"
+        [cdkDropListConnectedTo]="domainMethodContainers"
+        (cdkDropListDropped)="drop($event)"
+        >
+          @for (method of unUsedMethods; track method) {
+              <mat-list-item cdkDrag [cdkDragData]="method">{{method}}</mat-list-item>
+          }
+        </mat-list>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </mat-drawer>
+  <div class="save">
+    <button mat-raised-button color="accent" (click)="drawer.toggle()">维护领域关系</button>
+    <button mat-raised-button color="primary" (click)="save()"class="m-l-8">保存文档</button>
+  </div>
+  <div class="tool-bar d-flex flex-col">
+    <button mat-raised-button (click)="addNewFeature()"class="m-y-8">添加新工作流</button>
+    <mat-button-toggle-group [(value)]="mode" vertical>
+      <mat-button-toggle value="edit">编辑模式</mat-button-toggle>
       <mat-button-toggle value="markField">标记字段</mat-button-toggle>
       <mat-button-toggle value="markDomain">标记领域</mat-button-toggle>
       <mat-button-toggle value="markMethod">标记方法</mat-button-toggle>
     </mat-button-toggle-group>
-</div>
-<div #editor></div>
+  </div>
+  <div #editor></div>
+</mat-drawer-container>
+
