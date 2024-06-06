@@ -5,6 +5,8 @@ export type Product = PrismaProduct & AuditDomain & OCC;
 
 export type ProductQuery = Pick<Product, 'code' | 'name' | 'desc'>;
 
+export type DomainSummary = {name: string, fields: string[], methods: string[]};
+
 export interface ProductDomainService {
   /**
    * 获取产品列表
@@ -28,7 +30,7 @@ export interface ProductDomainService {
    * @param id 产品id
    * @param data 文档二进制数据
    */
-  saveProductDocData(id: bigint, data: string): void;
+  saveProductDocData(id: bigint, data: string, domains: DomainSummary[]): void;
     /**
    * 获取产品列表
    */

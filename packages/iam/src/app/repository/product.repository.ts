@@ -2,8 +2,9 @@ import { fromUint8Array, toUint8Array } from 'js-base64';
 import { PrismaService } from "@pisces/backend";
 import { Injectable, Logger } from "@nestjs/common";
 import { Provider } from "@pisces/musubi/server";
-import { Product, ProductQuery, ProductDomainService } from "../domain/product.entity";
+import { Product, ProductQuery, ProductDomainService, DomainSummary } from "../domain/product.entity";
 import { Page, PageRequest, paginator } from "@pisces/common";
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class ProductRepository implements Provider<ProductDomainService> {
@@ -24,10 +25,13 @@ export class ProductRepository implements Provider<ProductDomainService> {
     }
     return product
   }
-  async saveProductDocData(id: bigint, data: string): Promise<void> {
-    await this.prisma.product.update({data: {data: Buffer.from(toUint8Array(data))}, where: {
-      id: id
-    }})
+  async saveProductDocData(id: bigint, data: string, domains: DomainSummary[]): Promise<void> {
+    this.prisma.$transaction(async tx => {
+      const { product } = tx;
+      await product.update({
+        data: {data: Buffer.from(toUint8Array(data))},
+        where: { id: id }})
+    })
   }
 
   async deleteProduct(id: bigint) {

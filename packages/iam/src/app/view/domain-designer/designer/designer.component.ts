@@ -1,4 +1,3 @@
-import { DomSanitizer } from '@angular/platform-browser';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -13,7 +12,7 @@ import {
 } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { Consumer, RemoteService } from "@pisces/musubi/client";
-import { ProductDomainService } from "../../../domain/product.entity";
+import { DomainSummary, ProductDomainService } from "../../../domain/product.entity";
 import { EditorService } from "../../../service/editor.service";
 import { AbstractEditor } from "@blocksuite/blocks";
 import { ToastrService } from "ngx-toastr";
@@ -36,10 +35,9 @@ export class DesignerComponent implements OnInit, AfterViewInit, OnDestroy {
   mode: Signal<'edit' | 'markField' | 'markDomain' | 'markMethod'> = editorMode;
   fields = signal<string[]>([]);
   domainName?: string;
-  domains: {name: string, fields: string[], methods: string[]}[] = [];
-  unUsedFields: string[] = ['qqq','www'];
-  unUsedMethods: string[] = ['eee', 'rrr'];
-
+  domains: DomainSummary[] = [];
+  unUsedFields: string[] = [];
+  unUsedMethods: string[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -88,7 +86,7 @@ export class DesignerComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log(this.editor.doc.blockCollection.yBlocks.toJSON());
 
     this.productRepository
-      .saveProductDocData(this.productId, str)
+      .saveProductDocData(this.productId, str, this.domains)
       .subscribe(() => {
         this.toast.success("保存成功");
       });

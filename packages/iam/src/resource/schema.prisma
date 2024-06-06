@@ -157,7 +157,7 @@ model Product {
   // 产品名称
   name            String           @db.VarChar(120)
   // 产品描述
-  desc            String?           @db.Text
+  desc            String?          @db.Text
   // 产品文档二进制数据
   data            Bytes?           @db.ByteA
   // 版本号
@@ -170,8 +170,8 @@ model Product {
   updateBy        BigInt           @map("update_by")
   // 更新时间
   updateAt        DateTime         @updatedAt @map("update_at")
-  // 归属的域
-  productDomains  ProductDomain[]
+  // 包含的域
+  domains         Domain[]
   // 包含的特性
   productFeatures ProductFeature[]
 
@@ -179,19 +179,15 @@ model Product {
 }
 
 // 产品域表
-model ProductDomain {
+model Domain {
   // 域ID
   id              BigInt           @id @default(autoincrement()) @map("id")
   // 所属的产品ID
-  productId       BigInt           @map("product_id")
+  productId       BigInt?          @map("product_id")
   // 关联的产品
-  Product         Product          @relation(fields: [productId], references: [id])
+  product         Product?         @relation(fields: [productId], references: [id])
   // 领域名称
   name            String
-  // 实体
-  entity          String           @default("")
-  // 聚合根
-  aggregateRoot   String           @default("")
   // 描述
   desc            String           @map("desc") @db.Text
   // 版本号
@@ -206,45 +202,109 @@ model ProductDomain {
   updateAt        DateTime         @updatedAt @map("update_at")
   // 域下的产品特性
   productFeatures ProductFeature[]
+  Entity          Entity[]
 
   @@index([productId])
-  @@map("ddd_product_domain")
+  @@map("ddd_domain")
 }
 
 // 产品特性表
 model ProductFeature {
   // 特性ID
-  id              BigInt         @id @default(autoincrement()) @map("id")
+  id         BigInt   @id @default(autoincrement()) @map("id")
   // 所属的产品ID
-  productId       BigInt         @map("product_id")
+  productId  BigInt   @map("product_id")
   // 所属的域ID
-  productDomainId BigInt?        @map("product_domain_id")
+  domainId   BigInt?  @map("domain_id")
   // 关联的产品
-  Product         Product        @relation(fields: [productId], references: [id])
+  Product    Product  @relation(fields: [productId], references: [id])
   // 可能的关联域
-  ProductDomain   ProductDomain? @relation(fields: [productDomainId], references: [id])
+  domain     Domain?  @relation(fields: [domainId], references: [id])
   // 标题
-  title           String         @map("title") @db.VarChar(240)
+  title      String   @map("title") @db.VarChar(240)
   // 描述
-  desc            String         @db.Text
+  desc       String   @db.Text
   // 事件
-  event           String         @db.Text
+  event      String   @db.Text
   // 命令
-  command         String         @db.Text
+  command    String   @db.Text
   // 角色
-  role            String         @db.Text
+  role       String   @db.Text
   // 版本号
-  versionNum      BigInt         @default(1) @map("version_num")
+  versionNum BigInt   @default(1) @map("version_num")
   // 创建者
-  createBy        BigInt         @map("create_by")
+  createBy   BigInt   @map("create_by")
   // 创建时间
-  createAt        DateTime       @default(now()) @map("create_at")
+  createAt   DateTime @default(now()) @map("create_at")
   // 更新者
-  updateBy        BigInt         @map("update_by")
+  updateBy   BigInt   @map("update_by")
   // 更新时间
-  updateAt        DateTime       @updatedAt @map("update_at")
+  updateAt   DateTime @updatedAt @map("update_at")
 
   @@index([productId])
-  @@index([productDomainId])
+  @@index([domainId])
   @@map("ddd_product_feature")
+}
+
+// 领域实体表
+model Entity {
+  // 域ID
+  id          BigInt        @id @default(autoincrement()) @map("id")
+  // 所属的产品ID
+  domainId    BigInt        @map("domain_id")
+  // 关联的产品
+  domain      Domain        @relation(fields: [domainId], references: [id])
+  // 实体名称
+  name        String
+  // 描述
+  desc        String
+  // 版本号
+  versionNum  BigInt        @default(1) @map("version_num")
+  // 创建者
+  createBy    BigInt        @map("create_by")
+  // 创建时间
+  createAt    DateTime      @default(now()) @map("create_at")
+  // 更新者
+  updateBy    BigInt        @map("update_by")
+  // 更新时间
+  updateAt    DateTime      @updatedAt @map("update_at")
+  EntityField EntityField[]
+
+  @@index([domainId])
+  @@map("ddd_entity")
+}
+
+// 领域实体字段表
+model EntityField {
+  // 域ID
+  id           BigInt   @id @default(autoincrement()) @map("id")
+  // 所属的产品ID
+  entityId     BigInt   @map("entity_id")
+  // 关联的实体
+  entity       Entity   @relation(fields: [entityId], references: [id])
+  // 字段名称
+  name         String
+  // 字段类型
+  type         String
+  // 默认值
+  defaultValue String
+  // 是否必填
+  isRequired   String
+  // 字典
+  dict         String?
+  // 字段描述
+  desc         String
+  // 版本号
+  versionNum   BigInt   @default(1) @map("version_num")
+  // 创建者
+  createBy     BigInt   @map("create_by")
+  // 创建时间
+  createAt     DateTime @default(now()) @map("create_at")
+  // 更新者
+  updateBy     BigInt   @map("update_by")
+  // 更新时间
+  updateAt     DateTime @updatedAt @map("update_at")
+
+  @@index([entityId])
+  @@map("ddd_entity_field")
 }
