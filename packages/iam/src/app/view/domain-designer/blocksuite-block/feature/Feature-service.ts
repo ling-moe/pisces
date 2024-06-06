@@ -1,7 +1,7 @@
 import { BaseSelection, BlockService, TextSelection } from '@blocksuite/block-std';
 import { FeatureBlockModel } from './feature-model';
 import { isEqual } from 'lodash';
-import { Observable, filter, map, startWith, pairwise } from 'rxjs';
+import { Observable, filter, map, startWith, pairwise, tap } from 'rxjs';
 import { editorMode } from '../../designer/designer.component';
 import { EditorService } from 'packages/iam/src/app/service/editor.service';
 import { INJECTOR } from 'packages/iam/src/app/main.frontend';
@@ -32,6 +32,9 @@ export class FeatureService extends BlockService<FeatureBlockModel> {
       filter(event => event?.from.length !== 0),
       map(event => {
           // FIXME 反选的时候blocksuite有bug， 会把widget移除
+          if(!event){
+            return '';
+          }
           command.chain().formatText({
             textSelection: event,
             styles: {
@@ -40,14 +43,19 @@ export class FeatureService extends BlockService<FeatureBlockModel> {
           }).run();
           const start = !event.reverse ? event.from.index : (event.from.index - event.from.length);
           const end = start + event.from.length;
-          const field = this.doc.getBlock(event.blockId)?.yBlock.toJSON()['prop:text'].slice(start, end);
-          const fieldIndex = this.fields.findIndex(i => field.includes(i));
-          if (fieldIndex !== -1) {
-            this.fields[fieldIndex] = field;
-          } else {
-            this.fields.push(field);
-          }
-          return [...this.fields];
+          const field: string = this.doc.getBlock(event.blockId)?.yBlock.toJSON()['prop:text'].slice(start, end);
+          return field;
+      }),
+      filter(i => i !== ''),
+      tap(field => editorService.refresh(field)),
+      map(field => {
+        const fieldIndex = this.fields.findIndex(i => field.includes(i));
+        if (fieldIndex !== -1) {
+          this.fields[fieldIndex] = field;
+        } else {
+          this.fields.push(field);
+        }
+        return [...this.fields];
       })
     );
   }

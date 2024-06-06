@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { AffineEditorContainer } from '@blocksuite/presets';
 import { Doc, DocCollection, Schema } from '@blocksuite/store';
 import { fromUint8Array, toUint8Array } from 'js-base64';
@@ -11,6 +11,10 @@ import { CustomBlockSpecs, edgelessModeSpecs } from '../view/domain-designer/blo
   providedIn: 'root',
 })
 export class EditorService {
+  fieldsOb = new EventEmitter<string>();
+  refresh(field: string): void {
+    this.fieldsOb.next(field);
+  }
   private collection!: DocCollection;
   private docUpdatedSubject = new BehaviorSubject<Doc[]>([]);
   docUpdated$ = this.docUpdatedSubject.asObservable();

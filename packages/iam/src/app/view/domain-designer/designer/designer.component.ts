@@ -1,3 +1,4 @@
+import { DomSanitizer } from '@angular/platform-browser';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -35,7 +36,7 @@ export class DesignerComponent implements OnInit, AfterViewInit, OnDestroy {
   mode: Signal<'edit' | 'markField' | 'markDomain' | 'markMethod'> = editorMode;
   fields = signal<string[]>([]);
   domainName?: string;
-  domains: {name: string, fields: [], methods: []}[] = [];
+  domains: {name: string, fields: string[], methods: string[]}[] = [];
   unUsedFields: string[] = ['qqq','www'];
   unUsedMethods: string[] = ['eee', 'rrr'];
 
@@ -57,7 +58,7 @@ export class DesignerComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.domains.map(i => i.name + 'Method').concat('unUsedMethodsContainer');
   }
 
-  drop(event: CdkDragDrop<any>) {
+  drop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
@@ -100,6 +101,25 @@ export class DesignerComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     this.productId = BigInt(this.route.snapshot.params['id']);
+    this.editorService.fieldsOb.subscribe(field => {
+      let flag = false;
+      for (const domain of this.domains) {
+        const fieldIndex = domain.fields.findIndex(i => field.includes(i));
+        if (fieldIndex !== -1) {
+          domain.fields[fieldIndex] = field;
+          flag = true;
+        }
+      }
+      if(flag){
+        return
+      }
+      const fieldIndex = this.unUsedFields.findIndex(i => field.includes(i));
+      if (fieldIndex !== -1) {
+        this.unUsedFields[fieldIndex] = field;
+      }else{
+        this.unUsedFields = [...this.unUsedFields, field];
+      }
+    })
   }
 
   ngAfterViewInit(): void {

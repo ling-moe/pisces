@@ -20,27 +20,38 @@
               {{domain.name}}
             </mat-panel-title>
           </mat-expansion-panel-header>
-          <p>字段</p>
-          <mat-list [id]="domain.name + 'Field'"
-                    cdkDropList
-                    [cdkDropListData]="domain.fields"
-                    [cdkDropListConnectedTo]="domainFieldContainers"
-                    (cdkDropListDropped)="drop($event)"
-                    >
-          @for (field of domain.fields; track field) {
-              <mat-list-item cdkDrag [cdkDragData]="field">{{field}}</mat-list-item>
-          }
-          </mat-list>
-          <p>方法</p>
-          <mat-list [id]="domain.name + 'Method'"
-          cdkDropList
-          [cdkDropListData]="domain.methods"
-          [cdkDropListConnectedTo]="domainMethodContainers"
-          (cdkDropListDropped)="drop($event)">
-          @for (method of domain.methods; track method) {
-              <mat-list-item cdkDrag [cdkDragData]="method">{{method}}</mat-list-item>
-          }
-          </mat-list>
+          <fieldset class="r-4">
+            <legend>字段</legend>
+            <mat-list [id]="domain.name + 'Field'"
+            cdkDropList
+            [cdkDropListData]="domain.fields"
+            [cdkDropListConnectedTo]="domainFieldContainers"
+            (cdkDropListDropped)="drop($event)"
+            >
+            @for (field of domain.fields; track field) {
+                <mat-list-item cdkDrag [cdkDragData]="field" class="drag-item">
+                  <div class="drag-item-placeholder" *cdkDragPlaceholder></div>
+                  {{field}}
+                </mat-list-item>
+            }
+            </mat-list>
+          </fieldset>
+          <fieldset class="r-4">
+            <legend>方法</legend>
+            <mat-list [id]="domain.name + 'Method'"
+            cdkDropList
+            [cdkDropListData]="domain.methods"
+            [cdkDropListConnectedTo]="domainMethodContainers"
+            (cdkDropListDropped)="drop($event)"
+            >
+            @for (method of domain.methods; track method) {
+                <mat-list-item cdkDrag [cdkDragData]="method" class="drag-item">
+                  <div class="drag-item-placeholder" *cdkDragPlaceholder></div>
+                  {{method}}
+                </mat-list-item>
+            }
+            </mat-list>
+          </fieldset>
         </mat-expansion-panel>
       }
       <mat-expansion-panel class="m-8" expanded>
@@ -48,14 +59,17 @@
           <mat-panel-title>未使用的字段</mat-panel-title>
         </mat-expansion-panel-header>
         <mat-list
-                  id="unUsedFieldsContainer"
-                    cdkDropList
-                    [cdkDropListData]="unUsedFields"
-                    [cdkDropListConnectedTo]="domainFieldContainers"
-                    (cdkDropListDropped)="drop($event)"
+          id="unUsedFieldsContainer"
+            cdkDropList
+            [cdkDropListData]="unUsedFields"
+            [cdkDropListConnectedTo]="domainFieldContainers"
+            (cdkDropListDropped)="drop($event)"
         >
           @for (field of unUsedFields; track field) {
-              <mat-list-item cdkDrag [cdkDragData]="field">{{field}}</mat-list-item>
+              <mat-list-item cdkDrag [cdkDragData]="field" class="drag-item">
+                <div class="drag-item-placeholder" *cdkDragPlaceholder></div>
+                {{field}}
+              </mat-list-item>
           }
         </mat-list>
       </mat-expansion-panel>
@@ -71,7 +85,10 @@
         (cdkDropListDropped)="drop($event)"
         >
           @for (method of unUsedMethods; track method) {
-              <mat-list-item cdkDrag [cdkDragData]="method">{{method}}</mat-list-item>
+              <mat-list-item cdkDrag [cdkDragData]="method" class="drag-item">
+                <div class="drag-item-placeholder" *cdkDragPlaceholder></div>
+                {{method}}
+              </mat-list-item>
           }
         </mat-list>
       </mat-expansion-panel>
