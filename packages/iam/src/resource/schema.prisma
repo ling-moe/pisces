@@ -189,7 +189,7 @@ model Domain {
   // 领域名称
   name            String
   // 描述
-  desc            String           @map("desc") @db.Text
+  desc            String?          @map("desc") @db.Text
   // 版本号
   versionNum      BigInt           @default(1) @map("version_num")
   // 创建者
@@ -203,6 +203,7 @@ model Domain {
   // 域下的产品特性
   productFeatures ProductFeature[]
   Entity          Entity[]
+  EntityField     EntityField[]
 
   @@index([productId])
   @@map("ddd_domain")
@@ -223,7 +224,7 @@ model ProductFeature {
   // 标题
   title      String   @map("title") @db.VarChar(240)
   // 描述
-  desc       String   @db.Text
+  desc       String?  @db.Text
   // 事件
   event      String   @db.Text
   // 命令
@@ -250,9 +251,9 @@ model ProductFeature {
 model Entity {
   // 域ID
   id          BigInt        @id @default(autoincrement()) @map("id")
-  // 所属的产品ID
+  // 所属的领域ID
   domainId    BigInt        @map("domain_id")
-  // 关联的产品
+  // 关联的领域
   domain      Domain        @relation(fields: [domainId], references: [id])
   // 实体名称
   name        String
@@ -279,17 +280,21 @@ model EntityField {
   // 域ID
   id           BigInt   @id @default(autoincrement()) @map("id")
   // 所属的产品ID
-  entityId     BigInt   @map("entity_id")
+  entityId     BigInt?  @map("entity_id")
   // 关联的实体
-  entity       Entity   @relation(fields: [entityId], references: [id])
+  entity       Entity?  @relation(fields: [entityId], references: [id])
+  // 所属的领域ID
+  domainId     BigInt?  @map("domain_id")
+  // 关联的领域
+  domain       Domain?  @relation(fields: [domainId], references: [id])
   // 字段名称
   name         String
   // 字段类型
   type         String
   // 默认值
-  defaultValue String
+  defaultValue String?
   // 是否必填
-  isRequired   String
+  isRequired   Boolean
   // 字典
   dict         String?
   // 字段描述

@@ -34,5 +34,5 @@ export interface ProductDomainService {
     /**
    * 获取产品列表
    */
-  detailProduct(id: bigint): Product & {base64Data?: string} | null;
+  detailProduct(id: bigint): Product & {base64Data?: string,domains?: DomainSummary[]} | null;
 }

@@ -12,6 +12,11 @@
   right: 36px;
 }
 
+.drag-handle{
+  margin: 0 8px;
+  cursor: move;
+}
+
 .drag-item{
   border-bottom: solid 1px #ccc;
   color: rgba(0, 0, 0, 0.87);
@@ -20,7 +25,6 @@
   align-items: center;
   justify-content: space-between;
   box-sizing: border-box;
-  cursor: move;
   background: white;
   font-size: 14px;
 }

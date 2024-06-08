@@ -1,6 +1,7 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   Inject,
@@ -45,6 +46,7 @@ export class DesignerComponent implements OnInit, AfterViewInit, OnDestroy {
     private productRepository: Consumer<ProductDomainService>,
     private editorService: EditorService,
     private toast: ToastrService,
+    private cdr: ChangeDetectorRef,
   ) {
   }
 
@@ -117,6 +119,7 @@ export class DesignerComponent implements OnInit, AfterViewInit, OnDestroy {
       }else{
         this.unUsedFields = [...this.unUsedFields, field];
       }
+      this.cdr.markForCheck();
     })
   }
 
@@ -124,6 +127,8 @@ export class DesignerComponent implements OnInit, AfterViewInit, OnDestroy {
     this.productRepository.detailProduct(this.productId).subscribe(res => {
       this.editor = this.editorService.createEditor(res?.base64Data);
       this.editorEle().nativeElement.appendChild(this.editor);
+
+      this.domains = res?.domains??[];
     });
   }
 

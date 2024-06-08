@@ -1,7 +1,7 @@
 import { BaseSelection, BlockService, TextSelection } from '@blocksuite/block-std';
 import { FeatureBlockModel } from './feature-model';
 import { isEqual } from 'lodash';
-import { Observable, filter, map, startWith, pairwise, tap } from 'rxjs';
+import { Observable, filter, map, startWith, pairwise, tap, debounceTime, distinct } from 'rxjs';
 import { editorMode } from '../../designer/designer.component';
 import { EditorService } from 'packages/iam/src/app/service/editor.service';
 import { INJECTOR } from 'packages/iam/src/app/main.frontend';
@@ -25,28 +25,22 @@ export class FeatureService extends BlockService<FeatureBlockModel> {
       map(event => event.find(i => i.type === 'text') as TextSelection)
     );
     this.fieldsOb = ob.pipe(
-      startWith(new TextSelection({ from: { length: 0, path: [], index: 0 }, to: null })),
-      pairwise(),
-      filter(([a, b]) => !isEqual(a, b)),
-      map(([, b]) => b),
-      filter(event => event?.from.length !== 0),
+      // FIXME 暂不支持反选字段时进行扫描，reverse会造成字段分离
+      filter(event => event && event.from.length !== 0 && !event.reverse),
+      distinct(event => String(event.from.index) + String(event.from.length)),
       map(event => {
-          // FIXME 反选的时候blocksuite有bug， 会把widget移除
-          if(!event){
-            return '';
+        command.chain().formatText({
+          textSelection: event,
+          styles: {
+            color: 'blue'
           }
-          command.chain().formatText({
-            textSelection: event,
-            styles: {
-              color: 'blue'
-            }
-          }).run();
-          const start = !event.reverse ? event.from.index : (event.from.index - event.from.length);
-          const end = start + event.from.length;
-          const field: string = this.doc.getBlock(event.blockId)?.yBlock.toJSON()['prop:text'].slice(start, end);
-          return field;
+        }).run();
+
+        const start = event.from.index;
+        const end = start + event.from.length;
+        const field: string = this.doc.getBlock(event.blockId)?.yBlock.toJSON()['prop:text'].slice(start, end);
+        return field;
       }),
-      filter(i => i !== ''),
       tap(field => editorService.refresh(field)),
       map(field => {
         const fieldIndex = this.fields.findIndex(i => field.includes(i));
