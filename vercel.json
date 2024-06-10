@@ -2,14 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "packages/iam/src/app/main.backend.ts",
+      "src": "./dist/packages/iam/main.js",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "src/main.ts",
+      "dest": "./dist/packages/iam/main.js",
       "methods": [
         "GET",
         "POST",
