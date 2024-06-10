@@ -31,12 +31,12 @@ export class MenuRepository implements Provider<MenuDomainService> {
   }
 
   @HasPermission('获取菜单中已分配的权限')
-  listAssignedPermByMenuId(menuId: bigint): Menu[] | Promise<Menu[]> {
+  async listAssignedPermByMenuId(menuId: bigint): Promise<Menu[]> {
     return this.prisma.menu.findMany({ where: { pid: menuId } });
   }
 
   @HasPermission('获取权限列表')
-  listPerm(): Perm[] {
+  async listPerm(): Promise<Perm[]> {
     return prems;
   }
 

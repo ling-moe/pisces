@@ -31,7 +31,7 @@
         "{options.outputPath}"
       ],
       "options": {
-        "outputPath": "dist/packages/iam/frontend",
+        "outputPath": "dist/packages/iam",
         "index": "libs/frontend/src/index.html",
         "browser": "packages/iam/src/app/main.frontend.ts",
         "polyfills": [
@@ -89,7 +89,7 @@
       ],
       "defaultConfiguration": "production",
       "options": {
-        "outputPath": "dist/packages/iam/backend",
+        "outputPath": "dist/packages/iam",
         "target": "node",
         "compiler": "tsc",
         "main": "packages/iam/src/app/main.backend.ts",
@@ -104,7 +104,7 @@
     },
     "build": {
       "executor": "nx:run-commands",
-      "defaultConfiguration": "development",
+      "defaultConfiguration": "production",
       "options": {
         "commands": [
           "nx run iam:build-frontend",
