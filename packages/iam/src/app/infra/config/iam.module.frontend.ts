@@ -1,3 +1,4 @@
+import { MtxGridModule } from '@ng-matero/extensions/grid';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,10 +14,11 @@ import { UserAssignComponent } from '../../view/role/user-assign/user-assign.com
 import { UserCreateComponent } from '../../view/user/create/create.component';
 import { UserEditComponent } from '../../view/user/edit/edit.component';
 import { UserListComponent } from '../../view/user/list/list.component';
-import { DesignerComponent } from '../../view/domain-designer/designer/designer.component';
+import { ProductDesignerComponent } from '../../view/domain-designer/product-designer/designer.component';
 import { ProductComponent } from '../../view/domain-designer/product/product.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { DomainComponent } from '../../view/domain-designer/domain/domain.component';
+import { DomainDesignerComponent } from '../../view/domain-designer/domain-designer/domain-designer.component';
 
 const COMPONENTS = [UserListComponent, UserCreateComponent, UserEditComponent, MenuListComponent];
 
@@ -29,12 +31,16 @@ const iamFrontendRoutes: Route[] = [
         component: ProductComponent,
       },
       {
+        path: 'product/:id',
+        component: ProductDesignerComponent,
+      },
+      {
         path: 'domain',
         component: DomainComponent,
       },
       {
-        path: 'designer/:id',
-        component: DesignerComponent,
+        path: 'domain/:id',
+        component: DomainDesignerComponent,
       },
     ],
   },
@@ -74,8 +80,9 @@ const iamFrontendRoutes: Route[] = [
     RoleAuthorizationComponent,
     UserAssignComponent,
     ProductComponent,
-    DesignerComponent,
+    ProductDesignerComponent,
     DomainComponent,
+    DomainDesignerComponent,
   ],
 })
 export class IamModuleFrontend {}

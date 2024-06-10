@@ -4,7 +4,8 @@ import { Page, PageRequest, paginator } from "@pisces/common";
 import { Provider } from "@pisces/musubi/server";
 import { Domain, EntityField } from '@prisma/client';
 import { fromUint8Array, toUint8Array } from 'js-base64';
-import { DomainSummary, Product, ProductDomainService, ProductQuery } from "../domain/product.entity";
+import { Product, ProductDomainService, ProductQuery } from "../domain/product.entity";
+import { DomainSummary } from "../domain/domain.entity";
 
 @Injectable()
 export class ProductRepository implements Provider<ProductDomainService> {

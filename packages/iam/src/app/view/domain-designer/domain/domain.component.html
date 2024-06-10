@@ -1,1 +1,10 @@
-<p>domain works!</p>
+<mtx-grid [data]="list"
+          [columns]="columns"
+          [length]="total"
+          [loading]="isLoading"
+          [pageOnFront]="false"
+          [pageIndex]="queryParams.page"
+          [pageSize]="queryParams.size"
+          [pageSizeOptions]="[5,10,20]"
+          (page)="getNextPage($event)">
+</mtx-grid>

@@ -2,7 +2,7 @@ import { BaseSelection, BlockService, TextSelection } from '@blocksuite/block-st
 import { FeatureBlockModel } from './feature-model';
 import { isEqual } from 'lodash';
 import { Observable, filter, map, startWith, pairwise, tap, debounceTime, distinct } from 'rxjs';
-import { editorMode } from '../../designer/designer.component';
+import { editorMode } from '../../product-designer/designer.component';
 import { EditorService } from 'packages/iam/src/app/service/editor.service';
 import { INJECTOR } from 'packages/iam/src/app/main.frontend';
 

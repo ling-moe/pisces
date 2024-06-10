@@ -13,21 +13,22 @@ import {
 } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { Consumer, RemoteService } from "@pisces/musubi/client";
-import { DomainSummary, ProductDomainService } from "../../../domain/product.entity";
+import { ProductDomainService } from "../../../domain/product.entity";
 import { EditorService } from "../../../service/editor.service";
 import { AbstractEditor } from "@blocksuite/blocks";
 import { ToastrService } from "ngx-toastr";
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from "@angular/cdk/drag-drop";
+import { DomainSummary } from "../../../domain/domain.entity";
 
 export const editorMode = signal<'edit' | 'markField' | 'markDomain' | 'markMethod'>('edit');
 
 @Component({
-  selector: 'pisces-designer',
+  selector: 'pisces-product-designer',
   templateUrl: './designer.component.html',
   styleUrl: './designer.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DesignerComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ProductDesignerComponent implements OnInit, AfterViewInit, OnDestroy {
 
   editorEle = viewChild.required<ElementRef>('editor');
   editor!: AbstractEditor;

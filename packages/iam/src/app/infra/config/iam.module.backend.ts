@@ -5,6 +5,7 @@ import { MenuRepository } from "../../repository/menu.repository";
 import { AuthController } from "../../controller/auth.controller";
 import { CacheModule } from "@pisces/backend";
 import { ProductRepository } from "../../repository/product.repository";
+import { DomainRepository } from '../../repository/domain.repository';
 
 @MusubiModule({
   imports: [
@@ -15,6 +16,7 @@ import { ProductRepository } from "../../repository/product.repository";
     RoleRepository,
     MenuRepository,
     ProductRepository,
+    DomainRepository,
   ],
   controllers: [
     AuthController

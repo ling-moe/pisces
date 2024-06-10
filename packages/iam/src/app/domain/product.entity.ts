@@ -1,11 +1,11 @@
 import { PageRequest, Page, AuditDomain, OCC } from '@pisces/common';
 import { Product as PrismaProduct } from "@prisma/client";
+import { DomainSummary } from './domain.entity';
 
 export type Product = PrismaProduct & AuditDomain & OCC;
 
 export type ProductQuery = Pick<Product, 'code' | 'name' | 'desc'>;
 
-export type DomainSummary = {name: string, fields: string[], methods: string[]};
 
 export interface ProductDomainService {
   /**

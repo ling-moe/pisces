@@ -106,7 +106,7 @@ export class ProductComponent implements OnInit,FormActionSubmit<FormAction> {
   }
 
   toDesign(id: bigint): void {
-    this.router.navigateByUrl(`/iam/domain/designer/${id}`);
+    this.router.navigateByUrl(`/iam/domain/product/${id}`);
   }
 
   productCreateFields: FormlyFieldConfig[] =
