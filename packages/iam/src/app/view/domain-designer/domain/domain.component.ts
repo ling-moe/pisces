@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { MtxGridColumn } from '@ng-matero/extensions/grid';
 import { RemoteService, Consumer } from '@pisces/musubi/client';
 import { Domain, DomainDomainService } from '../../../domain/domain.entity';
@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
   selector: 'pisces-domain',
   templateUrl: './domain.component.html',
   styleUrl: './domain.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DomainComponent implements OnInit {
   columns: MtxGridColumn[] = [
@@ -71,6 +72,7 @@ export class DomainComponent implements OnInit {
     @Inject(RemoteService)
     private domainRepository: Consumer<DomainDomainService>,
     private router: Router,
+    private cdr: ChangeDetectorRef,
   ){}
 
   ngOnInit(): void {
@@ -89,6 +91,7 @@ export class DomainComponent implements OnInit {
       this.list = res.data;
       this.total = res.total;
       this.isLoading = false;
+      this.cdr.markForCheck();
     });
   }
 

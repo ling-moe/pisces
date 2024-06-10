@@ -1,1 +1,47 @@
-<p>domain-designer works!</p>
+<mtx-grid [data]="list" [columns]="columns" [loading]="isLoading"
+          [expandable]="true" [expansionTemplate]="expansionTpl"
+          (expansionChange)="loadFields($event)">
+</mtx-grid>
+
+<ng-template #expansionTpl let-row>
+  <mat-list>
+    <mat-list-item style="height: 160px;border: 1px solid blue;">
+      <form style="height: 160px;">
+        <mat-form-field appearance="fill" style="width: 50px;">
+          <mat-label>序号</mat-label>
+          <input matInput value="1" disabled>
+        </mat-form-field>
+        <mat-form-field appearance="fill" style="width: 150px;">
+          <mat-label>名称</mat-label>
+          <input matInput>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>描述</mat-label>
+          <input matInput>
+        </mat-form-field>
+        <mat-form-field appearance="fill" style="width: 150px;">
+          <mat-label>类型</mat-label>
+          <mat-select>
+            <mat-option value="INTEGER">整数</mat-option>
+            <mat-option value="DECIMAL">小数</mat-option>
+            <mat-option value="STRING">字符串</mat-option>
+            <mat-option value="TEXT">长文本</mat-option>
+            <mat-option value="LOW">值集</mat-option>
+            <mat-option value="DATE">日期</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="fill" style="width: 150px;">
+          <mat-label>默认值</mat-label>
+          <input matInput>
+        </mat-form-field>
+        <mat-form-field appearance="fill" style="width: 150px;">
+          <mat-label>字典</mat-label>
+          <input matInput>
+        </mat-form-field>
+        <mat-slide-toggle appearance="fill">
+          是否必填
+        </mat-slide-toggle>
+      </form>
+    </mat-list-item>
+  </mat-list>
+</ng-template>

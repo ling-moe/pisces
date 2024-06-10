@@ -1,10 +1,5 @@
-<mtx-grid [data]="list"
-          [columns]="columns"
-          [length]="total"
-          [loading]="isLoading"
-          [pageOnFront]="false"
-          [pageIndex]="queryParams.page"
-          [pageSize]="queryParams.size"
-          [pageSizeOptions]="[5,10,20]"
-          (page)="getNextPage($event)">
+<mtx-grid rowHover="true" [data]="list" [columns]="columns"
+          [loading]="isLoading" [length]="total" [pageOnFront]="false"
+          [pageIndex]="queryParams.page" [pageSize]="queryParams.size"
+          [pageSizeOptions]="[5,10,20]" (page)="getNextPage($event)">
 </mtx-grid>

@@ -29,7 +29,7 @@ export type MusubiModuleMetadata = ModuleMetadata & {
 };
 
 export type Provider<T> = {
-  [P in keyof T]: T[P] extends (...args: infer A) => infer R ? (...args: A) => Promise<R> | R : any;
+  [P in keyof T]: T[P] extends (...args: infer A) => infer R ?  (...args: A) => Promise<R> : any;
 };
 /**
  * 在原有module注解的情况下进行增强

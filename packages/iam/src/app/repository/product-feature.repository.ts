@@ -10,15 +10,15 @@ export class ProductFeatureRepository implements Provider<ProductFeatureDomainSe
     private prisma: PrismaService
   ) {
   }
-  listProductFeature(productId: bigint): ProductFeature[] | Promise<ProductFeature[]> {
+  listProductFeature(productId: bigint): Promise<ProductFeature[]> {
     return this.prisma.productFeature.findMany({
       where: {
         productId: productId
       }
     });
   }
-  saveProductFeature(productId: bigint, list: ProductFeature[]): void | Promise<void> {
-    this.prisma.$transaction(async client => {
+  saveProductFeature(productId: bigint, list: ProductFeature[]): Promise<void> {
+    return this.prisma.$transaction(async client => {
       const group = groupBy(list, i => i.isRemove);
       await client.productFeature.deleteMany({
         where: {

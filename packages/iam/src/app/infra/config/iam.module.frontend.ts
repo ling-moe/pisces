@@ -1,4 +1,3 @@
-import { MtxGridModule } from '@ng-matero/extensions/grid';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -17,8 +16,8 @@ import { UserListComponent } from '../../view/user/list/list.component';
 import { ProductDesignerComponent } from '../../view/domain-designer/product-designer/designer.component';
 import { ProductComponent } from '../../view/domain-designer/product/product.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { DomainComponent } from '../../view/domain-designer/domain/domain.component';
 import { DomainDesignerComponent } from '../../view/domain-designer/domain-designer/domain-designer.component';
+import { DomainComponent } from '../../view/domain-designer/domain/domain.component';
 
 const COMPONENTS = [UserListComponent, UserCreateComponent, UserEditComponent, MenuListComponent];
 
