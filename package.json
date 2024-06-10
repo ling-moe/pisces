@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "iam:start": "nx run iam:serve",
-    "iam:deploy": "prisma generate --schema=packages/iam/src/resource/schema.prisma && nx run iam:build",
+    "iam:deploy": "nx run iam:build",
     "test": "npx nx run iam:build --watch=true --configuration=development",
     "db:studio": "prisma studio --schema=packages/iam/src/resource/schema.prisma",
     "musubi:tsc": "packages/musubi/tsconfig.schematics.json",
