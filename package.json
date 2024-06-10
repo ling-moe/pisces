@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "iam:start": "nx run iam:serve",
+    "iam:start": "nx run iam:serve --configuration=development",
     "iam:deploy": "nx run iam:build",
     "test": "npx nx run iam:build --watch=true --configuration=development",
     "db:studio": "prisma studio --schema=packages/iam/src/resource/schema.prisma",
