@@ -55,7 +55,7 @@ export class UserRepository implements Provider<UserDomainService>{
     await this.prisma.user.update({ where: { id: user.id }, data: user });
   }
 
-  querySelfUser(): User {
+  async querySelfUser(): Promise<User> {
     const user = this.authClsStore.get('currentUser');
     if (!user){
       throw new UnauthorizedException("用户未登录");

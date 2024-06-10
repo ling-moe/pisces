@@ -5,6 +5,8 @@ import { CoreBackendModule } from "@pisces/backend";
 import { json } from "body-parser";
 import { BigIntModule, initStandard } from '@pisces/common';
 import { IamModuleBackend } from "./infra/config/iam.module.backend";
+import * as express from 'express'
+import path from "node:path";
 
 @Module({
   imports: [
@@ -29,6 +31,14 @@ export async function appInit() {
 }
 
 async function bootstrap(app: INestApplication) {
+
+  app.use(express.static(path.join(__dirname, './browser')));
+
+  // 所有其他路由都指向 Angular 应用的入口文件
+  app.getHttpServer().get(/^(?!\/api).*/, (req: any, res: any) => {
+    res.sendFile(path.join(__dirname, './browser/index.html'));
+  });
+  
   const port = process.env.PORT || 3100;
   await app.listen(port);
   Logger.log(
