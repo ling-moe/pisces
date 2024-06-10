@@ -36,7 +36,7 @@ export async function appInit() {
 }
 
 async function bootstrap(app: INestApplication) {
-  const port = process.env.PORT || 3100;
+  const port = process.env.PORT || 3200;
   await app.listen(port);
   Logger.log(
     `🚀 IamApplication is running on: http://localhost:${port}`
