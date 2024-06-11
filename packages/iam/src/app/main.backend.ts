@@ -26,11 +26,11 @@ export async function appInit() {
   initStandard();
   const app = await NestFactory.create(AppModuleBackend);
   app.use(json({ reviver: BigIntModule }));
-  app.use(express.static(path.join(__dirname, './browser')));
-  // 所有其他路由都指向 Angular 应用的入口文件
-  app.getHttpServer().get(/^(?!\/api).*/, (req: express.Request, res: express.Response) => {
-    res.sendFile(path.join(__dirname, './browser/index.html'));
-  });
+  // app.use(express.static(path.join(__dirname, './browser')));
+  // // 所有其他路由都指向 Angular 应用的入口文件
+  // app.getHttpServer().get(/^(?!\/api).*/, (req: express.Request, res: express.Response) => {
+  //   res.sendFile(path.join(__dirname, './browser/index.html'));
+  // });
   await app.init();
   return app;
 }
