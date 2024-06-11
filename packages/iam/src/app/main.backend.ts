@@ -22,7 +22,7 @@ import path from "node:path";
 })
 export class AppModuleBackend { }
 
-export async function appInit() {
+export default async function appInit() {
   initStandard();
   const app = await NestFactory.create(AppModuleBackend);
   app.use(json({ reviver: BigIntModule }));
