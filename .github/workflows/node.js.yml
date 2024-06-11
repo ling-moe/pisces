@@ -27,7 +27,7 @@ jobs:
         cache: 'pnpm'
     - run: pnpm install --no-frozen-lockfile
     - run: pnpm run generate
-    - run: pnpm run iam:deploy
+    - run: pnpm run iam:deploy --skip-nx-cache
     - name: Deploy to Vercel
       run: npx vercel --token ${VERCEL_TOKEN} --prod
       env:
