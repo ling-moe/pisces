@@ -6,6 +6,7 @@
       "use": "@vercel/node"
     }
   ],
+  "outputDirectory": "dist",
   "routes": [
     {
       "src": "/(.*)",
