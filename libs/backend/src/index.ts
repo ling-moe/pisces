@@ -1,5 +1,5 @@
 export * from './lib/core.backend.module'
-export * from './lib/prisma/prisma.module'
+export * from './lib/prisma'
 export * from './lib/cache/cache.helper'
 export * from './lib/cache/cache.module'
 export * from './lib/exception/biz-exception'

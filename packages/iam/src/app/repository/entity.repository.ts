@@ -1,7 +1,8 @@
 import { Injectable } from "@nestjs/common";
-import { PrismaService } from "@pisces/backend";
 import { Provider } from "@pisces/musubi/server";
 import { Entity, EntityDomainService, EntityField } from "../domain/entity.entity";
+import { PrismaService } from '../infra/config/prisma.module.backend';
+
 
 @Injectable()
 export class EntityRepository implements Provider<EntityDomainService> {

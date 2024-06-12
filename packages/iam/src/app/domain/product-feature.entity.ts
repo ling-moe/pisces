@@ -1,4 +1,4 @@
-import { ProductFeature as PrismaProductFeature } from '@prisma/client';
+import { ProductFeature as PrismaProductFeature } from '../infra/prisma/client';
 import { AuditDomain, OCC, RemoveMark } from '@pisces/common';
 
 export type ProductFeature = PrismaProductFeature & AuditDomain & OCC & RemoveMark;

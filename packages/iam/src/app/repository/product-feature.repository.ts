@@ -1,8 +1,8 @@
-import { PrismaService } from "@pisces/backend";
 import { Injectable } from "@nestjs/common";
 import { Provider } from "@pisces/musubi/server";
 import { ProductFeature, ProductFeatureDomainService } from "../domain/product-feature.entity";
 import { groupBy } from "lodash";
+import { PrismaService } from '../infra/config/prisma.module.backend';
 
 @Injectable()
 export class ProductFeatureRepository implements Provider<ProductFeatureDomainService> {

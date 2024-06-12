@@ -2,8 +2,8 @@ import { AuthGuard } from '@nestjs/passport';
 import { ExecutionContext, Injectable, UnauthorizedException, mixin } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { ClsService } from 'nestjs-cls';
-import { User } from '@prisma/client';
 import { SetMetadata } from '@nestjs/common';
+import { User } from './auth.types';
 
 export const IS_PUBLIC_KEY = 'isPublic';
 export const Public = () => SetMetadata(IS_PUBLIC_KEY, true);
