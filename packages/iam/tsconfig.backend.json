@@ -18,6 +18,7 @@
     "src/**/*.backend.module.ts",
     "src/**/domain/**/*.ts",
     "src/**/infra/**/*.backend.ts",
-    "src/**/infra/util/**/*.ts"
+    "src/**/infra/util/**/*.ts",
+    "src/app/infra/prisma"
   ]
 }
