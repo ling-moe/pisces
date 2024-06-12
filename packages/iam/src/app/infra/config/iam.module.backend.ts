@@ -7,10 +7,21 @@ import { CacheModule } from "@pisces/backend";
 import { ProductRepository } from "../../repository/product.repository";
 import { DomainRepository } from '../../repository/domain.repository';
 import { EntityRepository } from '../../repository/entity.repository';
+import { ClsService } from 'nestjs-cls';
+import { PrismaService } from './prisma.module.backend';
 
 @MusubiModule({
   imports: [
     CacheModule
+  ],
+  providers: [
+    {
+      provide: PrismaService,
+      useFactory(clsService: ClsService<{ currentUser: { id: bigint; }; }>) {
+        return new PrismaService().init(clsService);
+      },
+      inject: [ClsService]
+    }
   ],
   remotes: [
     UserRepository,
@@ -24,4 +35,4 @@ import { EntityRepository } from '../../repository/entity.repository';
     AuthController
   ]
 })
-export class IamModuleBackend {}
+export class IamModuleBackend { }

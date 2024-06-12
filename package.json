@@ -82,6 +82,7 @@
     "ts-jest": "^29.1.0",
     "ts-node": "10.9.1",
     "typescript": "5.3.3",
+    "vercel": "^34.2.6",
     "webpack": "^5.89.0",
     "webpack-dev-middleware": "^6.1.1",
     "webpack-hot-middleware": "^2.25.4"
@@ -159,7 +160,8 @@
   },
   "prettier": {
     "printWidth": 120,
-    "bracketLine": true
+    "bracketLine": true,
+    "singleQuote": true
   },
   "packageManager": "pnpm@8.15.6+sha256.01c01eeb990e379b31ef19c03e9d06a14afa5250b82e81303f88721c99ff2e6f"
 }

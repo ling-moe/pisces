@@ -1,8 +1,8 @@
-import { PrismaService } from '@pisces/backend';
 import { Injectable } from '@nestjs/common';
 import { Provider } from '@pisces/musubi/server';
 import { Role, RoleMenu, RoleQuery, RoleUser, RoleDomainService } from '../domain/role.entity';
 import { Page, PageRequest, paginator } from '@pisces/common';
+import { PrismaService } from '../infra/config/prisma.module.backend';
 
 @Injectable()
 export class RoleRepository implements Provider<RoleDomainService> {
@@ -33,7 +33,7 @@ export class RoleRepository implements Provider<RoleDomainService> {
       this.prisma.roleMenu.deleteMany({where: {id: {in: removeList}}}),
       this.prisma.roleMenu.createMany({data: addList})
     ]);
-  };
+  }
   /**
    * 分页查询角色列表
    * @param pageRequest 分页参数

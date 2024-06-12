@@ -1,4 +1,3 @@
-import { Prisma } from '@prisma/client';
 
 export class PageRequest<T extends AuditDomain> {
 
@@ -18,7 +17,7 @@ export class PageRequest<T extends AuditDomain> {
 export interface Sort<T> {
   alise?: string;
   field: keyof T;
-  direction: Prisma.SortOrder;
+  direction: 'asc' | 'desc';
 }
 
 export const DEFAULT_PAGE: PageRequest<any> = new PageRequest();
@@ -90,6 +89,6 @@ function toPrisma<T>(page: number, size: number, sorts: Sort<T>[]) {
         modelOrder[sort.field] = sort.direction;
       }
       return {...result, ...modelOrder}
-    }, {} as {[P in keyof T]: Prisma.SortOrder})
+    }, {} as {[P in keyof T]: 'asc' | 'desc'})
   }
 }

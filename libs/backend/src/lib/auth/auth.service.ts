@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { User } from '@prisma/client';
 import { hash } from 'bcrypt';
 import { CacheHelper } from '../cache/cache.helper';
+import { User } from './auth.types';
 
 /**
  * 用于处理用户身份验证和生成令牌

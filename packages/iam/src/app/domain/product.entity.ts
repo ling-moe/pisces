@@ -1,5 +1,5 @@
 import { PageRequest, Page, AuditDomain, OCC } from '@pisces/common';
-import { Product as PrismaProduct } from "@prisma/client";
+import { Product as PrismaProduct } from "../infra/prisma/client";
 import { DomainSummary } from './domain.entity';
 
 export type Product = PrismaProduct & AuditDomain & OCC;

@@ -94,7 +94,6 @@
         "compiler": "tsc",
         "main": "packages/iam/src/app/main.backend.ts",
         "tsConfig": "packages/iam/tsconfig.backend.json",
-        "isolatedConfig": true,
         "webpackConfig": "libs/backend/webpack.config.js"
       },
       "configurations": {

@@ -3,9 +3,9 @@ import {
   Controller,
   Post,
 } from '@nestjs/common';
-import { User } from '@prisma/client';
 import { Public } from '@pisces/backend';
 import { UserRepository } from '../repository/user.repository';
+import { User } from '../domain/user.entity';
 
 @Controller('/auth')
 export class AuthController {

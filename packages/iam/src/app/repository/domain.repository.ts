@@ -1,9 +1,8 @@
 import { Injectable } from "@nestjs/common";
-import { PrismaService } from "@pisces/backend";
 import { Page, PageRequest, paginator } from "@pisces/common";
 import { Provider } from "@pisces/musubi/server";
-import { Domain } from '@prisma/client';
-import { DomainDomainService, DomainQuery } from "../domain/domain.entity";
+import { Domain, DomainDomainService, DomainQuery } from "../domain/domain.entity";
+import { PrismaService } from "../infra/config/prisma.module.backend";
 
 @Injectable()
 export class DomainRepository implements Provider<DomainDomainService> {

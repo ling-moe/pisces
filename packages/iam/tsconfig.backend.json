@@ -2,7 +2,7 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../dist/out-tsc/backend",
-    "declaration": true,
+    "declaration": true
   },
   "exclude": [
     "jest.config.ts",
@@ -17,6 +17,7 @@
     "src/**/*.repository.ts",
     "src/**/*.backend.module.ts",
     "src/**/domain/**/*.ts",
-    "src/**/infra/**/*.backend.ts"
+    "src/**/infra/**/*.backend.ts",
+    "src/**/infra/util/**/*.ts"
   ]
 }

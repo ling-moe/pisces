@@ -1,14 +1,15 @@
-import { PrismaService, CacheHelper, BizException, Token } from '@pisces/backend';
+import { CacheHelper, BizException, Token } from '@pisces/backend';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { Prisma, RoleUser } from '@prisma/client';
 import { Provider } from '@pisces/musubi/server';
 import { hash, compare } from 'bcrypt';
 import { User, UserQuery, UserDomainService } from '../domain/user.entity';
 import { PageRequest, DEFAULT_PAGE, paginator, Page } from '@pisces/common';
 import { camelCase, mapKeys } from 'lodash';
 import { ClsService } from 'nestjs-cls';
-import { HasPermission } from '../infra/util/permission';
 import { v4 as uuidv4 } from 'uuid';
+import { PrismaService } from '../infra/config/prisma.module.backend';
+import { RoleUser } from '../domain/role.entity';
+import { HasPermission } from '../infra/util/permission';
 
 @Injectable()
 export class UserRepository implements Provider<UserDomainService>{
@@ -120,41 +121,41 @@ export class UserRepository implements Provider<UserDomainService>{
     });
   }
 
-  async $user(userWhereUniqueInput: Prisma.UserWhereUniqueInput) {
-    return this.prisma.user.findUnique({
-      where: userWhereUniqueInput,
-    });
-  }
+  // async $user(userWhereUniqueInput: Prisma.UserWhereUniqueInput) {
+  //   return this.prisma.user.findUnique({
+  //     where: userWhereUniqueInput,
+  //   });
+  // }
 
-  async $users(options: {
-    skip?: number;
-    take?: number;
-    cursor?: Prisma.UserWhereUniqueInput;
-    where?: Prisma.UserWhereInput;
-    orderBy?: Prisma.UserOrderByWithRelationInput;
-  }) {
-    const { skip, take, cursor, where, orderBy } = options;
+  // async $users(options: {
+  //   skip?: number;
+  //   take?: number;
+  //   cursor?: Prisma.UserWhereUniqueInput;
+  //   where?: Prisma.UserWhereInput;
+  //   orderBy?: Prisma.UserOrderByWithRelationInput;
+  // }) {
+  //   const { skip, take, cursor, where, orderBy } = options;
 
-    return await this.prisma.user.findMany({
-      skip,
-      take,
-      cursor,
-      where,
-      orderBy,
-    });
-  }
+  //   return await this.prisma.user.findMany({
+  //     skip,
+  //     take,
+  //     cursor,
+  //     where,
+  //     orderBy,
+  //   });
+  // }
 
-  async $updateUser(options: { where: Prisma.UserWhereUniqueInput; data: Prisma.UserUpdateInput; }) {
-    const { where, data } = options;
-    return this.prisma.user.update({
-      data,
-      where,
-    });
-  }
+  // async $updateUser(options: { where: Prisma.UserWhereUniqueInput; data: Prisma.UserUpdateInput; }) {
+  //   const { where, data } = options;
+  //   return this.prisma.user.update({
+  //     data,
+  //     where,
+  //   });
+  // }
 
-  async $deleteUser(where: Prisma.UserWhereUniqueInput) {
-    return this.prisma.user.delete({
-      where,
-    });
-  }
+  // async $deleteUser(where: Prisma.UserWhereUniqueInput) {
+  //   return this.prisma.user.delete({
+  //     where,
+  //   });
+  // }
 }

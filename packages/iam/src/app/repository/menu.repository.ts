@@ -1,4 +1,3 @@
-import { PrismaService } from '@pisces/backend';
 import { Injectable } from '@nestjs/common';
 import { Provider } from '@pisces/musubi/server';
 import { Menu, MenuNode, MenuDomainService } from '../domain/menu.entity';
@@ -7,6 +6,7 @@ import { HasPermission, Perm } from '../infra/util/permission';
 import { prems } from "../infra/util/permission";
 import { ClsService } from 'nestjs-cls';
 import { User } from '../domain/user.entity';
+import { PrismaService } from '../infra/config/prisma.module.backend';
 
 @Injectable()
 export class MenuRepository implements Provider<MenuDomainService> {
@@ -42,7 +42,7 @@ export class MenuRepository implements Provider<MenuDomainService> {
 
   @HasPermission('树状查询菜单')
   async treeMenu(isIncludeFunction: boolean) {
-    const list1:MenuNode[] = await this.prisma.$queryRawUnsafe<MenuNode[]>(`WITH RECURSIVE result AS (
+    const list1: MenuNode[] = await this.prisma.$queryRawUnsafe<MenuNode[]>(`WITH RECURSIVE result AS (
       SELECT *, 1 as level FROM iam_menu WHERE pid = 0
       UNION
       SELECT m.*, p.level + 1 as level FROM iam_menu m JOIN result p ON m.pid = p.id ${isIncludeFunction ? '' : 'AND m.menu_type != \'FUNCTION\''})
