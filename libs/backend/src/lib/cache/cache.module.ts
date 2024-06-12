@@ -14,7 +14,7 @@ import { RedisClientOptions } from 'redis';
           socket: {
             host: cfg.get('REDIS_HOST'),
             port: cfg.get('REDIS_PORT'),
-            tls: false,
+            tls: cfg.get('REDIS_TLS') ==='true',
           },
           username: cfg.get('REDIS_USERNAME'),
           password: cfg.get('REDIS_PASSWORD'),
