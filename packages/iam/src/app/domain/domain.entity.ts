@@ -1,5 +1,5 @@
 import { PageRequest, Page, AuditDomain, OCC } from '@pisces/common';
-import { Domain as PrismaDomain } from "../infra/prisma/client";
+import { Domain as PrismaDomain } from "../infra/config/prisma.module.backend";
 
 export type Domain = PrismaDomain & AuditDomain & OCC;
 export type DomainSummary = {name: string, fields: string[], methods: string[]};

@@ -1,5 +1,5 @@
 import { AuditDomain, OCC } from '@pisces/common';
-import { Entity as PrismaEntity, EntityField as PrismaEntityField } from "../infra/prisma/client";
+import { Entity as PrismaEntity, EntityField as PrismaEntityField } from "../infra/config/prisma.module.backend";
 
 export type Entity = PrismaEntity & AuditDomain & OCC;
 export type EntityField = PrismaEntityField & AuditDomain & OCC;
