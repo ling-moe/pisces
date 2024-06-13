@@ -5,8 +5,8 @@ import { CoreBackendModule } from "@pisces/backend";
 import { json } from "body-parser";
 import { BigIntModule, initStandard } from '@pisces/common';
 import { IamModuleBackend } from "./infra/config/iam.module.backend";
-import * as express from 'express'
-import path from "node:path";
+import {static as expressStatic} from 'express'
+import {join} from "path";
 
 @Module({
   imports: [
@@ -26,11 +26,14 @@ export async function appInit() {
   initStandard();
   const app = await NestFactory.create(AppModuleBackend);
   app.use(json({ reviver: BigIntModule }));
-  app.use(express.static(path.join(__dirname, './browser')));
+  app.use(expressStatic(join(__dirname, './browser')));
   // 所有其他路由都指向 Angular 应用的入口文件
-  app.getHttpServer().get(/^(?!\/api).*/, (req: express.Request, res: express.Response) => {
-    res.sendFile(path.join(__dirname, './browser/index.html'));
-  });
+  app.getHttpAdapter().get((req, res, next) => {
+    if(/^(?!\/api).*/.test(req.url)){
+      return res.sendFile(join(__dirname, './browser/index.html'));
+    }
+    next?.()
+    });
   await app.init();
   return app;
 }
