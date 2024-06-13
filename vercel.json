@@ -2,7 +2,7 @@
   "version": 2,
   "functions": {
     "dist/packages/iam/main.js": {
-      "includeFiles": "dist/iam/prisma/**/*"
+      "includeFiles": "dist/**/*"
     }
   }
   "outputDirectory": "dist",
