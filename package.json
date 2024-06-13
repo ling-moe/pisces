@@ -10,7 +10,7 @@
     "musubi:tsc": "packages/musubi/tsconfig.schematics.json",
     "musubi:update": "schematics ./packages/musubi:update --debug==false",
     "migrate": "prisma migrate dev --schema=packages/iam/src/resource/schema.prisma",
-    "postinstall": "prisma generate --schema=packages/iam/src/resource/schema.prisma && mkdir -p /var/task/.prisma/client && cp dist/iam/prisma/libquery* /var/task/.prisma/client/"
+    "postinstall": "prisma generate --schema=packages/iam/src/resource/schema.prisma"
   },
   "private": true,
   "devDependencies": {
