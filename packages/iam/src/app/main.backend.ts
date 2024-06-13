@@ -22,7 +22,7 @@ import {join} from "path";
 })
 export class AppModuleBackend { }
 
-export async function appInit() {
+export default async function appInit() {
   initStandard();
   const app = await NestFactory.create(AppModuleBackend);
   app.use(json({ reviver: BigIntModule }));
@@ -39,7 +39,7 @@ export async function appInit() {
 }
 
 async function bootstrap(app: INestApplication) {
-  const port = process.env.PORT || 3100;
+  const port = process.env.PORT || 3200;
   await app.listen(port);
   Logger.log(
     `🚀 IamApplication is running on: http://localhost:${port}`
