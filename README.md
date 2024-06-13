@@ -15,7 +15,7 @@
 
 我认为未来的全栈开发一定是统一语言的，而这个语言目前最好的载体就是TS（Kotlin也是一个方向，如果有机会我会制作另外一个项目说明这一点）。
 
-本项目采用的技术栈为Angular+Nx+Prisma+Nestjs+ng-matero（后面会将详细版本放出来）。
+本项目采用的技术栈为Angular+Nx+Prisma+Nestjs+ng-matero（后面会将详细版本放出来）
 
 ## Feature列表
 
