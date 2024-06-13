@@ -4,19 +4,13 @@
     "dist/packages/iam/main.js": {
       "includeFiles": "dist/**/*"
     }
-  }
+  },
   "outputDirectory": "dist",
   "routes": [
     {
       "src": "/(.*)",
       "dest": "dist/packages/iam/main.js",
-      "methods": [
-        "GET",
-        "POST",
-        "PUT",
-        "DELETE",
-        "PATCH"
-      ]
+      "methods": ["GET", "POST", "PUT", "DELETE", "PATCH"]
     }
   ]
 }
