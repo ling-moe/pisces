@@ -1,11 +1,10 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "dist/packages/iam/main.js",
-      "use": "@vercel/node"
+  "functions": {
+    "dist/packages/iam/main.js": {
+      "includeFiles": "dist/iam/prisma/**/*"
     }
-  ],
+  }
   "outputDirectory": "dist",
   "routes": [
     {
