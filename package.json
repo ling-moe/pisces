@@ -2,6 +2,7 @@
   "name": "@pisces/source",
   "version": "0.0.0",
   "license": "MIT",
+  "type": "module",
   "scripts": {
     "iam:start": "nx run iam:serve --configuration=development",
     "iam:deploy": "nx run iam:build",
