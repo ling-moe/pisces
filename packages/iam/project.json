@@ -31,7 +31,7 @@
         "{options.outputPath}"
       ],
       "options": {
-        "outputPath": "api/iam",
+        "outputPath": "dist/packages/iam",
         "index": "libs/frontend/src/index.html",
         "browser": "packages/iam/src/app/main.frontend.ts",
         "polyfills": [
@@ -89,7 +89,7 @@
       ],
       "defaultConfiguration": "production",
       "options": {
-        "outputPath": "api/iam",
+        "outputPath": "dist/packages/iam",
         "target": "node",
         "compiler": "tsc",
         "main": "packages/iam/src/app/main.backend.ts",
