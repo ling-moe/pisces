@@ -5,12 +5,8 @@
     "src/**/*.spec.ts",
     "src/**/*.test.ts"
   ],
-  "compilerOptions": {
-    "composite": true,
-    "declaration": true
-  },
   "files": [
-    "src/app/main.frontend.ts",
+    "src/app/main.frontend.ts"
   ],
   "include": [
     "src/**/*.frontend.ts",
