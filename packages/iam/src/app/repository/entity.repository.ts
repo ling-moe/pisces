@@ -10,6 +10,9 @@ export class EntityRepository implements Provider<EntityDomainService> {
     private prisma: PrismaService,
   ) {
   }
+  async listFieldsByDomain(domainId: bigint): Promise<EntityField[]> {
+    return this.prisma.entityField.findMany({where: {domainId: domainId}});
+  }
 
   async listFieldsByEntity(entityId: bigint): Promise<EntityField[]> {
     return this.prisma.entityField.findMany({where: {entityId: entityId}});

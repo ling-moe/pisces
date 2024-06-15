@@ -1,27 +1,45 @@
+@if (unsignFields?.length !== 0) {
+<h3>未分配实体的字段</h3>
+<ng-container
+              *ngTemplateOutlet="expansionTpl; context: {$implicit: {fields: unsignFields}}">
+</ng-container>
+}
+
 <mtx-grid [data]="list" [columns]="columns" [loading]="isLoading"
           [expandable]="true" [expansionTemplate]="expansionTpl"
           (expansionChange)="loadFields($event)">
 </mtx-grid>
 
 <ng-template #expansionTpl let-row>
-  <mat-list>
-    <mat-list-item style="height: 160px;border: 1px solid blue;">
-      <form style="height: 160px;">
-        <mat-form-field appearance="fill" style="width: 50px;">
+
+    <mat-list [id]="row.id ? ('Entity' + row.id) : 'unEntity'" cdkDropList
+              [cdkDropListData]="row.fields?.controls"
+              (cdkDropListDropped)="drop($event)"
+              [cdkDropListConnectedTo]="entityContainers"
+              style="min-height: 56px;">
+              <form>
+      @for (fieldForm of row.fields?.controls; track $index) {
+      <mat-list-item cdkDrag [cdkDragData]="fieldForm" class="drag-item"
+                     [formGroup]="fieldForm"
+                     style="display: block;height: 56px;border-bottom: 1px solid blue;">
+        <mat-icon class="drag-handle" matListItemIcon
+                  cdkDragHandle>drag_indicator</mat-icon>
+        <div class="drag-item-placeholder" *cdkDragPlaceholder></div>
+        <mat-form-field appearance="fill" style="width: 56px;">
           <mat-label>序号</mat-label>
-          <input matInput value="1" disabled>
+          <input matInput [value]="$index+1" disabled>
         </mat-form-field>
         <mat-form-field appearance="fill" style="width: 150px;">
           <mat-label>名称</mat-label>
-          <input matInput>
+          <input matInput formControlName="name">
         </mat-form-field>
         <mat-form-field appearance="fill">
           <mat-label>描述</mat-label>
-          <input matInput>
+          <input matInput formControlName="desc">
         </mat-form-field>
         <mat-form-field appearance="fill" style="width: 150px;">
           <mat-label>类型</mat-label>
-          <mat-select>
+          <mat-select formControlName="type">
             <mat-option value="INTEGER">整数</mat-option>
             <mat-option value="DECIMAL">小数</mat-option>
             <mat-option value="STRING">字符串</mat-option>
@@ -32,16 +50,21 @@
         </mat-form-field>
         <mat-form-field appearance="fill" style="width: 150px;">
           <mat-label>默认值</mat-label>
-          <input matInput>
+          <input matInput formControlName="defaultValue">
         </mat-form-field>
         <mat-form-field appearance="fill" style="width: 150px;">
           <mat-label>字典</mat-label>
-          <input matInput>
+          <input matInput formControlName="dict">
         </mat-form-field>
-        <mat-slide-toggle appearance="fill">
+        <mat-slide-toggle appearance="fill" formControlName="isRequired">
           是否必填
         </mat-slide-toggle>
-      </form>
-    </mat-list-item>
-  </mat-list>
+        <button matSuffix mat-icon-button aria-label="Add">
+          <mat-icon color="warn">delete</mat-icon>
+        </button>
+      </mat-list-item>
+      }
+    </form>
+    </mat-list>
+
 </ng-template>

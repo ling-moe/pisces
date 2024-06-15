@@ -73,7 +73,6 @@ export class MenuListComponent implements OnInit {
 
   delete(id: bigint) {
     this.menuRepository.deleteMenu(id).subscribe(() => this.query());
-    ;
   }
 
   create(drawer: MatDrawer) {

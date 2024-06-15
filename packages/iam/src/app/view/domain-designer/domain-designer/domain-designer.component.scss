@@ -5,3 +5,27 @@ mat-grid-tile {
 :host ::ng-deep .mat-grid-tile-content {
   align-items: flex-start;
 }
+
+.drag-handle{
+  margin: 0 8px;
+  cursor: move;
+}
+
+.drag-item{
+  border-bottom: solid 1px #ccc;
+  color: rgba(0, 0, 0, 0.87);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  background: white;
+  font-size: 14px;
+}
+
+.drag-item-placeholder {
+  background: #ccc;
+  border: dotted 3px #999;
+  min-height: 60px;
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}

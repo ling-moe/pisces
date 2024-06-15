@@ -28,4 +28,10 @@ export interface EntityDomainService {
    * @param entityId 实体id
    */
   listFieldsByEntity(entityId: bigint): EntityField[]
+
+    /**
+   * 查询领域中未分配实体的字段
+   * @param domainId 领域id
+   */
+    listFieldsByDomain(domainId: bigint): EntityField[]
 }
