@@ -1,4 +1,4 @@
-import { appInit } from "./src/app/main.backend";
+import appInit from "./src/app/main.backend";
 
 const app = appInit();
 

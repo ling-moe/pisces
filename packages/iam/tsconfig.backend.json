@@ -1,8 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../dist/out-tsc/backend",
-    "declaration": true
+    "outDir": "../../dist/out-tsc/backend"
   },
   "exclude": [
     "jest.config.ts",
