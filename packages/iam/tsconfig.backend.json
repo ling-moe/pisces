@@ -5,6 +5,10 @@
     "src/**/*.spec.ts",
     "src/**/*.test.ts"
   ],
+  "compilerOptions": {
+    "composite": true,
+    "declaration": true
+  },
   "files": [
     "src/app/main.backend.ts"
   ],
@@ -15,7 +19,5 @@
     "src/**/domain/**/*.ts",
     "src/**/infra/**/*.backend.ts",
     "src/**/infra/util/**/*.ts",
-    "src/app/infra/prisma",
-    "dist/prisma/iam/**/*"
   ]
 }
