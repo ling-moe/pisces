@@ -41,3 +41,4 @@ Thumbs.db
 .angular
 .nx
 api
+packages/**/infra/prisma

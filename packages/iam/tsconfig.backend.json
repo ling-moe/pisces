@@ -1,8 +1,5 @@
 {
   "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "outDir": "../../dist/out-tsc/backend"
-  },
   "exclude": [
     "jest.config.ts",
     "src/**/*.spec.ts",
@@ -18,6 +15,7 @@
     "src/**/domain/**/*.ts",
     "src/**/infra/**/*.backend.ts",
     "src/**/infra/util/**/*.ts",
-    "src/app/infra/prisma"
+    "src/app/infra/prisma",
+    "dist/prisma/iam/**/*"
   ]
 }
