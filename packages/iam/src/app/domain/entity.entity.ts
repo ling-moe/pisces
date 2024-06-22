@@ -1,8 +1,9 @@
-import { AuditDomain, OCC } from '@pisces/common';
+import { AuditDomain, OCC, RemoveMark } from '@pisces/common';
 import { Entity as PrismaEntity, EntityField as PrismaEntityField } from "../infra/config/prisma.module.backend";
 
 export type Entity = PrismaEntity & AuditDomain & OCC;
 export type EntityField = PrismaEntityField & AuditDomain & OCC;
+export type EntityFieldSaveVO = EntityField & RemoveMark;
 
 
 export interface EntityDomainService {
@@ -27,11 +28,16 @@ export interface EntityDomainService {
    * 查询实体中的字段
    * @param entityId 实体id
    */
-  listFieldsByEntity(entityId: bigint): EntityField[]
+  listFieldsByEntity(entityId: bigint): EntityField[];
 
-    /**
+  /**
    * 查询领域中未分配实体的字段
    * @param domainId 领域id
    */
-    listFieldsByDomain(domainId: bigint): EntityField[]
+  listFieldsByDomain(domainId: bigint): EntityField[];
+  /**
+   * 查批量保存领域字段
+   * @param domainId 领域id
+   */
+  saveDomainFields(fields: EntityFieldSaveVO[]): void;
 }

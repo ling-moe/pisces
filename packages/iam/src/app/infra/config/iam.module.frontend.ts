@@ -81,7 +81,6 @@ const iamFrontendRoutes: Route[] = [
     ProductComponent,
     ProductDesignerComponent,
     DomainComponent,
-    DomainDesignerComponent,
-  ],
+    DomainDesignerComponent,],
 })
 export class IamModuleFrontend {}

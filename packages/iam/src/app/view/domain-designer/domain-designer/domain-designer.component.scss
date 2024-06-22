@@ -29,3 +29,8 @@ mat-grid-tile {
   min-height: 60px;
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
+
+.form-row{
+  display: flex;
+  align-items: center;
+}

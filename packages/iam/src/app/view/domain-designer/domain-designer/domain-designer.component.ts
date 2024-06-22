@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { RemoteService, Consumer } from '@pisces/musubi/client';
 import { MtxGridColumn } from '@ng-matero/extensions/grid';
 import { Entity, EntityDomainService, EntityField } from '../../../domain/entity.entity';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'pisces-domain-designer',
@@ -13,6 +14,25 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DomainDesignerComponent implements OnInit {
+  saveEntityFields(entityId: bigint,formArray: FormArray) {
+    formArray.markAllAsTouched();
+    if (!formArray.valid) {
+      return;
+    }
+    const data = formArray.value.map((i: any) => ({ ...i, entityId: entityId,domainId: this.domainId }));
+    console.log(data);
+
+    this.entityRepository.saveDomainFields(data).subscribe(() => {
+      this.toast.success("保存成功");
+    });
+  }
+  removeField(formArray: FormArray, index: number, fieldForm: FormGroup) {
+    fieldForm.patchValue({ isRemove: true });
+  }
+  editableFields(formArray?: FormArray):FormGroup<any>[]{
+    return formArray?.controls.filter(i => !i.value.isRemove) as FormGroup<any>[];
+  }
+
   isLoading = true;
   domainId!: bigint;
   list: (Entity & { fields?: FormArray; })[] = [];
@@ -61,7 +81,8 @@ export class DomainDesignerComponent implements OnInit {
     @Inject(RemoteService)
     private entityRepository: Consumer<EntityDomainService>,
     private cdr: ChangeDetectorRef,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private toast: ToastrService,
   ) { }
 
   ngOnInit(): void {
@@ -74,7 +95,7 @@ export class DomainDesignerComponent implements OnInit {
     this.entityRepository
       .listEntity(this.domainId)
       .subscribe(res => {
-        this.list = res;
+        this.list = res.map(i => ({ ...i, _loading: false }));
         this.isLoading = false;
         this.cdr.markForCheck();
       });
@@ -82,24 +103,24 @@ export class DomainDesignerComponent implements OnInit {
       .listFieldsByDomain(this.domainId)
       .subscribe(res => {
         const fieldControls = res?.map(field => this.createFieldForm(field)) ?? [];
-        this.unsignFields = this.fb.array(fieldControls)
+        this.unsignFields = this.fb.array(fieldControls);
         this.cdr.markForCheck();
       });
   }
   addField(row: Entity & { fields?: FormArray; }) {
-    row.fields?.push(this.createFieldForm({} as EntityField))
+    row.fields?.push(this.createFieldForm({} as EntityField));
   }
 
-  loadFields(e: { data: Entity & { fields?: FormArray; }; index: number,expanded: boolean }) {
-    if(!e.expanded || e.data.fields){
+  loadFields(e: { data: Entity & { fields?: FormArray; }; index: number, expanded: boolean; }) {
+    if (!e.expanded || e.data.fields) {
       return;
     }
     this.entityRepository
       .listFieldsByEntity(e.data.id)
       .subscribe(res => {
-        const fieldControls = res?.map(this.createFieldForm) ?? [];
-        if(fieldControls.length === 0){
-          fieldControls.push(this.createFieldForm({} as EntityField))
+        const fieldControls = res?.map(i => this.createFieldForm(i)) ?? [];
+        if (fieldControls.length === 0) {
+          fieldControls.push(this.createFieldForm({} as EntityField));
         }
         e.data.fields = this.fb.array(fieldControls);
         this.cdr.markForCheck();
@@ -107,19 +128,21 @@ export class DomainDesignerComponent implements OnInit {
   }
 
   createFieldForm(field: EntityField) {
-    const { name, type, defaultValue, isRequired, dict, desc, entityId } = field;
+    const { name, type, defaultValue, isRequired, dict, desc, entityId,id } = field;
     return this.fb.group({
-      name: [name, Validators.required],
+      name: [name??'', Validators.required],
       type: [type ?? 'STRING', Validators.required],
       defaultValue: [defaultValue],
-      isRequired: [isRequired, Validators.required],
+      isRequired: [isRequired ?? false, Validators.required],
       dict: [dict],
       desc: [desc, Validators.required],
-      entityId: [entityId]
+      entityId: [entityId],
+      id: [id],
+      isRemove: [false]
     });
   }
 
-  drop(event: CdkDragDrop<string[]>) {
+  drop(event: CdkDragDrop<any[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
@@ -130,9 +153,10 @@ export class DomainDesignerComponent implements OnInit {
         event.currentIndex,
       );
     }
+    this.cdr.markForCheck();
   }
 
-  get entityContainers(){
+  get entityContainers() {
     return this.list.map(i => 'Entity' + i.id).concat('unEntity');
   }
 
