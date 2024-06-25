@@ -1,11 +1,12 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { RemoteService, Consumer } from '@pisces/musubi/client';
-import { MtxGridColumn } from '@ng-matero/extensions/grid';
-import { Entity, EntityDomainService, EntityField } from '../../../domain/entity.entity';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit, viewChild } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDrawer } from '@angular/material/sidenav';
+import { ActivatedRoute } from '@angular/router';
+import { MtxGridColumn } from '@ng-matero/extensions/grid';
+import { Consumer, RemoteService } from '@pisces/musubi/client';
 import { ToastrService } from 'ngx-toastr';
+import { Entity, EntityDomainService, EntityField } from '../../../domain/entity.entity';
 
 @Component({
   selector: 'pisces-domain-designer',
@@ -14,12 +15,63 @@ import { ToastrService } from 'ngx-toastr';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DomainDesignerComponent implements OnInit {
-  saveEntityFields(entityId: bigint,formArray: FormArray) {
+  remove(row: any): void {
+    this.entityRepository.deleteEntity(row.id)
+      .subscribe(() => {
+        this.toast.success("删除成功");
+        this.query();
+    });
+  }
+  createEntity() {
+    this.entityForm.updateValueAndValidity();
+    if (!this.entityForm.valid) {
+      return;
+    }
+    if(this.entityForm.value.id){
+      this.entityRepository.updateEntity(this.entityForm.value)
+      .subscribe(() => {
+        this.toast.success("保存成功");
+        this.drawer().toggle();
+        this.query();
+    });
+    }else{
+      this.entityRepository.createEntity(this.entityForm.value)
+      .subscribe(() => {
+        this.toast.success("保存成功");
+        this.drawer().toggle();
+        this.query();
+      });
+    }
+
+  }
+  openCreate(drawer: MatDrawer) {
+    this.drawer().toggle();
+    this.entityForm = this.fb.group({
+      id: [null],
+      name: [null, Validators.required],
+      domainId: [this.domainId],
+      desc: [null]
+    });
+  }
+
+  openEdit(row: any) {
+    this.drawer().toggle();
+    this.entityForm = this.fb.group({
+      id: [row.id],
+      name: [row.name, Validators.required],
+      domainId: [this.domainId],
+      desc: [row.desc]
+    });
+  }
+  entityForm!: FormGroup<any>;
+  drawer = viewChild.required<MatDrawer>('drawer')
+
+  saveEntityFields(entityId: bigint, formArray: FormArray) {
     formArray.markAllAsTouched();
     if (!formArray.valid) {
       return;
     }
-    const data = formArray.value.map((i: any) => ({ ...i, entityId: entityId,domainId: this.domainId }));
+    const data = formArray.value.map((i: any) => ({ ...i, entityId: entityId, domainId: this.domainId }));
     console.log(data);
 
     this.entityRepository.saveDomainFields(data).subscribe(() => {
@@ -29,7 +81,7 @@ export class DomainDesignerComponent implements OnInit {
   removeField(formArray: FormArray, index: number, fieldForm: FormGroup) {
     fieldForm.patchValue({ isRemove: true });
   }
-  editableFields(formArray?: FormArray):FormGroup<any>[]{
+  editableFields(formArray?: FormArray): FormGroup<any>[] {
     return formArray?.controls.filter(i => !i.value.isRemove) as FormGroup<any>[];
   }
 
@@ -53,7 +105,7 @@ export class DomainDesignerComponent implements OnInit {
           text: '编辑',
           icon: 'edit',
           tooltip: '编辑',
-          click: () => alert('edit'),
+          click: (row) => this.openEdit(row),
         },
         {
           type: 'icon',
@@ -69,7 +121,7 @@ export class DomainDesignerComponent implements OnInit {
           tooltip: '删除',
           color: 'warn',
           pop: '确认要删除这条数据？',
-          click: () => alert('delete'),
+          click: (row) => this.remove(row),
         },
       ],
     },
@@ -128,9 +180,9 @@ export class DomainDesignerComponent implements OnInit {
   }
 
   createFieldForm(field: EntityField) {
-    const { name, type, defaultValue, isRequired, dict, desc, entityId,id } = field;
+    const { name, type, defaultValue, isRequired, dict, desc, entityId, id } = field;
     return this.fb.group({
-      name: [name??'', Validators.required],
+      name: [name ?? '', Validators.required],
       type: [type ?? 'STRING', Validators.required],
       defaultValue: [defaultValue],
       isRequired: [isRequired ?? false, Validators.required],

@@ -1,15 +1,38 @@
-@if (unsignFields?.length !== 0) {
-<h3>未分配实体的字段</h3>
-<ng-container
-              *ngTemplateOutlet="expansionTpl; context: {$implicit: {fields: unsignFields}}">
-</ng-container>
-}
+<mat-drawer-container class="h-full">
+  <mat-drawer #drawer style="width: 400px;" mode="over" position="end">
+    @if (drawer.opened) {
+      <form class="m-16" [formGroup]="entityForm" (ngSubmit)="createEntity()">
+        <mat-form-field class="w-full">
+          <mat-label>名称</mat-label>
+          <input matInput formControlName="name">
+        </mat-form-field>
+        <mat-form-field class="w-full">
+          <mat-label>描述</mat-label>
+          <input matInput formControlName="desc">
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit">
+          保存
+        </button>
+      </form>
+    }
+  </mat-drawer>
+  <button mat-raised-button color="primary" class="m-b-8"
+          (click)="openCreate(drawer)">
+    新建实体
+  </button>
+  @if (unsignFields?.length !== 0) {
+  <h3>未分配实体的字段</h3>
+  <ng-container
+                *ngTemplateOutlet="expansionTpl; context: {$implicit: {fields: unsignFields}}">
+  </ng-container>
+  }
 
-<mtx-grid [data]="list" [columns]="columns" [loading]="isLoading"
-          [expandable]="true" [expansionTemplate]="expansionTpl"
-          (expansionChange)="loadFields($event)" pageOnFront="false"
-          showPaginator="false">
-</mtx-grid>
+  <mtx-grid [data]="list" [columns]="columns" [loading]="isLoading"
+            [expandable]="true" [expansionTemplate]="expansionTpl"
+            (expansionChange)="loadFields($event)" pageOnFront="false"
+            showPaginator="false">
+  </mtx-grid>
+</mat-drawer-container>
 
 <ng-template #expansionTpl let-row>
   <div class="w-full">
