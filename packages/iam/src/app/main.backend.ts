@@ -45,5 +45,6 @@ async function bootstrap(app: INestApplication) {
     `🚀 IamApplication is running on: http://localhost:${port}`
   );
 }
-
-appInit().then(app => bootstrap(app)) ;
+if(process.env.NX_TASK_TARGET_CONFIGURATION === 'production'){
+  appInit().then(app => bootstrap(app))
+}

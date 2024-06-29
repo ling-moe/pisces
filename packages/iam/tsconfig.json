@@ -18,22 +18,25 @@
     "strictBindCallApply": true,
     "inlineSources": true
   },
-  "references": [
-    {
-      "path": "./tsconfig.backend.json"
-    },
-    {
-      "path": "./tsconfig.frontend.json"
-    },
-    {
-      "path": "./tsconfig.spec.json"
-    }
-  ],
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true
-  }
+  },
+  "references": [
+    {
+      "path": "../../libs/backend/tsconfig.lib.json"
+    },
+    {
+      "path": "../../libs/frontend/tsconfig.lib.json"
+    },
+    {
+      "path": "../../libs/common/tsconfig.lib.json"
+    },
+    {
+      "path": "../../libs/musubi/tsconfig.lib.json"
+    }
+  ]
 
 }

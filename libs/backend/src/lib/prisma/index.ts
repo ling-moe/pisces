@@ -7,51 +7,83 @@ export interface AuditModel {
   updateBy: bigint;
 }
 
+export type QueryEvent = {
+  timestamp: Date;
+  query: string;
+  params: string;
+  duration: number;
+  target: string;
+};
+
+export type LogEvent = {
+  timestamp: Date;
+  message: string;
+  target: string;
+};
+
 export function createPrismaService<ModelName extends string, T extends Type<any>>(
   client: T,
-  Prisma: any){
+  Prisma: any) {
   @Injectable()
   class PrismaService extends client implements OnModuleInit {
-    authClsStore!: ClsService<{currentUser: {id: bigint}}>
+    authClsStore!: ClsService<{ currentUser: { id: bigint; }; }>;
     constructor(
       ...args: any[]
     ) {
-      super({...args,log: [
-        {
-          emit: 'event',
-          level: 'query',
-        },
-        {
-          emit: 'stdout',
-          level: 'error',
-        },
-        {
-          emit: 'stdout',
-          level: 'info',
-        },
-        {
-          emit: 'stdout',
-          level: 'warn',
-        },
-      ],});
+      super({
+        ...args, log: [
+          {
+            emit: 'event',
+            level: 'query',
+          },
+          {
+            emit: 'event',
+            level: 'error',
+          },
+          {
+            emit: 'event',
+            level: 'info',
+          },
+          {
+            emit: 'event',
+            level: 'warn',
+          },
+        ],
+      });
     }
 
-    init(authClsStore: ClsService<{currentUser: {id: bigint}}>) {
+    init(authClsStore: ClsService<{ currentUser: { id: bigint; }; }>) {
       this.authClsStore = authClsStore;
       return this.$extends(this.createAutoFillAuditFieldsExt());
     }
+
     async onModuleInit() {
-      super.$on('query', (e: { query: string; params: string; duration: string; }) => {
-        Logger.log('Prisma Query: ' + e.query)
-        Logger.log('Prisma Params: ' + e.params)
-        Logger.debug('Prisma Duration: ' + e.duration + 'ms')
-      })
+      this.initLog();
       await this.$connect();
     }
 
     async enableShutdownHooks(app: INestApplication) {
       this.$on('beforeExit' as never, async () => {
         await app.close();
+      });
+    }
+
+    private initLog() {
+      super.$on('query', (e: QueryEvent) => {
+        Logger.log('[Prisma] Query: ' + e.query);
+        Logger.log('[Prisma] Params: ' + e.params);
+        Logger.debug('[Prisma] Duration: ' + e.duration + 'ms');
+      });
+      super.$on('info', (e: LogEvent) => {
+        Logger.log('[Prisma]: ' + e.message);
+      });
+
+      super.$on('warn', (e: LogEvent) => {
+        Logger.warn('[Prisma]: ' + e.message);
+      });
+
+      super.$on('error', (e: LogEvent) => {
+        Logger.error('[Prisma]: ' + e.message);
       });
     }
 

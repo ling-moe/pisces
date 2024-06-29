@@ -317,7 +317,7 @@ devDependencies:
     specifier: ^4.17.17
     version: 4.17.21
   '@types/jest':
-    specifier: ^29.4.0
+    specifier: ^29.5.12
     version: 29.5.12
   '@types/json-bigint':
     specifier: ^1.0.1
