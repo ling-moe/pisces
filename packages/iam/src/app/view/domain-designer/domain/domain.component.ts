@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit, viewChild } from '@angular/core';
 import { MtxGridColumn } from '@ng-matero/extensions/grid';
 import { RemoteService, Consumer } from '@pisces/musubi/client';
-import { Domain, DomainDomainService } from '../../../domain/domain.entity';
+import { Domain, DomainDomainService, DomainSave } from '../../../domain/domain.entity';
 import { PageRequest } from '@pisces/common';
 import { PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
@@ -9,6 +9,8 @@ import { MatDrawer } from '@angular/material/sidenav';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Product, ProductDomainService } from '../../../domain/product.entity';
+
+type DomainForm = FormGroup & Record<'value', DomainSave>
 
 @Component({
   selector: 'pisces-domain',
@@ -62,7 +64,7 @@ export class DomainComponent implements OnInit {
           text: '进入',
           icon: 'login',
           tooltip: '进入',
-          click: (row) => this.router.navigateByUrl(`/iam/domain/domain/${row.id}`),
+          click: (row: Domain) => this.router.navigateByUrl(`/iam/domain/domain/${row.id}`),
         },
         {
           type: 'icon',
@@ -71,7 +73,7 @@ export class DomainComponent implements OnInit {
           tooltip: '删除',
           color: 'warn',
           pop: '确认要删除这条数据？',
-          click: (row) => this.remove(row),
+          click: (row: Domain) => this.remove(row),
         },
       ],
     },
@@ -114,7 +116,7 @@ export class DomainComponent implements OnInit {
       .subscribe(res => this.products = res);
   }
 
-  remove(row: any): void {
+  remove(row: Domain): void {
     this.domainRepository.deleteDomain(row.id)
       .subscribe(() => {
         this.toast.success("删除成功");
@@ -155,17 +157,17 @@ export class DomainComponent implements OnInit {
       name: [null, Validators.required],
       productId: [null, Validators.required],
       desc: [null]
-    });
+    }) as DomainForm;
   }
 
-  openEdit(row: any) {
+  openEdit(row: Domain) {
     this.drawer().toggle();
     this.domainForm = this.fb.group({
       id: [row.id],
       name: [row.name, Validators.required],
       productId: [row.productId, Validators.required],
       desc: [row.desc]
-    });
+    }) as DomainForm;
   }
-  domainForm!: FormGroup<any>;
+  domainForm!: DomainForm;
 }
