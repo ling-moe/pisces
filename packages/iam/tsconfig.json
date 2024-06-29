@@ -23,20 +23,5 @@
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true
-  },
-  "references": [
-    {
-      "path": "../../libs/backend/tsconfig.lib.json"
-    },
-    {
-      "path": "../../libs/frontend/tsconfig.lib.json"
-    },
-    {
-      "path": "../../libs/common/tsconfig.lib.json"
-    },
-    {
-      "path": "../../libs/musubi/tsconfig.lib.json"
-    }
-  ]
-
+  }
 }

@@ -14,5 +14,16 @@
     "src/**/domain/**/*.ts",
     "src/**/infra/**/*.frontend.ts",
     "src/app/service/*.service.ts"
+  ],
+  "references": [
+    {
+      "path": "../../libs/frontend/tsconfig.lib.json"
+    },
+    {
+      "path": "../../libs/common/tsconfig.lib.json"
+    },
+    {
+      "path": "../../libs/musubi/tsconfig.lib.json"
+    }
   ]
 }
