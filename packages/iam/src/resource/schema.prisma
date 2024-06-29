@@ -313,5 +313,6 @@ model EntityField {
   updateAt     DateTime @updatedAt @map("update_at")
 
   @@index([entityId])
+  @@index([domainId])
   @@map("ddd_entity_field")
 }
