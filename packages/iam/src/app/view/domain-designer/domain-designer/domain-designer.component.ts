@@ -20,31 +20,31 @@ export class DomainDesignerComponent implements OnInit {
       .subscribe(() => {
         this.toast.success("删除成功");
         this.query();
-    });
+      });
   }
   createEntity() {
     this.entityForm.updateValueAndValidity();
     if (!this.entityForm.valid) {
       return;
     }
-    if(this.entityForm.value.id){
+    if (this.entityForm.value.id) {
       this.entityRepository.updateEntity(this.entityForm.value)
-      .subscribe(() => {
-        this.toast.success("保存成功");
-        this.drawer().toggle();
-        this.query();
-    });
-    }else{
+        .subscribe(() => {
+          this.toast.success("保存成功");
+          this.drawer().toggle();
+          this.query();
+        });
+    } else {
       this.entityRepository.createEntity(this.entityForm.value)
-      .subscribe(() => {
-        this.toast.success("保存成功");
-        this.drawer().toggle();
-        this.query();
-      });
+        .subscribe(() => {
+          this.toast.success("保存成功");
+          this.drawer().toggle();
+          this.query();
+        });
     }
 
   }
-  openCreate(drawer: MatDrawer) {
+  openCreate() {
     this.drawer().toggle();
     this.entityForm = this.fb.group({
       id: [null],
@@ -64,7 +64,7 @@ export class DomainDesignerComponent implements OnInit {
     });
   }
   entityForm!: FormGroup<any>;
-  drawer = viewChild.required<MatDrawer>('drawer')
+  drawer = viewChild.required<MatDrawer>('drawer');
 
   saveEntityFields(entityId: bigint, formArray: FormArray) {
     formArray.markAllAsTouched();

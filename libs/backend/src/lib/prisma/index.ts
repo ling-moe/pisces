@@ -44,7 +44,7 @@ export function createPrismaService<ModelName extends string, T extends Type<any
       super.$on('query', (e: { query: string; params: string; duration: string; }) => {
         Logger.log('Prisma Query: ' + e.query)
         Logger.log('Prisma Params: ' + e.params)
-        Logger.log('Prisma Duration: ' + e.duration + 'ms')
+        Logger.debug('Prisma Duration: ' + e.duration + 'ms')
       })
       await this.$connect();
     }

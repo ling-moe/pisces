@@ -1,5 +1,38 @@
-<mtx-grid rowHover="true" [data]="list" [columns]="columns"
-          [loading]="isLoading" [length]="total" [pageOnFront]="false"
-          [pageIndex]="queryParams.page" [pageSize]="queryParams.size"
-          [pageSizeOptions]="[5,10,20]" (page)="getNextPage($event)">
-</mtx-grid>
+<mat-drawer-container class="h-full">
+  <mat-drawer #drawer mode="over" position="end" style="width: 400px;">
+    @if (drawer.opened) {
+    <form class="m-16" [formGroup]="domainForm" (ngSubmit)="createDomain()">
+      <mat-form-field class="w-full">
+        <mat-label>名称</mat-label>
+        <input matInput formControlName="name">
+      </mat-form-field>
+      <mat-form-field  class="w-full">
+        <mat-label>产品</mat-label>
+        <mat-select formControlName="productId">
+          @for (product of products; track product.id) {
+            <mat-option [value]="product.id">{{product.name}}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="w-full">
+        <mat-label>描述</mat-label>
+        <input matInput formControlName="desc">
+      </mat-form-field>
+      <button mat-raised-button color="primary" type="submit">
+        保存
+      </button>
+    </form>
+    }
+  </mat-drawer>
+  <button mat-raised-button color="primary" class="m-b-8"
+          (click)="openCreate()">
+    新建领域
+  </button>
+
+  <mtx-grid rowHover="true" [data]="list" [columns]="columns"
+            [loading]="isLoading" [length]="total" [pageOnFront]="false"
+            [pageIndex]="queryParams.page" [pageSize]="queryParams.size"
+            [pageSizeOptions]="[5,10,20]" (page)="getNextPage($event)">
+  </mtx-grid>
+
+</mat-drawer-container>

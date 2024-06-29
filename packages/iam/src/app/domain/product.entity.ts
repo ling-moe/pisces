@@ -9,9 +9,13 @@ export type ProductQuery = Pick<Product, 'code' | 'name' | 'desc'>;
 
 export interface ProductDomainService {
   /**
-   * 获取产品列表
+   * 分頁获取产品
    */
   pageProduct(pageRequest: PageRequest<Product>, query?: ProductQuery): Page<Product>;
+  /**
+ * 获取产品列表
+ */
+  listProduct(query?: ProductQuery): Product[];
   /**
    * 创建产品
    */
@@ -31,8 +35,8 @@ export interface ProductDomainService {
    * @param data 文档二进制数据
    */
   saveProductDocData(id: bigint, data: string, domains: DomainSummary[]): void;
-    /**
-   * 获取产品列表
-   */
-  detailProduct(id: bigint): Product & {base64Data?: string,domains?: DomainSummary[]} | null;
+  /**
+ * 获取产品列表
+ */
+  detailProduct(id: bigint): Product & { base64Data?: string, domains?: DomainSummary[]; } | null;
 }

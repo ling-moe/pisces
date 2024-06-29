@@ -13,8 +13,11 @@ export class ProductRepository implements Provider<ProductDomainService> {
     private prisma: PrismaService,
   ) {
   }
+  listProduct(query?: ProductQuery): Promise<Product[]> {
+    return this.prisma.product.findMany({ where: query });
+  }
   async detailProduct(id: bigint) {
-    const product: Product & {base64Data?: string,domains?: DomainSummary[]} | null = await this.prisma.product.findUnique({
+    const product: Product & { base64Data?: string, domains?: DomainSummary[]; } | null = await this.prisma.product.findUnique({
       where: {
         id: id
       }
@@ -26,10 +29,10 @@ export class ProductRepository implements Provider<ProductDomainService> {
     if (product?.data) {
       product.base64Data = fromUint8Array(product.data);
     }
-    const domains = await this.prisma.domain.findMany({where: {productId: id}});
+    const domains = await this.prisma.domain.findMany({ where: { productId: id } });
     const dm = await Promise.all(domains.map(async domain => {
-      const fields = await this.prisma.entityField.findMany({where: {domainId: domain.id}})
-      return {name: domain.name, fields: fields.map(i => i.name),methods: []}
+      const fields = await this.prisma.entityField.findMany({ where: { domainId: domain.id } });
+      return { name: domain.name, fields: fields.map(i => i.name), methods: [] };
     }));
     product.domains = dm;
     return product;
@@ -52,8 +55,8 @@ export class ProductRepository implements Provider<ProductDomainService> {
           existDomain = await domainMapper.create({ data: <Domain>{ name: doamin.name, productId: id } });
         }
         for (const field of doamin.fields) {
-          const existField = await entityFieldMapper.findFirst({where: {domainId: existDomain.id,name: field}});
-          if(!existField){
+          const existField = await entityFieldMapper.findFirst({ where: { domainId: existDomain.id, name: field } });
+          if (!existField) {
             await entityFieldMapper.create({ data: <EntityField>{ name: field, domainId: existDomain.id, type: 'text', isRequired: false, desc: field } });
           }
         }

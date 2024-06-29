@@ -1,10 +1,14 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit, viewChild } from '@angular/core';
 import { MtxGridColumn } from '@ng-matero/extensions/grid';
 import { RemoteService, Consumer } from '@pisces/musubi/client';
 import { Domain, DomainDomainService } from '../../../domain/domain.entity';
 import { PageRequest } from '@pisces/common';
 import { PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
+import { MatDrawer } from '@angular/material/sidenav';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { Product, ProductDomainService } from '../../../domain/product.entity';
 
 @Component({
   selector: 'pisces-domain',
@@ -13,6 +17,27 @@ import { Router } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DomainComponent implements OnInit {
+  createDomain() {
+    this.domainForm.updateValueAndValidity();
+    if (!this.domainForm.valid) {
+      return;
+    }
+    if (this.domainForm.value.id) {
+      this.domainRepository.updateDomain(this.domainForm.value)
+        .subscribe(() => {
+          this.toast.success("保存成功");
+          this.drawer().toggle();
+          this.query();
+        });
+    } else {
+      this.domainRepository.createDomain(this.domainForm.value)
+        .subscribe(() => {
+          this.toast.success("保存成功");
+          this.drawer().toggle();
+          this.query();
+        });
+    }
+  }
   columns: MtxGridColumn[] = [
     { header: '领域名称', field: 'name' },
     { header: '所属产品', field: 'product.name' },
@@ -30,7 +55,7 @@ export class DomainComponent implements OnInit {
           text: '编辑',
           icon: 'edit',
           tooltip: '编辑',
-          click: () => alert('edit'),
+          click: (row) => this.openEdit(row),
         },
         {
           type: 'icon',
@@ -46,11 +71,13 @@ export class DomainComponent implements OnInit {
           tooltip: '删除',
           color: 'warn',
           pop: '确认要删除这条数据？',
-          click: () => alert('delete'),
+          click: (row) => this.remove(row),
         },
       ],
     },
   ];
+
+  drawer = viewChild.required<MatDrawer>('drawer');
 
   list: Domain[] = [];
   total = 0;
@@ -71,12 +98,28 @@ export class DomainComponent implements OnInit {
   constructor(
     @Inject(RemoteService)
     private domainRepository: Consumer<DomainDomainService>,
+    @Inject(RemoteService)
+    private productRepository: Consumer<ProductDomainService>,
     private router: Router,
     private cdr: ChangeDetectorRef,
-  ){}
+    private fb: FormBuilder,
+    private toast: ToastrService
+  ) { }
+
+  products: Product[] = [];
 
   ngOnInit(): void {
     this.query();
+    this.productRepository.listProduct()
+      .subscribe(res => this.products = res);
+  }
+
+  remove(row: any): void {
+    this.domainRepository.deleteDomain(row.id)
+      .subscribe(() => {
+        this.toast.success("删除成功");
+        this.query();
+      });
   }
 
   trackByName(index: number, item: Domain) {
@@ -86,13 +129,13 @@ export class DomainComponent implements OnInit {
   query() {
     this.isLoading = true;
     this.domainRepository
-    .pageDomain(PageRequest.of(this.queryParams.page,this.queryParams.size))
-    .subscribe(res =>{
-      this.list = res.data;
-      this.total = res.total;
-      this.isLoading = false;
-      this.cdr.markForCheck();
-    });
+      .pageDomain(PageRequest.of(this.queryParams.page, this.queryParams.size))
+      .subscribe(res => {
+        this.list = res.data;
+        this.total = res.total;
+        this.isLoading = false;
+        this.cdr.markForCheck();
+      });
   }
 
   getNextPage(e: PageEvent) {
@@ -104,4 +147,25 @@ export class DomainComponent implements OnInit {
   refresh() {
     this.query();
   }
+
+  openCreate() {
+    this.drawer().toggle();
+    this.domainForm = this.fb.group({
+      id: [null],
+      name: [null, Validators.required],
+      productId: [null, Validators.required],
+      desc: [null]
+    });
+  }
+
+  openEdit(row: any) {
+    this.drawer().toggle();
+    this.domainForm = this.fb.group({
+      id: [row.id],
+      name: [row.name, Validators.required],
+      productId: [row.productId, Validators.required],
+      desc: [row.desc]
+    });
+  }
+  domainForm!: FormGroup<any>;
 }
