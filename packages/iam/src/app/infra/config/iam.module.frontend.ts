@@ -18,6 +18,7 @@ import { ProductComponent } from '../../view/domain-designer/product/product.com
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { DomainDesignerComponent } from '../../view/domain-designer/domain-designer/domain-designer.component';
 import { DomainComponent } from '../../view/domain-designer/domain/domain.component';
+import { CodeEditorModule } from '@acrodata/code-editor';
 
 const COMPONENTS = [UserListComponent, UserCreateComponent, UserEditComponent, MenuListComponent];
 
@@ -71,6 +72,7 @@ const iamFrontendRoutes: Route[] = [
     MatIconModule,
     MatButtonModule,
     MatButtonToggleModule,
+    CodeEditorModule,
   ],
   declarations: [
     ...COMPONENTS,

@@ -89,6 +89,7 @@
     "webpack-hot-middleware": "^2.25.4"
   },
   "dependencies": {
+    "@acrodata/code-editor": "^0.4.0",
     "@angular/animations": "17.3.8",
     "@angular/cdk": "17.3.9",
     "@angular/common": "17.3.8",
@@ -106,6 +107,8 @@
     "@blocksuite/blocks": "0.14.0",
     "@blocksuite/presets": "0.14.0",
     "@blocksuite/store": "0.14.0",
+    "@codemirror/lang-javascript": "^6.2.2",
+    "@codemirror/language": "^6.10.2",
     "@nestjs/cache-manager": "^2.1.0",
     "@nestjs/common": "^10.0.2",
     "@nestjs/config": "^3.0.0",

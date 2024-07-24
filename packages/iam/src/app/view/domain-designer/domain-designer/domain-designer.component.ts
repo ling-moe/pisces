@@ -7,6 +7,7 @@ import { MtxGridColumn } from '@ng-matero/extensions/grid';
 import { Consumer, RemoteService } from '@pisces/musubi/client';
 import { ToastrService } from 'ngx-toastr';
 import { Entity, EntityDomainService, EntityField } from '../../../domain/entity.entity';
+import { LanguageDescription } from '@codemirror/language';
 
 @Component({
   selector: 'pisces-domain-designer',
@@ -22,6 +23,15 @@ export class DomainDesignerComponent implements OnInit {
         this.query();
       });
   }
+  editorLang = LanguageDescription.of({
+    name: "TypeScript",
+    alias: ["ts"],
+    extensions: ["ts","mts","cts"],
+    load() {
+      return import("@codemirror/lang-javascript").then(m => m.javascript({typescript: true}))
+    }
+  });
+
   createEntity() {
     this.entityForm.updateValueAndValidity();
     if (!this.entityForm.valid) {

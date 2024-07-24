@@ -1,38 +1,53 @@
-<mat-drawer-container class="h-full">
-  <mat-drawer #drawer style="width: 400px;" mode="over" position="end">
-    @if (drawer.opened) {
-      <form class="m-16" [formGroup]="entityForm" (ngSubmit)="createEntity()">
-        <mat-form-field class="w-full">
-          <mat-label>名称</mat-label>
-          <input matInput formControlName="name">
-        </mat-form-field>
-        <mat-form-field class="w-full">
-          <mat-label>描述</mat-label>
-          <input matInput formControlName="desc">
-        </mat-form-field>
-        <button mat-raised-button color="primary" type="submit">
-          保存
-        </button>
-      </form>
-    }
-  </mat-drawer>
-  <button mat-raised-button color="primary" class="m-b-8"
-          (click)="openCreate()">
-    新建实体
-  </button>
-  @if (unsignFields?.length !== 0) {
-  <h3>未分配实体的字段</h3>
-  <ng-container
-                *ngTemplateOutlet="expansionTpl; context: {$implicit: {fields: unsignFields}}">
-  </ng-container>
-  }
+<mat-tab-group class="h-full">
+  <mat-tab label="实体">
+    <mat-drawer-container class="h-full">
+      <mat-drawer #drawer style="width: 400px;" mode="over" position="end">
+        @if (drawer.opened) {
+        <form class="m-16" [formGroup]="entityForm" (ngSubmit)="createEntity()">
+          <mat-form-field class="w-full">
+            <mat-label>名称</mat-label>
+            <input matInput formControlName="name">
+          </mat-form-field>
+          <mat-form-field class="w-full">
+            <mat-label>描述</mat-label>
+            <input matInput formControlName="desc">
+          </mat-form-field>
+          <button mat-raised-button color="primary" type="submit">
+            保存
+          </button>
+        </form>
+        }
+      </mat-drawer>
+      <button mat-raised-button color="primary" class="m-b-8"
+              (click)="openCreate()">
+        新建实体
+      </button>
+      @if (unsignFields?.length !== 0) {
+      <h3>未分配实体的字段</h3>
+      <ng-container
+                    *ngTemplateOutlet="expansionTpl; context: {$implicit: {fields: unsignFields}}">
+      </ng-container>
+      }
 
-  <mtx-grid [data]="list" [columns]="columns" [loading]="isLoading"
-            [expandable]="true" [expansionTemplate]="expansionTpl"
-            (expansionChange)="loadFields($event)" pageOnFront="false"
-            showPaginator="false">
-  </mtx-grid>
-</mat-drawer-container>
+      <mtx-grid [data]="list" [columns]="columns" [loading]="isLoading"
+                [expandable]="true" [expansionTemplate]="expansionTpl"
+                (expansionChange)="loadFields($event)" pageOnFront="false"
+                showPaginator="false">
+      </mtx-grid>
+    </mat-drawer-container>
+  </mat-tab>
+  <mat-tab label="表单">
+    <div class="d-flex h-full w-full">
+      <mat-list style="width: 30%;" class="b-r-4">
+        <mat-list-item>Item 1</mat-list-item>
+        <mat-list-item>Item 2</mat-list-item>
+        <mat-list-item>Item 3</mat-list-item>
+      </mat-list>
+      <code-editor style="width: 70%;" theme="dark" setup="basic" [languages]="[editorLang]" language="TypeScript" value="console.log(1);" />
+    </div>
+  </mat-tab>
+</mat-tab-group>
+
 
 <ng-template #expansionTpl let-row>
   <div class="w-full">
