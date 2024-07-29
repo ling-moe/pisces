@@ -21,7 +21,7 @@
       }
     },
     "update": {
-      "command": "schematics .:update --debug==false",
+      "command": "schematics .:code-cdtr --debug==false",
       "options": {
         "cwd": "libs/musubi"
       }

@@ -1,9 +1,9 @@
 {
   "$schema": "../../../node_modules/@angular-devkit/schematics/collection-schema.json",
   "schematics": {
-    "update": {
-      "description": "接口更新.",
-      "factory": "../../../dist/@pisces/musubi/schematics/update/index#update"
+    "code-cdtr": {
+      "description": "A blank schematic.",
+      "factory": "./code-cdtr/index#codeCdtr"
     }
   }
 }
