@@ -2,6 +2,7 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "baseUrl": ".",
+    "outDir": "../../dist/libs/musubi",
     "lib": [
       "es2018",
       "dom"
@@ -24,8 +25,7 @@
     ]
   },
   "include": [
-    "schematics/**/*",
-    "schematics/collection.json"
+    "schematics/**/*"
   ],
   "exclude": [
     "schematics/*/files/**/*"

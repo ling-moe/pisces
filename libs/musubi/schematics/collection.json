@@ -3,7 +3,7 @@
   "schematics": {
     "code-cdtr": {
       "description": "A blank schematic.",
-      "factory": "./code-cdtr/index#codeCdtr"
+      "factory": "../../../dist/libs/musubi/code-cdtr/index#codeCdtr"
     }
   }
 }
