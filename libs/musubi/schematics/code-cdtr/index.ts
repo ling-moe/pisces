@@ -49,7 +49,7 @@ function test() {
   const siz = number('siz').label('体型').required();
   // number('int').label('智力').required();
 
-  multi([age, str, dex, siz]).control(move, ([ageProp, strProp, dexProp, sizProp], move) =>
+  multi([age, str, dex, siz]).control(move, ([ageProp, strProp, dexProp, sizProp]) =>
     move.value = calcMov({ str: strProp.value, age: ageProp.value, dex: dexProp.value, pow: sizProp.value })
   );
   // jobval.control(

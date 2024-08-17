@@ -30,14 +30,12 @@ export function group(name: string, ...builders: AbstractBuilder[]) {
        const form = builders.map(i => i.toText()).reduce((res, cur) => {
         res.template += cur.template;
         res.formControl += cur.formControl;
-        res.controlFlow += cur.controlFlow;
-        res.formVar +=  cur.formVar;
+        res.init += cur.init;
         return res;
-      }, { template: '', formControl: '', controlFlow: '', formVar: ''});
+      }, { template: '', formControl: '', init: ''});
       form.template = `<form [group]="form$${name}">\n${form.template}</form>\n`
-      form.formControl = `form$${name} = {\n${form.formControl}};\n`
-      form.controlFlow = `formInit$${name}() {\n${form.controlFlow}};\n`
-      form.formVar = `formVar$${name} = {\n${form.formVar}};\n`
+      form.init = `formInit$${name}() {\n${form.formControl}\n${form.init}\nthis.form$${name} = {${builders.map(i => i.props().id).join(',')}}\n};\n`
+      form.formControl = `form$${name}!: Record<string, FormItem>;`;
       return form;
     }
   };
@@ -58,7 +56,7 @@ interface MultiTool<T extends AbstractBuilder> {
   ): void;
 }
 
-function renderIfExist(str: string | null | undefined, template: string) {
+function renderIfExist(str: string | null | undefined | boolean, template: string) {
   return str ? template : '';
 }
 
@@ -130,23 +128,21 @@ abstract class AbstractBuilder {
 
   control(
     move: InputBuilder,
-    controlFunction: (props: InputBuilder, move: AbstractBuilder) => number
+    controlFunction: (props: InputBuilder) => number
   ) {
     console.log(move, controlFunction);
   }
-  toText(): {
+  toText(props?: string): {
     template: string;
     formControl: string;
-    controlFlow: string;
-    formVar: string;
+    init: string;
   } {
     const { id, defaultValue, required, controls } = this.props();
     return {
       template: '',
-      formVar: '',
-      formControl: `${id}: new FormControl(${defaultValue}, ${required ? 'Validators.required' : ''}),\n`,
-      controlFlow: controls.length ===0 ? '' : `${controls.map(control =>
-        `combineLatest([${control.ids.join(', ')}]).subscribe(${control.controlFunction})`)};\n`
+      formControl: `const ${id} = new FormItem(new FormControl(${defaultValue}, ${required ? 'Validators.required' : ''})${renderIfExist(!!props, `, ${props}`)});\n`,
+      init: controls.length ===0 ? '' : `${controls.map(control =>
+        `combineLatest([${control.ids.map(i => `${i}.valueChanges`).join(', ')}]).subscribe(${control.controlFunction})`)};\n`
     };
   }
 }
@@ -167,7 +163,6 @@ export class InputBuilder extends AbstractBuilder {
       <mat-label>${label}</mat-label>
       <input matInput type="${this._type}" id="${id}" ${renderIfExist(placeholder, `placeholder="${placeholder}"`)} formControlName="${id}">
     </mat-form-field>`,
-    formVar: ''
     };
   }
 }
@@ -208,18 +203,17 @@ export class SelectBuilder extends AbstractBuilder {
     }
 
     if(this._dictCode){
-      // @ts-ignore
-      super.controlByConst(`this.cardToolService.getConfig(${this._dictCode})`, ([value]) => this[`options$${id}`] = value)
+      // // @ts-ignore
+      // super.controlByConst(`this.cardToolService.getConfig(${this._dictCode})`, ([value]) => this[`options$${id}`] = value)
     }
     return {
-      ...super.toText(),
+      ...super.toText(`{options: ${optionStr}}`),
       template: `<mat-form-field>
         <mat-label>${label}</mat-label>
         <mat-select ${renderIfExist(placeholder, `placeholder="${placeholder}"`)} formControlName="${id}">
           <mat-option *ngFor="let item of options" [value]="item.code">{{item.text}}</mat-option>
         </mat-select>
-       </mat-form-field>`,
-       formVar: `options$${id} = ${optionStr},\n`
+       </mat-form-field>`
     };
   }
 }

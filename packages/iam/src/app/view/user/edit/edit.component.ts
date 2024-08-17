@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { UserDomainService,User } from '../../../domain/user.entity';
 import { Consumer, RemoteService} from "@pisces/musubi/client";
 
@@ -21,6 +21,7 @@ export class UserEditComponent implements OnInit {
   }
 
   ngOnInit() {
+    new FormControl(Validators.required)
     this.form = this.fb.group({
       username: [{ value: '', disabled: true }, Validators.required],
       displayName: ['', Validators.required],
