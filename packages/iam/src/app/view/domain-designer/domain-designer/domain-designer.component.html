@@ -18,7 +18,7 @@
         </form>
         }
       </mat-drawer>
-      <button mat-raised-button color="primary" class="m-b-8"
+      <button mat-raised-button color="primary" class="m-y-8"
               (click)="openCreate()">
         新建实体
       </button>
@@ -38,12 +38,40 @@
   </mat-tab>
   <mat-tab label="表单">
     <div class="d-flex h-full w-full">
-      <mat-list style="width: 30%;" class="b-r-4">
-        <mat-list-item>Item 1</mat-list-item>
-        <mat-list-item>Item 2</mat-list-item>
-        <mat-list-item>Item 3</mat-list-item>
-      </mat-list>
-      <code-editor style="width: 70%;" theme="dark" setup="basic" [languages]="[editorLang]" language="TypeScript" value="console.log(1);" />
+      <div style="width: 30%;" class="b-r-4">
+        <mat-form-field class="m-y-8 w-full">
+          <mat-label>请输入表单名称</mat-label>
+          <input matInput type="text" #newFormName>
+          <button matSuffix mat-icon-button color="primary" (click)="createForm(newFormName.value)">
+            <mat-icon>add</mat-icon>
+          </button>
+        </mat-form-field>
+        <mat-selection-list [multiple]="false" #formList>
+          @for (form of forms; track form.id) {
+            <mat-list-option [value]="form">{{form.name}}</mat-list-option>
+          }
+        </mat-selection-list>
+      </div>
+      <div style="width: 70%;" class="m-t-8">
+      <div class="d-flex">
+        <span class="w-full m-r-8"></span>
+      <button mat-raised-button class="m-r-8">
+        生成
+      </button>
+      <button mat-raised-button color="primary" class="m-r-8"
+      [disabled]="!formList.selectedOptions.selected[0]?.value"
+      (click)="saveFormJs(formList.selectedOptions.selected[0]?.value.id, formList.selectedOptions.selected[0]?.value.formJs)">
+        保存
+      </button>
+      <button mat-raised-button color="warn" class="m-r-8">
+        删除
+      </button>
+      </div>
+      <code-editor theme="dark" setup="basic" [languages]="[editorLang]" language="TypeScript"
+                   [(ngModel)]="formList.selectedOptions.selected[0]?.value.formJs" #editor/>
+
+      {{editor.value}}
+    </div>
     </div>
   </mat-tab>
 </mat-tab-group>

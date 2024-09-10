@@ -206,6 +206,7 @@ model Domain {
   productFeatures ProductFeature[]
   Entity          Entity[]
   EntityField     EntityField[]
+  Form            Form[]
 
   @@index([productId])
   @@map("ddd_domain")
@@ -315,4 +316,31 @@ model EntityField {
   @@index([entityId])
   @@index([domainId])
   @@map("ddd_entity_field")
+}
+
+// 领域表单表
+model Form {
+  // 域ID
+  id         BigInt   @id @default(autoincrement()) @map("id")
+  // 所属的领域ID
+  domainId   BigInt   @map("domain_id")
+  // 关联的领域
+  domain     Domain   @relation(fields: [domainId], references: [id])
+  // 实体名称
+  name       String
+  // 描述
+  formJs     String?  @db.Text
+  // 版本号
+  versionNum BigInt   @default(1) @map("version_num")
+  // 创建者
+  createBy   BigInt   @map("create_by")
+  // 创建时间
+  createAt   DateTime @default(now()) @map("create_at")
+  // 更新者
+  updateBy   BigInt   @map("update_by")
+  // 更新时间
+  updateAt   DateTime @updatedAt @map("update_at")
+
+  @@index([domainId])
+  @@map("ddd_form")
 }

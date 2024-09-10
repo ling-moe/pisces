@@ -8,6 +8,7 @@ import { Consumer, RemoteService } from '@pisces/musubi/client';
 import { ToastrService } from 'ngx-toastr';
 import { Entity, EntityDomainService, EntityField } from '../../../domain/entity.entity';
 import { LanguageDescription } from '@codemirror/language';
+import { DomainDomainService, Form } from '../../../domain/domain.entity';
 
 @Component({
   selector: 'pisces-domain-designer',
@@ -16,6 +17,24 @@ import { LanguageDescription } from '@codemirror/language';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DomainDesignerComponent implements OnInit {
+  saveFormJs(formId: bigint, formJs: string) {
+    console.log(formJs)
+    this.domainRepository.saveForm({ id: formId, formJs } as Form)
+      .subscribe(() => this.toast.success("保存成功"));
+  }
+  createForm(formName: string) {
+    if (!formName) {
+      this.toast.error("表单名称不能为空");
+    }
+    this.domainRepository.saveForm({ domainId: this.domainId, name: formName } as Form)
+      .subscribe(() => {
+        this.toast.success("新建成功");
+        this.domainRepository.listForms(this.domainId)
+          .subscribe(res => {
+            this.forms = res;
+          });
+      });
+  }
   remove(row: any): void {
     this.entityRepository.deleteEntity(row.id)
       .subscribe(() => {
@@ -26,9 +45,9 @@ export class DomainDesignerComponent implements OnInit {
   editorLang = LanguageDescription.of({
     name: "TypeScript",
     alias: ["ts"],
-    extensions: ["ts","mts","cts"],
+    extensions: ["ts", "mts", "cts"],
     load() {
-      return import("@codemirror/lang-javascript").then(m => m.javascript({typescript: true}))
+      return import("@codemirror/lang-javascript").then(m => m.javascript({ typescript: true }));
     }
   });
 
@@ -98,6 +117,7 @@ export class DomainDesignerComponent implements OnInit {
   isLoading = true;
   domainId!: bigint;
   list: (Entity & { fields?: FormArray; })[] = [];
+  forms: Form[] = [];
   columns: MtxGridColumn[] = [
     { header: '实体名称', field: 'name', showExpand: true },
     { header: '所属领域', field: 'domain.name' },
@@ -142,6 +162,8 @@ export class DomainDesignerComponent implements OnInit {
     private route: ActivatedRoute,
     @Inject(RemoteService)
     private entityRepository: Consumer<EntityDomainService>,
+    @Inject(RemoteService)
+    private domainRepository: Consumer<DomainDomainService>,
     private cdr: ChangeDetectorRef,
     private fb: FormBuilder,
     private toast: ToastrService,
@@ -167,6 +189,10 @@ export class DomainDesignerComponent implements OnInit {
         const fieldControls = res?.map(field => this.createFieldForm(field)) ?? [];
         this.unsignFields = this.fb.array(fieldControls);
         this.cdr.markForCheck();
+      });
+    this.domainRepository.listForms(this.domainId)
+      .subscribe(res => {
+        this.forms = res;
       });
   }
   addField(row: Entity & { fields?: FormArray; }) {

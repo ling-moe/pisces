@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { Page, PageRequest, paginator } from "@pisces/common";
 import { Provider } from "@pisces/musubi/server";
-import { Domain, DomainDomainService, DomainQuery, DomainSave } from "../domain/domain.entity";
+import { Domain, DomainDomainService, DomainQuery, DomainSave, Form } from "../domain/domain.entity";
 import { PrismaService } from "../infra/config/prisma.module.backend";
 
 @Injectable()
@@ -9,6 +9,17 @@ export class DomainRepository implements Provider<DomainDomainService> {
   constructor(
     private prisma: PrismaService,
   ) {
+  }
+  async saveForm(form: Form): Promise<void> {
+    if(form.id){
+      await this.prisma.form.update({data: form, where: {id: form.id}});
+    }else{
+      await this.prisma.form.create({data: form});
+    }
+
+  }
+  async listForms(domainId: bigint): Promise<Form[]> {
+    return await this.prisma.form.findMany({where: {domainId: domainId}});
   }
 
   async deleteDomain(id: bigint) {
