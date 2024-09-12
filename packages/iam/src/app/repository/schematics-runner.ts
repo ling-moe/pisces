@@ -2,8 +2,7 @@ import { UnsuccessfulWorkflowExecution } from '@angular-devkit/schematics';
 import { NodeWorkflow } from '@angular-devkit/schematics/tools';
 import { createConsoleLogger } from '@angular-devkit/core/node';
 import { schema } from '@angular-devkit/core';
-// @ts-ignore
-import {create} from 'ansi-colors';
+import {blue, cyan, green, red, yellow, } from 'ansicolor';
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -66,17 +65,15 @@ export async function main({
   stderr = process.stderr,
 }): Promise<0 | 1> {
 
-  // Create a separate instance to prevent unintended global changes to the color configuration
-  const colors = create();
 
   /** Create the DevKit Logger used through the CLI. */
   const logger = createConsoleLogger(verbose, stdout, stderr,
      {
     info: (s) => s,
     debug: (s) => s,
-    warn: (s) => colors.bold.yellow(s),
-    error: (s) => colors.bold.red(s),
-    fatal: (s) => colors.bold.red(s),
+    warn: (s) => yellow(s),
+    error: (s) => red(s),
+    fatal: (s) => red(s),
   }
 );
 
@@ -132,17 +129,17 @@ export async function main({
         );
         break;
       case 'update':
-        loggingQueue.push(`${colors.cyan('UPDATE')} ${eventPath} (${event.content.length} bytes)`);
+        loggingQueue.push(`${cyan('UPDATE')} ${eventPath} (${event.content.length} bytes)`);
         break;
       case 'create':
-        loggingQueue.push(`${colors.green('CREATE')} ${eventPath} (${event.content.length} bytes)`);
+        loggingQueue.push(`${green('CREATE')} ${eventPath} (${event.content.length} bytes)`);
         break;
       case 'delete':
-        loggingQueue.push(`${colors.yellow('DELETE')} ${eventPath}`);
+        loggingQueue.push(`${yellow('DELETE')} ${eventPath}`);
         break;
       case 'rename':
         loggingQueue.push(
-          `${colors.blue('RENAME')} ${eventPath} => ${removeLeadingSlash(event.to)}`,
+          `${blue('RENAME')} ${eventPath} => ${removeLeadingSlash(event.to)}`,
         );
         break;
     }
