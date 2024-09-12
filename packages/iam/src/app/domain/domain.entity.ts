@@ -37,4 +37,12 @@ export interface DomainDomainService {
    * @param form 表单对象
    */
   saveForm(form: Form): void;
+
+    /**
+   * 保存表单
+   * @param form 表单对象
+   */
+  removeForm(id: bigint): void;
+
+  syncForm(id: bigint): void
 }

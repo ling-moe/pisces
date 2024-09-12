@@ -7,8 +7,10 @@ import { select, input, multi, number, group } from './form-builder';
 // per file.
 export function codeCdtr(_options: any): Rule {
   return (tree: Tree, _context: SchematicContext) => {
-    console.log(runInNewContext(code,{ select, input, multi, number, group,}));
+    // console.log(runInNewContext(code,{ select, input, multi, number, group,}));
     console.log(111);
+    console.log(tree.root);
+    tree.create("111.txt", "红烧鸡翅成功了！");
     return tree;
   };
 }
