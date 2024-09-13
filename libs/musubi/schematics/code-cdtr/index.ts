@@ -1,73 +1,36 @@
-import { Rule, SchematicContext, Tree } from '@angular-devkit/schematics';
+import { externalSchematic, Rule, SchematicContext, Tree } from '@angular-devkit/schematics';
 import { runInNewContext } from "node:vm";
 import { select, input, multi, number, group } from './form-builder';
 
+type Option = {
+  code: string;
+  componentUri: string;
+}
 
 // You don't have to export the function as default. You can also have more than one rule factory
 // per file.
-export function codeCdtr(_options: any): Rule {
+export function codeCdtr(_options: Option): Rule {
   return (tree: Tree, _context: SchematicContext) => {
-    const result = runInNewContext(_options.code,{ select, input, multi, number, group,});
-    console.log(111);
-    tree.create("111.txt", JSON.stringify(result));
+    const {code,componentUri} = _options;
+    const componentName = componentUri.split('/').reverse()[0];
+    const result = runInNewContext(code,{ select, input, multi, number, group,});
+    // TODO 暂时只支持多文件组件
+    if(tree.exists(`${componentUri}/${componentName}.component.ts`)){
+      const html = tree.get(`${componentUri}/${componentName}.component.html`);
+      const ts = tree.get(`${componentUri}/${componentName}.component.ts`);
+      const htmlRecoder = tree.beginUpdate(`${componentUri}/${componentName}.component.html`);
+      const tsRecoder = tree.beginUpdate(`${componentUri}/${componentName}.component.ts`);
+      htmlRecoder.insertLeft(0, result[0].template);
+      tsRecoder.insertLeft(0, result[0].init);
+      tree.commitUpdate(htmlRecoder)
+      tree.commitUpdate(tsRecoder)
+    }else{
+      externalSchematic('@schematics/angular', 'component', {
+        name: componentName,
+        path: componentUri,
+        style: 'scss',
+      });
+    }
     return tree;
   };
 }
-
-const code  = `
-function test() {
-  const chartname = input('chartname').label('姓名').placeholder('你叫什么名字？').required();
-  const sex = input('sex')
-    .label('性别')
-    .placeholder('虽然正常来说只有男或女，可是也保不准有武装直升机？')
-    .required();
-  const player = input('player')
-    .label('玩家')
-    .placeholder('本尊在此')
-    .defaultValue(() => this.user?.name)
-    .required();
-  const address = input('address').label('住地').placeholder('你现在住哪?').required();
-  const time = select('time')
-    .label('时代')
-    .placeholder('你是哪个时代的人啊')
-    .options(() => Time.map(i => ({ code: i.value, text: i.label })))
-    .required();
-  const hometown = input('hometown').label('故乡').placeholder('是M18星云吗？').required();
-
-  const age = number('age').label('年龄').placeholder('您贵庚？').required();
-  const jobval = select('jobval')
-    .dict('jobs')
-    .label('职业')
-    .placeholder('师傅你是做什么工作的？')
-    .required();
-
-  const move = number('move').label('移动').required();
-  const str = number('str').label('力量').required();
-  // number('con').label('体质').required();
-  // number('pow').label('意志').required();
-  const dex = number('dex').label('敏捷').required();
-  // number('app').label('外貌').required();
-  const siz = number('siz').label('体型').required();
-  // number('int').label('智力').required();
-
-  multi([age, str, dex, siz]).control(move, ([ageProp, strProp, dexProp, sizProp]) =>
-    move.value = calcMov({ str: strProp.value, age: ageProp.value, dex: dexProp.value, pow: sizProp.value })
-  );
-  // jobval.control(
-  //   [],
-  //   (props, move) =>
-  //     (move.value = calcMov({ ...this.model.attribute, age: this.model.person.age }))
-  // );
-
-  // TODO 一对多 age.control([move,sex], (props, [move,sex]) => move.value = 12; sex.value = false))
-  // TODO 多对多
-  // TODO 无对一/多
-
-  return [
-    group('role', chartname, sex, player, address, time, hometown, age, jobval,move),
-    group('prop', str, dex, siz),
-  ];
-}
-test().map(i => i.toText());
-
-`;

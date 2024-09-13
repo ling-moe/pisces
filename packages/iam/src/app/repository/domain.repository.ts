@@ -15,7 +15,10 @@ export class DomainRepository implements Provider<DomainDomainService> {
     const form = await this.prisma.form.findFirst({where: {id}});
     run({
       collection: 'C:/Users/57186/Documents/Repos/pisces/libs/musubi',
-      schematicOptions: {code: form?.formJs}})
+      schematicOptions: {
+        code: form?.formJs,
+        componentUri: form?.componentUri
+      }})
   }
   async removeForm(id: bigint): Promise<void> {
     await this.prisma.form.delete({where: {id}});

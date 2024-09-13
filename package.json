@@ -8,7 +8,7 @@
     "test": "npx nx run iam:build --watch=true --configuration=development",
     "db:studio": "prisma studio --schema=packages/iam/src/resource/schema.prisma",
     "musubi:code-cdtr:complie": "tsc -p ./libs/musubi/tsconfig.schematics.json",
-    "musubi:code-cdtr": "tsc -p ./libs/musubi/tsconfig.schematics.json && schematics ./libs/musubi:code-cdtr --debug==true",
+    "musubi:code-cdtr": "schematics ./libs/musubi:code-cdtr --debug==true",
     "migrate": "prisma migrate dev --schema=packages/iam/src/resource/schema.prisma",
     "postinstall": "prisma generate --schema=packages/iam/src/resource/schema.prisma"
   },
