@@ -49,7 +49,7 @@ function removeLeadingSlash(value: string): string {
   return value[0] === '/' ? value.slice(1) : value;
 }
 
-export async function main({
+export async function run({
   debug = false,
   dryRunPresent = false,
   dryRun = false,

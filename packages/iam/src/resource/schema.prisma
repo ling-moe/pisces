@@ -328,7 +328,9 @@ model Form {
   domain     Domain   @relation(fields: [domainId], references: [id])
   // 实体名称
   name       String
-  // 描述
+  // 组件位置
+  componentUri String?
+  // 表单描述js
   formJs     String?  @db.Text
   // 版本号
   versionNum BigInt   @default(1) @map("version_num")

@@ -17,24 +17,24 @@ import { DomainDomainService, Form } from '../../../domain/domain.entity';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DomainDesignerComponent implements OnInit {
-syncForm(id: bigint) {
-  this.domainRepository.syncForm(id)
-  .subscribe(() => this.toast.success("同步成功"));
-}
+  syncForm(id: bigint) {
+    this.domainRepository.syncForm(id)
+      .subscribe(() => this.toast.success("同步成功"));
+  }
   removeForm(id: bigint) {
     this.domainRepository.removeForm(id)
-    .subscribe(() => {
-      this.toast.success("删除成功");
-      this.domainRepository.listForms(this.domainId)
+      .subscribe(() => {
+        this.toast.success("删除成功");
+        this.domainRepository.listForms(this.domainId)
           .subscribe(res => {
             this.forms = res;
             this.cdr.markForCheck();
           });
-    });
+      });
   }
-  saveFormJs(formId: bigint, formJs: string) {
+  saveFormJs(formId: bigint, formJs: string,componentUri: string) {
     console.log(formJs);
-    this.domainRepository.saveForm({ id: formId, formJs } as Form)
+    this.domainRepository.saveForm({ id: formId, formJs,componentUri } as Form)
       .subscribe(() => this.toast.success("保存成功"));
   }
   createForm(formName: string) {
