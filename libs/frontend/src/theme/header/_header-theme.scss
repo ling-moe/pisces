@@ -6,6 +6,6 @@
   $foreground: map.get($theme, foreground);
 
   .matero-toolbar {
-    border-bottom: 1px solid mat.get-color-from-palette($foreground, divider);
+    border-bottom: 1px solid mat.m2-get-color-from-palette($foreground, divider);
   }
 }

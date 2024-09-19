@@ -12,11 +12,11 @@
   .matero-sidemenu {
     > .menu-item {
       > .menu-heading {
-        color: mat.get-color-from-palette($foreground, text);
+        color: mat.m2-get-color-from-palette($foreground, text);
 
         &:hover,
         &:focus {
-          background: mat.get-color-from-palette($background, hover);
+          background: mat.m2-get-color-from-palette($background, hover);
         }
       }
 
@@ -25,20 +25,20 @@
           color:
             if(
               $is-dark-theme,
-              color.adjust(mat.get-color-from-palette($primary), $lightness: 25%),
-              mat.get-color-from-palette($accent)
+              color.adjust(mat.m2-get-color-from-palette($primary), $lightness: 25%),
+              mat.m2-get-color-from-palette($accent)
             );
-          background-color: if($is-dark-theme, rgba(mat.get-color-from-palette($primary), .15), transparent);
+          background-color: if($is-dark-theme, rgba(mat.m2-get-color-from-palette($primary), .15), transparent);
 
           &:hover,
           &:focus {
-            background: mat.get-color-from-palette($background, hover);
+            background: mat.m2-get-color-from-palette($background, hover);
           }
         }
       }
 
       &.expanded {
-        background: mat.get-color-from-palette($background, hover);
+        background: mat.m2-get-color-from-palette($background, hover);
       }
     }
 
@@ -50,7 +50,7 @@
 
             &:hover,
             &:focus {
-              background: mat.get-color-from-palette($background, hover);
+              background: mat.m2-get-color-from-palette($background, hover);
             }
           }
         }

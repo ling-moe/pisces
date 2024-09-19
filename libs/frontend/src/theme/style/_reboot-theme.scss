@@ -14,14 +14,14 @@
   }
 
   a:not(.mat-mdc-button-base) {
-    color: mat.get-color-from-palette($primary);
+    color: mat.m2-get-color-from-palette($primary);
 
     &:hover {
-      color: color.adjust(mat.get-color-from-palette($primary), $lightness: 10%);
+      color: color.adjust(mat.m2-get-color-from-palette($primary), $lightness: 10%);
     }
   }
 
   code {
-    background-color: rgba(mat.get-color-from-palette($foreground, secondary-text), .03);
+    background-color: rgba(mat.m2-get-color-from-palette($foreground, secondary-text), .03);
   }
 }

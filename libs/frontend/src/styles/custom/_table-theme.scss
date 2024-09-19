@@ -8,11 +8,11 @@
   $background: map.get($theme, 'background');
   $foreground: map.get($theme, 'foreground');
 
-  $row-hover-bg: mat.get-color-from-palette(mat.$indigo-palette, 50);
-  $row-odd-bg: mat.get-color-from-palette(mat.$gray-palette, 100);
+  $row-hover-bg: mat.m2-get-color-from-palette(mat.$m2-indigo-palette, 50);
+  $row-odd-bg: mat.m2-get-color-from-palette(mat.$m2-gray-palette, 100);
 
-  $row-hover-bg-dark: mat.get-color-from-palette(mat.$blue-gray-palette, 900);
-  $row-odd-bg-dark: color.adjust(mat.get-color-from-palette(mat.$gray-palette, 900), $lightness: 10%);
+  $row-hover-bg-dark: mat.m2-get-color-from-palette(mat.$m2-blue-gray-palette, 900);
+  $row-odd-bg-dark: color.adjust(mat.m2-get-color-from-palette(mat.$m2-gray-palette, 900), $lightness: 10%);
 
   mtx-grid.mtx-grid {
     .mat-table {

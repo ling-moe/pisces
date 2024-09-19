@@ -25,19 +25,19 @@
   }
 
   .toast-info {
-    background-color: mat.get-color-from-palette(mat.$blue-palette, 500);
+    background-color: mat.m2-get-color-from-palette(mat.$m2-blue-palette, 500);
   }
 
   .toast-success {
-    background-color: mat.get-color-from-palette(mat.$green-palette, 500);
+    background-color: mat.m2-get-color-from-palette(mat.$m2-green-palette, 500);
   }
 
   .toast-warning {
-    background-color: mat.get-color-from-palette(mat.$orange-palette, 500);
+    background-color: mat.m2-get-color-from-palette(mat.$m2-orange-palette, 500);
   }
 
   .toast-error {
-    background-color: mat.get-color-from-palette(mat.$red-palette, 500);
+    background-color: mat.m2-get-color-from-palette(mat.$m2-red-palette, 500);
   }
 
   .toast-close-button {

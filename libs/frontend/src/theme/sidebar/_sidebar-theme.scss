@@ -6,12 +6,12 @@
   $foreground: map.get($theme, foreground);
 
   .matero-sidebar-header {
-    color: mat.get-color-from-palette($foreground, text);
-    background: mat.get-color-from-palette($background, dialog);
-    border-bottom: 1px solid mat.get-color-from-palette($foreground, divider);
+    color: mat.m2-get-color-from-palette($foreground, text);
+    background: mat.m2-get-color-from-palette($background, dialog);
+    border-bottom: 1px solid mat.m2-get-color-from-palette($foreground, divider);
   }
 
   .matero-user-panel {
-    border-bottom: 1px solid mat.get-color-from-palette($foreground, divider);
+    border-bottom: 1px solid mat.m2-get-color-from-palette($foreground, divider);
   }
 }
