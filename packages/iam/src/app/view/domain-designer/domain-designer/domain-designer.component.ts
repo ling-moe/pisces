@@ -32,9 +32,8 @@ export class DomainDesignerComponent implements OnInit {
           });
       });
   }
-  saveFormJs(formId: bigint, formJs: string,componentUri: string) {
-    console.log(formJs);
-    this.domainRepository.saveForm({ id: formId, formJs,componentUri } as Form)
+  saveFormJs(form: Form) {
+    this.domainRepository.saveForm(form)
       .subscribe(() => this.toast.success("保存成功"));
   }
   createForm(formName: string) {

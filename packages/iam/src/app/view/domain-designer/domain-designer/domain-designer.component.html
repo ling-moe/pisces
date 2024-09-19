@@ -53,30 +53,32 @@
         </mat-selection-list>
       </div>
       <div style="width: 70%;">
+      @if (formList._value) {
+        @let selectedForm = formList.selectedOptions.selected[0].value;
       <div class="d-flex" style="height: 78px;">
         <span class="w-full m-r-8">
           <mat-form-field class="m-y-8 w-full" [disableControl]="!formList._value">
             <mat-label>组件位置</mat-label>
-            <input matInput type="text" [(ngModel)]="formList.selectedOptions.selected[0]?.value.componentUri">
+            <input matInput type="text" [(ngModel)]="selectedForm.componentUri">
           </mat-form-field>
         </span>
         <button mat-raised-button class="m-r-8" style="margin: auto 0;" [disabled]="!formList._value"
-                (click)="syncForm(formList.selectedOptions.selected[0].value.id)">
+                (click)="syncForm(selectedForm.id)">
           生成
         </button>
         <button mat-raised-button color="primary" class="m-r-8" style="margin: auto 0;" [disabled]="!formList._value"
-                (click)="saveFormJs(formList.selectedOptions.selected[0].value.id, formList.selectedOptions.selected[0].value.formJs,
-                formList.selectedOptions.selected[0]?.value.componentUri)">
+                (click)="saveFormJs(selectedForm)">
           保存
         </button>
         <button mat-raised-button color="warn" class="m-r-8" style="margin: auto 0;" [disabled]="!formList._value"
-                (click)="removeForm(formList.selectedOptions.selected[0]?.value.id)">
+                (click)="removeForm(selectedForm.id)">
           删除
         </button>
         </div>
         <code-editor style="height: calc(100% - 78px);" theme="dark" setup="basic"
                     [languages]="[editorLang]" language="TypeScript"
-                    [(ngModel)]="formList.selectedOptions.selected[0]?.value.formJs" #editor/>
+                    [(ngModel)]="selectedForm.formJs" #editor/>
+        }
     </div>
     </div>
   </mat-tab>
