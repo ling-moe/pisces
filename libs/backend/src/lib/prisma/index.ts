@@ -1,6 +1,6 @@
 import { INestApplication, Injectable, Logger, OnModuleInit, Type } from '@nestjs/common';
 import { ClsService } from "nestjs-cls";
-import {blue, green, lightYellow, red, yellow, } from 'ansicolor';
+import { green, lightYellow, red, yellow, } from 'ansicolor';
 
 export interface AuditModel {
   id?: bigint;
@@ -71,8 +71,10 @@ export function createPrismaService<ModelName extends string, T extends Type<any
 
     private initLog() {
       super.$on('query', (e: QueryEvent) => {
-        Logger.log(`${yellow('[Prisma]')} ${green('Query:')} ${green(e.query)} ${yellow(`+${e.duration}ms`)}`);
-        Logger.log(`${yellow('[Prisma]')} ${green('Param:')} ${green(e.params)}`);
+        let sql = e.query;
+        JSON.parse(e.params)
+          .forEach((v: unknown,i: number) => sql = sql.replace(`$${++i}`, JSON.stringify(v)));
+        Logger.log(`${yellow('[Prisma]')} ${green(`Query[${e.duration}ms]: ${green(sql)}`)}`);
       });
       super.$on('info', (e: LogEvent) => {
         Logger.log(`${yellow('[Prisma]')} ${green(e.message)}`);
