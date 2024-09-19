@@ -307,6 +307,9 @@ devDependencies:
   '@nx/workspace':
     specifier: 18.0.4
     version: 18.0.4(@swc-node/register@1.8.0)(@swc/core@1.3.107)
+  '@phenomnomnominal/tsquery':
+    specifier: ^6.1.3
+    version: 6.1.3(typescript@5.3.3)
   '@schematics/angular':
     specifier: 17.1.1
     version: 17.1.1
@@ -7460,6 +7463,16 @@ packages:
       esquery: 1.5.0
       typescript: 5.3.3
 
+  /@phenomnomnominal/tsquery@6.1.3(typescript@5.3.3):
+    resolution: {integrity: sha512-CEqpJ872StsxRmwv9ePCZ4BCisrJSlREUC5XxIRYxhvODt4aQoJFFmjTgaP6meyKiiXxxN/VWPZ58j4yHXRkmw==}
+    peerDependencies:
+      typescript: ^3 || ^4 || ^5
+    dependencies:
+      '@types/esquery': 1.5.4
+      esquery: 1.5.0
+      typescript: 5.3.3
+    dev: true
+
   /@pkgjs/parseargs@0.11.0:
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
     engines: {node: '>=14'}
@@ -8351,6 +8364,12 @@ packages:
     dependencies:
       '@types/estree': 1.0.5
       '@types/json-schema': 7.0.15
+    dev: true
+
+  /@types/esquery@1.5.4:
+    resolution: {integrity: sha512-yYO4Q8H+KJHKW1rEeSzHxcZi90durqYgWVfnh5K6ZADVBjBv2e1NEveYX5yT2bffgN7RqzH3k9930m+i2yBoMA==}
+    dependencies:
+      '@types/estree': 1.0.5
     dev: true
 
   /@types/estree@1.0.5:

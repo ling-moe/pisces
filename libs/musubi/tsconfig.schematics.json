@@ -8,7 +8,6 @@
       "dom"
     ],
     "declaration": true,
-    "module": "commonjs",
     "moduleResolution": "node",
     "noEmitOnError": true,
     "noFallthroughCasesInSwitch": true,
@@ -19,7 +18,7 @@
     "skipLibCheck": true,
     "sourceMap": true,
     "strictNullChecks": true,
-    "target": "es6",
+    "target": "ESNext",
     "types": [
       "node"
     ]
